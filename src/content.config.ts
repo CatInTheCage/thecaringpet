@@ -14,7 +14,7 @@ const blog = defineCollection({
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().default('/images/hero.jpg'),
 		categories: z.array(z.string()).default([]),
-		author: z.string().default('The Thoughtful Pet Research Team'),
+		author: z.string().default('The Caring Pet Research Team'),
 		readingTime: z.number().optional(),
 		featured: z.boolean().default(false),
 	}),

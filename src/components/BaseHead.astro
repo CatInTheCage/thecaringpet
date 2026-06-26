@@ -16,7 +16,7 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = '/images/hero.jpg', article = false, pubDate, updatedDate, author = 'The Thoughtful Pet Research Team' } = Astro.props;
+const { title, description, image = '/images/hero.jpg', article = false, pubDate, updatedDate, author = 'The Caring Pet Research Team' } = Astro.props;
 const fullTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 ---
 

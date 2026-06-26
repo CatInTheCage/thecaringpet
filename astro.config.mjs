@@ -5,7 +5,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://thethoughtfulpet.com',
+	site: 'https://thecaringpet.com',
 	base: '/',
 	output: 'static',
 	trailingSlash: 'always',

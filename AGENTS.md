@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-This is **The Thoughtful Pet**, an Astro 7 static site for research-backed pet feeding guides and product reviews. It is built from the Astro blog starter template and deployed as a static site to GitHub Pages.
+This is **The Caring Pet**, an Astro 7 static site for research-backed pet feeding guides and product reviews. It is built from the Astro blog starter template and deployed as a static site to Cloudflare Pages.
 
 ## Common commands
 
@@ -36,7 +36,7 @@ Blog posts live in `src/content/blog/` as Markdown or MDX files. The collection 
 - `updatedDate`: date (optional)
 - `heroImage`: string, defaults to `/images/hero.jpg`
 - `categories`: array of category slugs, defaults to `[]`
-- `author`: string, defaults to "The Thoughtful Pet Research Team"
+- `author`: string, defaults to "The Caring Pet Research Team"
 - `readingTime`: number (optional)
 - `featured`: boolean, defaults to `false`
 
@@ -90,7 +90,7 @@ The site imports Google Fonts (`Inter` for body, `Playfair Display` for headings
 
 `src/consts.ts` exports:
 
-- `SITE_TITLE` = "The Thoughtful Pet"
+- `SITE_TITLE` = "The Caring Pet"
 - `SITE_DESCRIPTION`
 - `SITE_URL`
 - `AFFILIATE_DISCLOSURE`
