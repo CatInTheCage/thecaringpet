@@ -552,8 +552,12 @@ const trustItems = [
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--spacing-lg);
-		max-width: 480px;
-		margin: 0 auto;
+	}
+
+	@media (min-width: 640px) {
+		.tools-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 
 	.tool-card {
