@@ -209,6 +209,30 @@ const trustItems = [
 				</div>
 			</section>
 
+			<!-- Free Tools -->
+			<section class="tools-section section bg-surface">
+				<div class="container">
+					<div class="section-header text-center">
+						<span class="section-eyebrow">Free Tools</span>
+						<h2>Quick Answers for Pet Owners</h2>
+						<p class="text-muted section-lead">Simple, research-backed calculators to help you understand your pet better.</p>
+					</div>
+					<div class="tools-grid">
+						<a href="/tools/dog-age-calculator/" class="tool-card">
+							<div class="tool-icon" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<circle cx="12" cy="12" r="10"/>
+									<polyline points="12 6 12 12 16 14"/>
+								</svg>
+							</div>
+							<h3>Dog Age Calculator</h3>
+							<p class="text-muted">Convert your dog's age to human years based on size — more accurate than the old 7-year rule.</p>
+							<span class="tool-link">Try it →</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
 			<!-- Research Process -->
 			<section class="research-process section">
 				<div class="container research-grid">
@@ -510,6 +534,70 @@ const trustItems = [
 		color: hsl(var(--primary));
 		font-weight: 600;
 		font-size: 0.9rem;
+	}
+
+	/* Free Tools */
+	.tools-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-lg);
+		max-width: 480px;
+		margin: 0 auto;
+	}
+
+	.tool-card {
+		display: block;
+		background-color: hsl(var(--card));
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+		padding: var(--spacing-xl);
+		box-shadow: var(--shadow-card);
+		transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+		text-decoration: none;
+	}
+
+	.tool-card:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-card-hover);
+		border-color: hsl(var(--primary) / 0.4);
+		text-decoration: none;
+	}
+
+	.tool-card:hover h3 {
+		color: hsl(var(--primary));
+	}
+
+	.tool-icon {
+		width: 3rem;
+		height: 3rem;
+		background-color: hsl(var(--primary) / 0.1);
+		color: hsl(var(--primary));
+		border-radius: var(--radius-md);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: var(--spacing-md);
+	}
+
+	.tool-icon svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
+	.tool-card h3 {
+		margin-bottom: var(--spacing-xs);
+		font-size: 1.35rem;
+		transition: color 0.2s ease;
+	}
+
+	.tool-card p {
+		margin-bottom: var(--spacing-md);
+		font-size: 0.95rem;
+	}
+
+	.tool-link {
+		font-weight: 600;
+		color: hsl(var(--primary));
 	}
 
 	/* Research Process */

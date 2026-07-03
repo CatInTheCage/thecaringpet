@@ -1,0 +1,858 @@
+---
+import Page from '../../../layouts/Page.astro';
+import FAQ from '../../../components/FAQ.astro';
+
+const title = 'Dog Age Calculator — Convert Dog Years to Human Years';
+const description = 'Convert your dog\'s age to human years based on size. More accurate than the outdated 7-year rule, with vet-aligned health milestones.';
+const image = '/images/hero.jpg';
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Dog Age Calculator', href: '/tools/dog-age-calculator/' },
+];
+
+const faqItems = [
+	{
+		question: 'Is the "one dog year equals seven human years" rule accurate?',
+		answer: 'No. Dogs age much faster in their first two years and the rate varies by size. Small dogs tend to live longer and age more slowly after year two than giant breeds. Our calculator uses a size-adjusted model based on veterinary guidelines.'
+	},
+	{
+		question: 'What is the scientific basis for this calculator?',
+		answer: 'A widely cited 2020 UC San Diego / NIH study (Wang et al., Cell Systems) used DNA methylation clocks in Labrador Retrievers and found that dogs age rapidly early in life. Because that formula was derived from a single breed, we use the practical size-adjusted model recommended by the AVMA and AKC: year 1 ≈ 15 human years, year 2 ≈ +9, and each year after adds 4–7 human years depending on size.'
+	},
+	{
+		question: 'When is a dog considered a senior?',
+		answer: 'It depends on size. Small breeds are often considered seniors around 10–12 years, medium breeds around 8–10, large breeds around 7–8, and giant breeds as early as 5–6 years. Large and giant breeds age faster and are prone to age-related issues earlier.'
+	},
+	{
+		question: 'Can this calculator replace a veterinary exam?',
+		answer: 'No. This tool provides an estimate for educational purposes only. Always consult a licensed veterinarian for health assessments, especially for senior or geriatric dogs.'
+	},
+	{
+		question: 'Why do large dogs age faster than small dogs?',
+		answer: 'Research by Kraus et al. (The American Naturalist, 2013) showed that larger dog breeds tend to have shorter lifespans and faster aging due to the biological trade-offs between growth, metabolism, and cellular maintenance.'
+	}
+];
+
+const schemaJson = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: 'Dog Age Calculator',
+	applicationCategory: 'HealthApplication',
+	operatingSystem: 'Any',
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'USD'
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'The Caring Pet'
+	},
+	description: description
+};
+---
+
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs}>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(schemaJson)} slot="head" />
+
+	<section class="calculator-section">
+		<div class="card calculator-card">
+			<h2 class="calculator-title">Calculate Your Dog's Human Age</h2>
+			<p class="text-muted calculator-intro">Enter your dog's age and size. The result is an estimate based on size-adjusted veterinary guidelines.</p>
+
+			<form id="dog-age-form" class="calculator-form" novalidate>
+				<div class="form-row">
+					<div class="form-group years-group">
+						<label for="years">Years</label>
+						<div class="stepper">
+							<button type="button" class="stepper-btn" data-stepper="down" aria-label="Decrease years">−</button>
+							<input type="number" id="years" name="years" min="0" max="30" value="0" aria-label="Years" />
+							<button type="button" class="stepper-btn" data-stepper="up" aria-label="Increase years">+</button>
+						</div>
+					</div>
+					<div class="form-group months-group">
+						<label>Months</label>
+						<div class="month-pills" role="radiogroup" aria-label="Months">
+							{Array.from({ length: 12 }, (_, i) => (
+								<label class="month-pill">
+									<input type="radio" name="months" value={i} checked={i === 0} />
+									<span>{i}</span>
+								</label>
+							))}
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group size-group">
+					<label>Size</label>
+					<div class="size-options" role="radiogroup" aria-label="Dog size">
+						<label class="size-option">
+							<input type="radio" name="size" value="small" required />
+							<span class="size-label">Small</span>
+							<span class="size-weight">under 20 lb</span>
+						</label>
+						<label class="size-option">
+							<input type="radio" name="size" value="medium" checked />
+							<span class="size-label">Medium</span>
+							<span class="size-weight">20–50 lb</span>
+						</label>
+						<label class="size-option">
+							<input type="radio" name="size" value="large" />
+							<span class="size-label">Large</span>
+							<span class="size-weight">50–100 lb</span>
+						</label>
+						<label class="size-option">
+							<input type="radio" name="size" value="giant" />
+							<span class="size-label">Giant</span>
+							<span class="size-weight">over 100 lb</span>
+						</label>
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary btn-lg calculate-btn">Calculate</button>
+			</form>
+
+			<div id="result-panel" class="result-panel" hidden aria-live="polite">
+				<div class="result-main">
+					<span class="result-label">Your dog is about</span>
+					<div class="result-age">
+						<span data-human-age>—</span>
+						<span class="result-unit">human years old</span>
+					</div>
+					<span data-life-stage-badge class="badge badge-secondary life-stage-badge">—</span>
+					<p data-life-stage-desc class="result-stage-desc">—</p>
+				</div>
+				<div class="result-actions">
+					<button id="share-btn" class="btn btn-secondary" type="button">Share result</button>
+					<span id="share-feedback" class="share-feedback" hidden>Copied to clipboard!</span>
+				</div>
+			</div>
+
+			<p id="error-message" class="error-message" hidden>
+				<svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<circle cx="12" cy="12" r="10"/>
+					<line x1="12" y1="8" x2="12" y2="12"/>
+					<line x1="12" y1="16" x2="12.01" y2="16"/>
+				</svg>
+				<span class="error-text">Please enter a valid age greater than 0.</span>
+			</p>
+		</div>
+	</section>
+
+	<section class="section-content">
+		<h2>How This Calculator Works</h2>
+		<p>
+			The old rule that one dog year equals seven human years is an oversimplification. Dogs mature rapidly in their first two years, and their aging rate depends heavily on size. Small breeds live longer and age more slowly after adulthood, while giant breeds age faster and reach senior status earlier.
+		</p>
+		<p>
+			This calculator uses a size-adjusted model based on veterinary guidance:
+		</p>
+		<ul>
+			<li><strong>Year 1</strong> ≈ 15 human years</li>
+			<li><strong>Year 2</strong> ≈ +9 human years (total ≈ 24)</li>
+			<li><strong>Each year after</strong> adds 4–7 human years, depending on size</li>
+		</ul>
+		<p>
+			This approach is supported by the <a href="https://www.webmd.com/pets/dogs/how-to-calculate-your-dogs-age" target="_blank" rel="noopener noreferrer">AVMA / AKC practical guidelines</a> and a widely cited <a href="https://www.science.org/doi/10.1126/science.abc2359" target="_blank" rel="noopener noreferrer">2020 UC San Diego / NIH study on canine DNA methylation clocks</a> (Wang et al., <em>Cell Systems</em>). That study used Labrador Retrievers, so for everyday breed-agnostic estimates we apply the veterinary size-adjusted linear model. Research by <a href="https://www.journals.uchicago.edu/doi/10.1086/675735" target="_blank" rel="noopener noreferrer">Kraus et al. (<em>The American Naturalist</em>, 2013)</a> also documents the size/lifespan trade-off across dog breeds.
+		</p>
+		<p class="text-small text-muted">
+			<strong>Disclaimer:</strong> This calculator provides estimates for educational purposes only and is not a substitute for professional veterinary advice, diagnosis, or treatment.
+		</p>
+	</section>
+
+	<section class="section-content">
+		<h2>Dog Age Comparison Chart</h2>
+		<p class="text-muted">Human-age equivalents by dog size. These are estimates, not exact conversions.</p>
+		<div class="table-wrapper">
+			<table>
+				<thead>
+					<tr>
+						<th>Dog Years</th>
+						<th>Small</th>
+						<th>Medium</th>
+						<th>Large</th>
+						<th>Giant</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>6 months</td><td>8</td><td>8</td><td>8</td><td>8</td></tr>
+					<tr><td>1 year</td><td>15</td><td>15</td><td>15</td><td>15</td></tr>
+					<tr><td>2 years</td><td>24</td><td>24</td><td>24</td><td>24</td></tr>
+					<tr><td>3 years</td><td>28</td><td>29</td><td>30</td><td>31</td></tr>
+					<tr><td>5 years</td><td>36</td><td>39</td><td>42</td><td>45</td></tr>
+					<tr><td>7 years</td><td>44</td><td>49</td><td>54</td><td>59</td></tr>
+					<tr><td>10 years</td><td>56</td><td>64</td><td>72</td><td>80</td></tr>
+					<tr><td>12 years</td><td>64</td><td>74</td><td>84</td><td>94</td></tr>
+					<tr><td>15 years</td><td>76</td><td>89</td><td>102</td><td>115</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<section class="section-content">
+		<h2>Health Milestones by Life Stage</h2>
+		<p class="text-muted">Use these general milestones as a conversation starter with your veterinarian.</p>
+
+		<div class="milestone-grid">
+			<div class="milestone-card">
+				<span class="milestone-icon">🐾</span>
+				<h3>Puppy</h3>
+				<p><strong>0–1 year</strong></p>
+				<ul>
+					<li>Core vaccination series</li>
+					<li>Spay/neuter planning</li>
+					<li>Socialization window</li>
+					<li>Start safe feeding routines</li>
+				</ul>
+				<p><a href="/blog/why-does-my-dog-eat-so-fast/">Why does my dog eat so fast?</a> · <a href="/blog/slow-feeder-bowl-size-guide/">Slow feeder bowl size guide</a></p>
+			</div>
+
+			<div class="milestone-card">
+				<span class="milestone-icon">🎾</span>
+				<h3>Young Adult</h3>
+				<p><strong>Small: 1–3 · Medium: 1–3 · Large/Giant: 1–2</strong></p>
+				<ul>
+					<li>Annual wellness exam</li>
+					<li>First dental assessment</li>
+					<li>Establish exercise routine</li>
+					<li>Body-condition scoring</li>
+				</ul>
+			</div>
+
+			<div class="milestone-card">
+				<span class="milestone-icon">💪</span>
+				<h3>Adult</h3>
+				<p><strong>Small: 3–8 · Medium: 3–7 · Large: 2–6 · Giant: 2–5</strong></p>
+				<ul>
+					<li>Continue annual exams and dental cleanings</li>
+					<li>Weight management</li>
+					<li>Enrichment feeding for mental stimulation</li>
+				</ul>
+				<p><a href="/blog/best-slow-feeder-dog-bowls/">Best slow feeder dog bowls</a> · <a href="/blog/best-puzzle-feeders-for-anxious-dogs/">Best puzzle feeders for anxious dogs</a></p>
+			</div>
+
+			<div class="milestone-card">
+				<span class="milestone-icon">🩺</span>
+				<h3>Senior</h3>
+				<p><strong>Small: 8–12 · Medium: 7–10 · Large: 6–9 · Giant: 5–8</strong></p>
+				<ul>
+					<li>Semi-annual vet visits</li>
+					<li>Bloodwork and urinalysis</li>
+					<li>Joint support for large/giant breeds</li>
+					<li>Calorie adjustment</li>
+				</ul>
+				<p><a href="/blog/best-slow-feeder-for-large-dogs/">Best slow feeder for large dogs</a> · <a href="/blog/slow-feeder-bowl-size-guide/">Bowl size guide</a></p>
+			</div>
+
+			<div class="milestone-card">
+				<span class="milestone-icon">🏠</span>
+				<h3>Geriatric</h3>
+				<p><strong>Small: 12+ · Medium: 10+ · Large: 9+ · Giant: 8+</strong></p>
+				<ul>
+					<li>Pain and mobility assessment</li>
+					<li>Cognitive health support</li>
+					<li>Home comfort modifications</li>
+					<li>Quality-of-life planning with your vet</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-content">
+		<h2>Related Feeding Guides</h2>
+		<ul class="related-list">
+			<li><a href="/blog/best-slow-feeder-dog-bowls/">Best Slow Feeder Dog Bowls</a> — Help fast eaters slow down safely.</li>
+			<li><a href="/blog/why-does-my-dog-eat-so-fast/">Why Does My Dog Eat So Fast?</a> — Causes, risks, and vet-backed solutions.</li>
+			<li><a href="/blog/slow-feeder-bowl-size-guide/">Slow Feeder Bowl Size Guide</a> — Choose the right bowl for your dog's breed and build.</li>
+			<li><a href="/blog/best-puzzle-feeders-for-anxious-dogs/">Best Puzzle Feeders for Anxious Dogs</a> — Mental enrichment for mealtime.</li>
+			<li><a href="/blog/best-lick-mats-for-dogs/">Best Lick Mats for Dogs</a> — Calming enrichment for all life stages.</li>
+		</ul>
+	</section>
+
+	<FAQ items={faqItems} />
+</Page>
+
+<script is:inline>
+	const SIZE_MULTIPLIERS = {
+		small: 4,
+		medium: 5,
+		large: 6,
+		giant: 7,
+	};
+
+	const LIFE_STAGES = {
+		puppy: {
+			label: 'Puppy',
+			description: 'Rapid growth, vaccinations, and socialization.'
+		},
+		youngAdult: {
+			label: 'Young Adult',
+			description: 'Physically mature; building routines and long-term habits.'
+		},
+		adult: {
+			label: 'Adult',
+			description: 'Prime years; focus on weight management and prevention.'
+		},
+		senior: {
+			label: 'Senior',
+			description: 'Slowing metabolism; increase screening and joint support.'
+		},
+		geriatric: {
+			label: 'Geriatric',
+			description: 'Advanced age; prioritize comfort, mobility, and quality of life.'
+		}
+	};
+
+	const STAGE_BOUNDARIES = {
+		small:  { puppy: 1, youngAdult: 3, adult: 8,  senior: 12 },
+		medium: { puppy: 1, youngAdult: 3, adult: 7,  senior: 10 },
+		large:  { puppy: 1, youngAdult: 2, adult: 6,  senior: 9  },
+		giant:  { puppy: 1, youngAdult: 2, adult: 5,  senior: 8  }
+	};
+
+	function calculateHumanAge(years, months, size) {
+		const ageYears = years + months / 12;
+		if (ageYears <= 1) {
+			return Math.round(ageYears * 15);
+		}
+		if (ageYears <= 2) {
+			return Math.round(15 + (ageYears - 1) * 9);
+		}
+		const multiplier = SIZE_MULTIPLIERS[size] || SIZE_MULTIPLIERS.medium;
+		return Math.round(24 + (ageYears - 2) * multiplier);
+	}
+
+	function getLifeStage(ageYears, size) {
+		const b = STAGE_BOUNDARIES[size] || STAGE_BOUNDARIES.medium;
+		if (ageYears < 1) return 'puppy';
+		if (ageYears <= b.youngAdult) return 'youngAdult';
+		if (ageYears <= b.adult) return 'adult';
+		if (ageYears <= b.senior) return 'senior';
+		return 'geriatric';
+	}
+
+	function formatAgeText(years, months) {
+		if (years === 0) return `${months}-month-old`;
+		if (months === 0) return `${years}-year-old`;
+		return `${years}-year, ${months}-month-old`;
+	}
+
+	const form = document.getElementById('dog-age-form');
+	const yearsInput = document.getElementById('years');
+	const resultPanel = document.getElementById('result-panel');
+	const errorMessage = document.getElementById('error-message');
+	const shareBtn = document.getElementById('share-btn');
+	const shareFeedback = document.getElementById('share-feedback');
+
+	let lastResult = null;
+
+	function getYearsValue() {
+		return parseInt(yearsInput.value, 10) || 0;
+	}
+
+	function getMonthsValue() {
+		const checked = form.querySelector('input[name="months"]:checked');
+		return checked ? parseInt(checked.value, 10) : 0;
+	}
+
+	function getSizeValue() {
+		const checked = form.querySelector('input[name="size"]:checked');
+		return checked ? checked.value : 'medium';
+	}
+
+	function showError(message) {
+		errorMessage.textContent = message;
+		errorMessage.hidden = false;
+		resultPanel.hidden = true;
+	}
+
+	function hideError() {
+		errorMessage.hidden = true;
+	}
+
+	function validate(years, months) {
+		if (Number.isNaN(years) || years < 0) {
+			return 'Please enter a valid number of years.';
+		}
+		if (years > 30) {
+			return 'Please enter an age of 30 years or less.';
+		}
+		if (Number.isNaN(months) || months < 0 || months > 11) {
+			return 'Please select a valid month value (0–11).';
+		}
+		if (years === 0 && months === 0) {
+			return 'Please enter an age greater than 0.';
+		}
+		return null;
+	}
+
+	function updateYears(change) {
+		const current = getYearsValue();
+		const min = parseInt(yearsInput.min, 10);
+		const max = parseInt(yearsInput.max, 10);
+		const next = Math.min(Math.max(current + change, min), max);
+		yearsInput.value = next;
+		hideError();
+	}
+
+	form?.querySelectorAll('[data-stepper]').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const change = btn.dataset.stepper === 'up' ? 1 : -1;
+			updateYears(change);
+		});
+	});
+
+	yearsInput?.addEventListener('input', () => {
+		hideError();
+	});
+
+	yearsInput?.addEventListener('blur', () => {
+		const value = getYearsValue();
+		const min = parseInt(yearsInput.min, 10);
+		const max = parseInt(yearsInput.max, 10);
+		if (value < min) yearsInput.value = min;
+		if (value > max) yearsInput.value = max;
+	});
+
+	form?.querySelectorAll('input[name="months"]').forEach((radio) => {
+		radio.addEventListener('change', hideError);
+	});
+
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+
+		const years = getYearsValue();
+		const months = getMonthsValue();
+		const size = getSizeValue();
+
+		const error = validate(years, months);
+		if (error) {
+			showError(error);
+			return;
+		}
+
+		hideError();
+
+		const ageYears = years + months / 12;
+		const humanAge = calculateHumanAge(years, months, size);
+		const stageKey = getLifeStage(ageYears, size);
+		const stage = LIFE_STAGES[stageKey];
+
+		resultPanel.querySelector('[data-human-age]').textContent = humanAge;
+		resultPanel.querySelector('[data-life-stage-badge]').textContent = stage.label;
+		resultPanel.querySelector('[data-life-stage-desc]').textContent = stage.description;
+
+		lastResult = {
+			years,
+			months,
+			sizeLabel: size.charAt(0).toUpperCase() + size.slice(1),
+			humanAge,
+			stageLabel: stage.label
+		};
+
+		resultPanel.hidden = false;
+		resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+	});
+
+	shareBtn?.addEventListener('click', async () => {
+		if (!lastResult) return;
+
+		const ageText = formatAgeText(lastResult.years, lastResult.months);
+		const shareText = `My ${ageText} ${lastResult.sizeLabel} dog is about ${lastResult.humanAge} in human years — ${lastResult.stageLabel} stage. Calculate your dog's age at thecaringpet.com/tools/dog-age-calculator/`;
+		const shareData = {
+			title: 'Dog Age Calculator — The Caring Pet',
+			text: shareText,
+			url: 'https://thecaringpet.com/tools/dog-age-calculator/'
+		};
+
+		try {
+			if (navigator.share) {
+				await navigator.share(shareData);
+			} else if (navigator.clipboard) {
+				await navigator.clipboard.writeText(shareText);
+				shareFeedback.hidden = false;
+				setTimeout(() => { shareFeedback.hidden = true; }, 2000);
+			} else {
+				// Final fallback: select text for manual copy
+				const textArea = document.createElement('textarea');
+				textArea.value = shareText;
+				textArea.style.position = 'fixed';
+				textArea.style.opacity = '0';
+				document.body.appendChild(textArea);
+				textArea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textArea);
+				shareFeedback.hidden = false;
+				setTimeout(() => { shareFeedback.hidden = true; }, 2000);
+			}
+		} catch (err) {
+			// User cancelled share or permission denied — no action needed
+			if (err.name !== 'AbortError') {
+				console.error('Share failed:', err);
+			}
+		}
+	});
+</script>
+
+<style>
+	.calculator-section {
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.calculator-card {
+		padding: var(--spacing-xl);
+	}
+
+	.calculator-title {
+		margin-bottom: var(--spacing-sm);
+		font-size: clamp(1.5rem, 4vw, 2rem);
+	}
+
+	.calculator-intro {
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.calculator-form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-lg);
+	}
+
+	.form-row {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-md);
+	}
+
+	@media (min-width: 480px) {
+		.form-row {
+			grid-template-columns: 1fr 2fr;
+		}
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xs);
+	}
+
+	.form-group label {
+		font-weight: 600;
+		font-size: 0.95rem;
+	}
+
+	/* Years stepper */
+	.stepper {
+		display: flex;
+		align-items: stretch;
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		background-color: hsl(var(--card));
+	}
+
+	.stepper input[type="number"] {
+		flex: 1;
+		border: none;
+		border-radius: 0;
+		text-align: center;
+		font-size: 1.25rem;
+		font-weight: 600;
+		padding: 0.75rem 0.5rem;
+		-moz-appearance: textfield;
+	}
+
+	.stepper input[type="number"]::-webkit-outer-spin-button,
+	.stepper input[type="number"]::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	.stepper-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		border: none;
+		background-color: hsl(var(--muted));
+		color: hsl(var(--foreground));
+		font-size: 1.25rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+	.stepper-btn:hover {
+		background-color: hsl(var(--primary) / 0.12);
+	}
+
+	.stepper-btn:active {
+		background-color: hsl(var(--primary) / 0.2);
+	}
+
+	/* Months pills */
+	.month-pills {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		gap: var(--spacing-xs);
+	}
+
+	.month-pill {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 1;
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		cursor: pointer;
+		background-color: hsl(var(--card));
+		transition: all 0.2s ease;
+		position: relative;
+	}
+
+	.month-pill:hover {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.03);
+	}
+
+	.month-pill input[type="radio"] {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.month-pill span {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: hsl(var(--foreground));
+	}
+
+	.month-pill:has(input:checked) {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary));
+		box-shadow: 0 0 0 1px hsl(var(--primary));
+	}
+
+	.month-pill:has(input:checked) span {
+		color: hsl(var(--primary-foreground));
+	}
+
+	.size-options {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--spacing-sm);
+	}
+
+	.size-option {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-xs);
+		padding: var(--spacing-md);
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		cursor: pointer;
+		transition: all 0.2s ease;
+		background-color: hsl(var(--card));
+	}
+
+	.size-option:hover {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.03);
+	}
+
+	.size-option input[type="radio"] {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.size-option:has(input:checked) {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.08);
+		box-shadow: 0 0 0 1px hsl(var(--primary));
+	}
+
+	.size-label {
+		font-weight: 600;
+		font-size: 1rem;
+	}
+
+	.size-weight {
+		font-size: 0.8rem;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.calculate-btn {
+		width: 100%;
+	}
+
+	.result-panel {
+		margin-top: var(--spacing-xl);
+		padding: var(--spacing-xl);
+		background: linear-gradient(135deg, hsl(var(--primary) / 0.08) 0%, hsl(var(--secondary) / 0.06) 100%);
+		border-radius: var(--radius-lg);
+		border: 1px solid hsl(var(--primary) / 0.15);
+		text-align: center;
+	}
+
+	.result-label {
+		display: block;
+		font-size: 0.95rem;
+		color: hsl(var(--muted-foreground));
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.result-age {
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+		gap: var(--spacing-sm);
+		margin-bottom: var(--spacing-md);
+		flex-wrap: wrap;
+	}
+
+	.result-age [data-human-age] {
+		font-family: var(--font-heading);
+		font-size: clamp(3rem, 8vw, 5rem);
+		font-weight: 700;
+		color: hsl(var(--foreground));
+		line-height: 1;
+	}
+
+	.result-unit {
+		font-size: 1.1rem;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.life-stage-badge {
+		font-size: 0.75rem;
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.result-stage-desc {
+		max-width: 480px;
+		margin: 0 auto var(--spacing-md);
+		color: hsl(var(--muted-foreground));
+	}
+
+	.result-actions {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-md);
+		flex-wrap: wrap;
+	}
+
+	.share-feedback {
+		font-size: 0.9rem;
+		color: hsl(var(--secondary-dark));
+		font-weight: 500;
+	}
+
+	.error-message {
+		margin-top: var(--spacing-md);
+		padding: var(--spacing-md) var(--spacing-lg);
+		background-color: hsl(var(--destructive) / 0.08);
+		color: hsl(var(--destructive));
+		border: 1px solid hsl(var(--destructive) / 0.2);
+		border-radius: var(--radius-md);
+		font-size: 0.95rem;
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+	}
+
+	.error-message[hidden] {
+		display: none;
+	}
+
+	.error-icon {
+		width: 1.25rem;
+		height: 1.25rem;
+		flex-shrink: 0;
+	}
+
+	.error-text {
+		line-height: 1.5;
+	}
+
+	.section-content {
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.section-content h2 {
+		margin-bottom: var(--spacing-md);
+	}
+
+	.table-wrapper {
+		overflow-x: auto;
+	}
+
+	.milestone-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-md);
+		margin-top: var(--spacing-lg);
+	}
+
+	.milestone-card {
+		background-color: hsl(var(--card));
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+		padding: var(--spacing-lg);
+		box-shadow: var(--shadow-card);
+	}
+
+	.milestone-icon {
+		font-size: 1.5rem;
+		display: block;
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.milestone-card h3 {
+		margin-bottom: var(--spacing-xs);
+		font-size: 1.25rem;
+	}
+
+	.milestone-card p {
+		margin-bottom: var(--spacing-sm);
+		color: hsl(var(--muted-foreground));
+	}
+
+	.milestone-card ul {
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.related-list {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	.related-list li {
+		padding: var(--spacing-sm) 0;
+		border-bottom: 1px solid hsl(var(--border));
+	}
+
+	.related-list li:last-child {
+		border-bottom: none;
+	}
+
+	.related-list a {
+		font-weight: 600;
+	}
+
+	@media (min-width: 640px) {
+		.size-options {
+			grid-template-columns: repeat(4, 1fr);
+		}
+
+		.milestone-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>

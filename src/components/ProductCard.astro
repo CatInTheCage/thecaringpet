@@ -1,4 +1,6 @@
 ---
+import { AMAZON_ASSOCIATES_TAG } from '../consts.ts';
+
 interface Props {
 	product: {
 		name: string;
@@ -51,7 +53,7 @@ const { product, badge } = Astro.props;
 			</div>
 		</div>
 		<a
-			href={`https://www.amazon.com/dp/${product.amazonId}/?tag=PLACEHOLDER_AMAZON_TAG-20`}
+			href={`https://www.amazon.com/dp/${product.amazonId}/?tag=${AMAZON_ASSOCIATES_TAG}`}
 			class="btn btn-primary product-cta"
 			target="_blank"
 			rel="noopener"
