@@ -8,6 +8,6 @@ export const SITE_AUTHOR = 'The Caring Pet Research Team';
 export const AFFILIATE_DISCLOSURE = 'The Caring Pet is reader-supported. When you buy through links on our site, we may earn an affiliate commission at no extra cost to you.';
 
 // Monetization & tracking placeholders — replace with real values after signing up.
-export const GA_TRACKING_ID = 'PLACEHOLDER_GA_TRACKING_ID';                         // Google Analytics 4 measurement ID (G-XXXXXXXXXX)
+export const GA_TRACKING_ID = 'G-3J7J1Y6XGP';                                        // Google Analytics 4 measurement ID (G-XXXXXXXXXX)
 export const AMAZON_ASSOCIATES_TAG = 'PLACEHOLDER_AMAZON_TAG-20';                  // Amazon Associates store ID
 export const CONVERTKIT_FORM_URL = 'PLACEHOLDER_CONVERTKIT_ACTION_URL';            // ConvertKit inline form action URL
