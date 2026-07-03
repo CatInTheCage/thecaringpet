@@ -133,6 +133,9 @@ a {
 	color: hsl(var(--primary));
 	text-decoration: none;
 	transition: color 0.2s ease;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
 }
 
 a:hover {

@@ -18,7 +18,11 @@ npm run preview      # Preview the production build locally
 npm run astro ...    # Run Astro CLI commands (e.g., astro check)
 ```
 
-Use `npm run build` to validate changes before committing. Use `npm run preview` to verify the built site, because the static output behavior differs from the dev server (especially around trailing slashes).
+Use `npm run build` to validate changes before committing. Use `npm run preview` to verify the built site, because the static output behavior differs from the dev server (especially around trailing slashes). There is no lint or test tooling configured; `npm run build` (which runs `astro build`) is the only validation gate.
+
+### Deployment
+
+The site auto-deploys to **Cloudflare Pages** on every push to `main` (GitHub repo `CatInTheCage/thethoughtfulpet`). Cloudflare runs `npm run build` and serves `dist/`. The Node version is pinned by `.nvmrc` (`22`) and `package.json` `engines` (`>=22.12.0`) — Cloudflare reads `.nvmrc`, so keep it satisfying the engines floor or the build fails. There is no GitHub Actions workflow; the old GitHub Pages workflow was removed in favor of Cloudflare.
 
 ## Architecture
 
@@ -40,14 +44,14 @@ Blog posts live in `src/content/blog/` as Markdown or MDX files. The collection 
 - `readingTime`: number (optional)
 - `featured`: boolean, defaults to `false`
 
-Posts are queried with `getCollection('blog')` and sorted by `updatedDate || pubDate` descending. The post URL is always `/blog/{post.id}/` where `post.id` is the filename without extension.
+Posts are queried with `getCollection('blog')` and sorted by `updatedDate || pubDate` descending. The post URL is always `/blog/${post.id}/` where `post.id` is the filename without extension.
 
 ### Pages and routing
 
 - `src/pages/index.astro` — homepage with hero, category grid, latest articles, and research process section.
-- `src/pages/blog/index.astro` — paginated-style list of all articles.
+- `src/pages/blog/index.astro` — paginated-style list of all articles with category filter pills.
 - `src/pages/blog/[...slug].astro` — dynamic article pages; passes the post and full post list to `BlogPost` layout.
-- `src/pages/categories/[slug].astro` — dynamic category pages for `best-picks`, `pet-knowledge`, `problem-solving`, `care-guides`.
+- `src/pages/categories/[slug].astro` — dynamic category pages for `best-picks`, `pet-knowledge`, `problem-solving`, `care-guides`. Includes an "All" filter pill linking back to `/blog/`.
 - `src/pages/about.astro`, `src/pages/contact.astro`, `src/pages/newsletter.astro`, `src/pages/privacy-policy.astro`, `src/pages/affiliate-disclosure.astro` — static pages.
 - `src/pages/rss.xml.js` — RSS feed using `@astrojs/rss`.
 
@@ -59,7 +63,7 @@ Posts are queried with `getCollection('blog')` and sorted by `updatedDate || pub
 ### Components
 
 - `src/components/Header.astro` — sticky header with paw-print SVG logo + text (`SITE_TITLE`) and mobile hamburger menu. Navigation links must keep trailing slashes.
-- `src/components/Footer.astro` — site footer with logo, mascot SVG, explore/company/connect links, and affiliate disclosure.
+- `src/components/Footer.astro` — site footer with logo, mascot image (`/images/footer-mascot.jpg`), explore/company/connect links, and affiliate disclosure.
 - `src/components/BaseHead.astro` — shared `<head>` content including global CSS, meta tags, Open Graph, Twitter cards, and conditional GA4 snippet.
 - `src/components/HeaderLink.astro` — active-state aware navigation link.
 - `src/components/Breadcrumbs.astro` — schema.org breadcrumb list.
@@ -84,7 +88,7 @@ Global styles live in `src/styles/global.css`. The design system uses HSL CSS cu
 
 Utility classes include `.container`, `.container-narrow`, `.section`, `.card`, `.badge`, `.btn`, `.btn-primary`, `.btn-secondary`, `.text-muted`, `.section-eyebrow`, `.affiliate-disclosure`, `.newsletter-form`, and `.faq-item`.
 
-The site imports Google Fonts (`Inter` for body, `Playfair Display` for headings) and still includes unused Atkinson Hyperlegible font files in `src/assets/fonts/`.
+The site imports Google Fonts (`Inter` for body, `Playfair Display` for headings). Article body text is constrained to `.container-narrow` (max-width 720px) for readability.
 
 ### Constants and placeholders
 
@@ -104,9 +108,9 @@ Before production launch, replace these placeholders:
 
 ### Images and assets
 
-- `public/images/` — site images including hero, post hero images, about photo, and mascot SVG.
+- `public/images/` — site images including hero, post hero images, about photo, and footer mascot.
 - `public/images/logo-horizontal.svg`, `public/images/logo-mark.svg`, `public/images/logo-horizontal.png`, `public/images/logo-mark.png` — these exist but are not used in the current header/footer.
-- `public/favicon.svg` — bowl icon in brand color `#C86B4A`.
+- `public/favicon.svg` — the live favicon, currently a VTracer-traced SVG (~200 KB). The original lightweight bowl icon in brand color `#C86B4A` is kept at `public/favicon.svg.bowl-backup`; restore it if the traced version looks blurry at small (16×16) sizes.
 - `src/assets/` — leftover starter placeholder images and unused font files.
 
 ### Internal link convention
@@ -135,3 +139,17 @@ Categories are hardcoded in three places and must stay in sync:
 3. `src/pages/categories/[slug].astro` — category metadata and `getStaticPaths`
 
 The valid category slugs are: `best-picks`, `pet-knowledge`, `problem-solving`, `care-guides`. Post frontmatter uses these exact slugs in the `categories` array.
+
+### Content asset standards
+
+This is a content-heavy affiliate site. When writing or rewriting blog posts, aim for:
+
+- One primary keyword + 3–5 related long-tail keywords per post.
+- At least 2,000 words of original, research-backed content.
+- 2–4 `ProductCard` components with real Amazon ASINs and product images that match the actual ASIN.
+- A comparison table.
+- An `FAQ` component for schema.org FAQ markup.
+- Internal links to related articles and category pages (with trailing slashes).
+- Hero images in `public/images/` named after the article slug.
+
+**Critical:** Product images in `public/images/products/` must match the actual ASIN being linked. Do not reuse images across different models, pack sizes, or variants.
