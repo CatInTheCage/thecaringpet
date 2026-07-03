@@ -26,7 +26,7 @@ const tools = [
 ];
 ---
 
-<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs}>
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} wide={true}>
 	<section class="tools-intro">
 		<p class="lead">
 			Each tool is built from veterinary guidelines and designed to give you a quick, trustworthy answer you can discuss with your vet.
@@ -147,7 +147,7 @@ const tools = [
 		transition: color 0.2s ease;
 	}
 
-	@media (min-width: 640px) {
+	@media (min-width: 560px) {
 		.tools-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}

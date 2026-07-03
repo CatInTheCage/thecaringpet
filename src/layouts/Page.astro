@@ -11,9 +11,11 @@ interface Props {
 	image?: string;
 	breadcrumbs?: Array<{ label: string; href: string }>;
 	showNewsletter?: boolean;
+	wide?: boolean;
 }
 
-const { title, description, image = '/images/hero.jpg', breadcrumbs, showNewsletter = true } = Astro.props;
+const { title, description, image = '/images/hero.jpg', breadcrumbs, showNewsletter = true, wide = false } = Astro.props;
+const containerClass = wide ? 'container' : 'container-narrow';
 const pageTitle = title;
 ---
 
@@ -26,7 +28,7 @@ const pageTitle = title;
 		<Header />
 		<main>
 			<section class="page-content section">
-				<div class="container-narrow">
+				<div class={containerClass}>
 					{breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
 
 					<div class="page-header">
