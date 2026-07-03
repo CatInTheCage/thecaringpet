@@ -1,5 +1,5 @@
 ---
-import { CONVERTKIT_FORM_URL } from '../consts.ts';
+import { NEWSLETTER_FORM_URL } from '../consts.ts';
 
 interface Props {
 	title?: string;
@@ -9,9 +9,9 @@ interface Props {
 }
 
 const {
-	title = "Get weekly pet feeding tips",
-	description = "Join thousands of thoughtful pet owners. No spam, unsubscribe anytime.",
-	buttonText = "Subscribe",
+	title = "Get the Free Dog Feeding Safety Checklist",
+	description = "Join our newsletter for vet-approved feeding tips. Get the PDF guide instantly.",
+	buttonText = "Get the Free Checklist",
 	compact = false,
 } = Astro.props;
 ---
@@ -20,23 +20,14 @@ const {
 	<div class="newsletter-content">
 		{title && <h3>{title}</h3>}
 		<p class="text-muted">{description}</p>
-		<form
-			class="newsletter-form"
-			action={CONVERTKIT_FORM_URL}
-			method="POST"
+		<a
+			href={NEWSLETTER_FORM_URL}
 			target="_blank"
-			novalidate
+			rel="noopener noreferrer"
+			class="btn btn-primary newsletter-cta"
 		>
-			<label for="email" class="sr-only">Email address</label>
-			<input
-				type="email"
-				id="email"
-				name="email"
-				placeholder="Enter your email"
-				required
-			/>
-			<button type="submit" class="btn btn-primary">{buttonText}</button>
-		</form>
+			{buttonText}
+		</a>
 	</div>
 </div>
 
@@ -63,24 +54,14 @@ const {
 		font-size: 0.95rem;
 	}
 
-	.newsletter-form {
-		display: flex;
-		gap: var(--spacing-sm);
-		flex-wrap: wrap;
-	}
-
-	.newsletter-form input {
-		flex: 1;
-		min-width: 240px;
+	.newsletter-cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	@media (max-width: 768px) {
-		.newsletter-form {
-			flex-direction: column;
-		}
-
-		.newsletter-form input,
-		.newsletter-form button {
+		.newsletter-cta {
 			width: 100%;
 		}
 	}
