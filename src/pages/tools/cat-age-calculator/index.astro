@@ -2,42 +2,43 @@
 import Page from '../../../layouts/Page.astro';
 import FAQ from '../../../components/FAQ.astro';
 
-const title = 'Dog Age Calculator — Convert Dog Years to Human Years';
-const description = 'Convert your dog\'s age to human years based on size. More accurate than the outdated 7-year rule, with vet-aligned health milestones.';
+const title = 'Cat Age Calculator — Convert Cat Years to Human Years';
+const description = 'Convert your cat\'s age to human years using the AVMA/AAFP-aligned 15-24-4 model. Find your cat\'s life stage and vet-backed health milestones.';
 const image = '/images/hero.jpg';
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },
-	{ label: 'Dog Age Calculator', href: '/tools/dog-age-calculator/' },
+	{ label: 'Tools', href: '/tools/' },
+	{ label: 'Cat Age Calculator', href: '/tools/cat-age-calculator/' },
 ];
 
 const faqItems = [
 	{
-		question: 'Is the "one dog year equals seven human years" rule accurate?',
-		answer: 'No. Dogs age much faster in their first two years and the rate varies by size. Small dogs tend to live longer and age more slowly after year two than giant breeds. Our calculator uses a size-adjusted model based on veterinary guidelines.'
+		question: 'Is the "one cat year equals seven human years" rule accurate?',
+		answer: 'No. Cats mature rapidly in their first two years. The first year is roughly equivalent to 15 human years, the second year adds about 9 more, and each year after that adds roughly 4 human years.'
 	},
 	{
 		question: 'What is the scientific basis for this calculator?',
-		answer: 'A widely cited 2020 UC San Diego / NIH study (Wang et al., Cell Systems) used DNA methylation clocks in Labrador Retrievers and found that dogs age rapidly early in life. Because that formula was derived from a single breed, we use the practical size-adjusted model recommended by the AVMA and AKC: year 1 ≈ 15 human years, year 2 ≈ +9, and each year after adds 4–7 human years depending on size.'
+		answer: 'This calculator uses the three-stage model widely cited by the AVMA and pet-health organizations: year 1 ≈ 15 human years, year 2 ≈ +9, and each year after ≈ +4. Life-stage labels follow the 2021 AAHA/AAFP Feline Life Stage Guidelines.'
 	},
 	{
-		question: 'When is a dog considered a senior?',
-		answer: 'It depends on size. Small breeds are often considered seniors around 10–12 years, medium breeds around 8–10, large breeds around 7–8, and giant breeds as early as 5–6 years. Large and giant breeds age faster and are prone to age-related issues earlier.'
+		question: 'When is a cat considered a senior?',
+		answer: 'The 2021 AAHA/AAFP Feline Life Stage Guidelines define cats over 10 years old as senior. Cats aged 15 and older are sometimes called geriatric or super-senior.'
 	},
 	{
 		question: 'Can this calculator replace a veterinary exam?',
-		answer: 'No. This tool provides an estimate for educational purposes only. Always consult a licensed veterinarian for health assessments, especially for senior or geriatric dogs.'
+		answer: 'No. This tool provides an estimate for educational purposes only. Always consult a licensed veterinarian for health assessments, especially for senior or geriatric cats.'
 	},
 	{
-		question: 'Why do large dogs age faster than small dogs?',
-		answer: 'Research by Kraus et al. (The American Naturalist, 2013) showed that larger dog breeds tend to have shorter lifespans and faster aging due to the biological trade-offs between growth, metabolism, and cellular maintenance.'
+		question: 'Do indoor and outdoor cats age differently?',
+		answer: 'This calculator does not distinguish between indoor and outdoor cats. Outdoor cats often face more environmental risks, but the basic aging model is similar. Individual health, genetics, and care have a much larger impact than lifestyle alone.'
 	}
 ];
 
 const schemaJson = {
 	'@context': 'https://schema.org',
 	'@type': 'SoftwareApplication',
-	name: 'Dog Age Calculator',
+	name: 'Cat Age Calculator',
 	applicationCategory: 'HealthApplication',
 	operatingSystem: 'Any',
 	offers: {
@@ -58,16 +59,16 @@ const schemaJson = {
 
 	<section class="calculator-section">
 		<div class="card calculator-card">
-			<h2 class="calculator-title">Calculate Your Dog's Human Age</h2>
-			<p class="text-muted calculator-intro">Enter your dog's age and size. The result is an estimate based on size-adjusted veterinary guidelines.</p>
+			<h2 class="calculator-title">Calculate Your Cat's Human Age</h2>
+			<p class="text-muted calculator-intro">Enter your cat's age. The result is an estimate based on veterinary age-guidelines.</p>
 
-			<form id="dog-age-form" class="calculator-form" novalidate>
+			<form id="cat-age-form" class="calculator-form" novalidate>
 				<div class="form-row">
 					<div class="form-group years-group">
-						<label for="years">Years</label>
+						<label for="cat-years">Years</label>
 						<div class="stepper">
 							<button type="button" class="stepper-btn" data-stepper="down" aria-label="Decrease years">−</button>
-							<input type="number" id="years" name="years" min="0" max="30" value="0" aria-label="Years" />
+							<input type="number" id="cat-years" name="years" min="0" max="30" value="0" aria-label="Years" />
 							<button type="button" class="stepper-btn" data-stepper="up" aria-label="Increase years">+</button>
 						</div>
 					</div>
@@ -84,38 +85,12 @@ const schemaJson = {
 					</div>
 				</div>
 
-				<div class="form-group size-group">
-					<label>Size</label>
-					<div class="size-options" role="radiogroup" aria-label="Dog size">
-						<label class="size-option">
-							<input type="radio" name="size" value="small" required />
-							<span class="size-label">Small</span>
-							<span class="size-weight">under 20 lb</span>
-						</label>
-						<label class="size-option">
-							<input type="radio" name="size" value="medium" checked />
-							<span class="size-label">Medium</span>
-							<span class="size-weight">20–50 lb</span>
-						</label>
-						<label class="size-option">
-							<input type="radio" name="size" value="large" />
-							<span class="size-label">Large</span>
-							<span class="size-weight">50–100 lb</span>
-						</label>
-						<label class="size-option">
-							<input type="radio" name="size" value="giant" />
-							<span class="size-label">Giant</span>
-							<span class="size-weight">over 100 lb</span>
-						</label>
-					</div>
-				</div>
-
 				<button type="submit" class="btn btn-primary btn-lg calculate-btn">Calculate</button>
 			</form>
 
-			<div id="result-panel" class="result-panel" hidden aria-live="polite">
+			<div id="cat-result-panel" class="result-panel" hidden aria-live="polite">
 				<div class="result-main">
-					<span class="result-label">Your dog is about</span>
+					<span class="result-label">Your cat is about</span>
 					<div class="result-age">
 						<span data-human-age>—</span>
 						<span class="result-unit">human years old</span>
@@ -124,12 +99,12 @@ const schemaJson = {
 					<p data-life-stage-desc class="result-stage-desc">—</p>
 				</div>
 				<div class="result-actions">
-					<button id="share-btn" class="btn btn-secondary" type="button">Share result</button>
-					<span id="share-feedback" class="share-feedback" hidden>Copied to clipboard!</span>
+					<button id="cat-share-btn" class="btn btn-secondary" type="button">Share result</button>
+					<span id="cat-share-feedback" class="share-feedback" hidden>Copied to clipboard!</span>
 				</div>
 			</div>
 
-			<p id="error-message" class="error-message" hidden>
+			<p id="cat-error-message" class="error-message" hidden>
 				<svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<circle cx="12" cy="12" r="10"/>
 					<line x1="12" y1="8" x2="12" y2="12"/>
@@ -143,18 +118,18 @@ const schemaJson = {
 	<section class="section-content">
 		<h2>How This Calculator Works</h2>
 		<p>
-			The old rule that one dog year equals seven human years is an oversimplification. Dogs mature rapidly in their first two years, and their aging rate depends heavily on size. Small breeds live longer and age more slowly after adulthood, while giant breeds age faster and reach senior status earlier.
+			The idea that one cat year equals seven human years is a rough oversimplification. Cats age quickly in their first two years — reaching the equivalent of a young adult human by age two — and then their aging rate slows.
 		</p>
 		<p>
-			This calculator uses a size-adjusted model based on veterinary guidance:
+			This calculator uses the veterinary-aligned three-stage model:
 		</p>
 		<ul>
 			<li><strong>Year 1</strong> ≈ 15 human years</li>
 			<li><strong>Year 2</strong> ≈ +9 human years (total ≈ 24)</li>
-			<li><strong>Each year after</strong> adds 4–7 human years, depending on size</li>
+			<li><strong>Each year after</strong> ≈ +4 human years</li>
 		</ul>
 		<p>
-			This approach is supported by the <a href="https://www.webmd.com/pets/dogs/how-to-calculate-your-dogs-age" target="_blank" rel="noopener noreferrer">AVMA / AKC practical guidelines</a> and a widely cited <a href="https://www.science.org/doi/10.1126/science.abc2359" target="_blank" rel="noopener noreferrer">2020 UC San Diego / NIH study on canine DNA methylation clocks</a> (Wang et al., <em>Cell Systems</em>). That study used Labrador Retrievers, so for everyday breed-agnostic estimates we apply the veterinary size-adjusted linear model. Research by <a href="https://www.journals.uchicago.edu/doi/10.1086/675735" target="_blank" rel="noopener noreferrer">Kraus et al. (<em>The American Naturalist</em>, 2013)</a> also documents the size/lifespan trade-off across dog breeds.
+			This model is widely used in client education by the <a href="https://www.avma.org/resources-tools/reports/avma-animal-health-studies-database" target="_blank" rel="noopener noreferrer">American Veterinary Medical Association (AVMA)</a>, aligns with the <a href="https://www.aaha.org/resources/2021-aaha-aafp-feline-life-stage-guidelines/" target="_blank" rel="noopener noreferrer">2021 AAHA/AAFP Feline Life Stage Guidelines</a>, and is published by <a href="https://icatcare.org/articles/how-to-tell-your-cats-age-in-human-years" target="_blank" rel="noopener noreferrer">International Cat Care</a>.
 		</p>
 		<p class="text-small text-muted">
 			<strong>Disclaimer:</strong> This calculator provides estimates for educational purposes only and is not a substitute for professional veterinary advice, diagnosis, or treatment.
@@ -162,29 +137,30 @@ const schemaJson = {
 	</section>
 
 	<section class="section-content">
-		<h2>Dog Age Comparison Chart</h2>
-		<p class="text-muted">Human-age equivalents by dog size. These are estimates, not exact conversions.</p>
+		<h2>Cat Age Comparison Chart</h2>
+		<p class="text-muted">Human-age equivalents by cat age. These are estimates, not exact conversions.</p>
 		<div class="table-wrapper">
 			<table>
 				<thead>
 					<tr>
-						<th>Dog Years</th>
-						<th>Small</th>
-						<th>Medium</th>
-						<th>Large</th>
-						<th>Giant</th>
+						<th>Cat Years</th>
+						<th>Human Years</th>
+						<th>Life Stage</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr><td>6 months</td><td>8</td><td>8</td><td>8</td><td>8</td></tr>
-					<tr><td>1 year</td><td>15</td><td>15</td><td>15</td><td>15</td></tr>
-					<tr><td>2 years</td><td>24</td><td>24</td><td>24</td><td>24</td></tr>
-					<tr><td>3 years</td><td>28</td><td>29</td><td>30</td><td>31</td></tr>
-					<tr><td>5 years</td><td>36</td><td>39</td><td>42</td><td>45</td></tr>
-					<tr><td>7 years</td><td>44</td><td>49</td><td>54</td><td>59</td></tr>
-					<tr><td>10 years</td><td>56</td><td>64</td><td>72</td><td>80</td></tr>
-					<tr><td>12 years</td><td>64</td><td>74</td><td>84</td><td>94</td></tr>
-					<tr><td>15 years</td><td>76</td><td>89</td><td>102</td><td>115</td></tr>
+					<tr><td>3 months</td><td>4</td><td>Kitten</td></tr>
+					<tr><td>6 months</td><td>8</td><td>Kitten</td></tr>
+					<tr><td>1 year</td><td>15</td><td>Young Adult</td></tr>
+					<tr><td>2 years</td><td>24</td><td>Young Adult</td></tr>
+					<tr><td>3 years</td><td>28</td><td>Young Adult</td></tr>
+					<tr><td>5 years</td><td>36</td><td>Young Adult</td></tr>
+					<tr><td>7 years</td><td>44</td><td>Mature Adult</td></tr>
+					<tr><td>10 years</td><td>56</td><td>Senior</td></tr>
+					<tr><td>12 years</td><td>64</td><td>Senior</td></tr>
+					<tr><td>15 years</td><td>76</td><td>Geriatric</td></tr>
+					<tr><td>18 years</td><td>88</td><td>Geriatric</td></tr>
+					<tr><td>20 years</td><td>96</td><td>Geriatric</td></tr>
 				</tbody>
 			</table>
 		</div>
@@ -196,62 +172,62 @@ const schemaJson = {
 
 		<div class="milestone-grid">
 			<div class="milestone-card">
-				<span class="milestone-icon">🐾</span>
-				<h3>Puppy</h3>
+				<span class="milestone-icon">🐱</span>
+				<h3>Kitten</h3>
 				<p><strong>0–1 year</strong></p>
 				<ul>
 					<li>Core vaccination series</li>
 					<li>Spay/neuter planning</li>
-					<li>Socialization window</li>
-					<li>Start safe feeding routines</li>
+					<li>Socialization and litter training</li>
+					<li>Introduce safe feeding routines</li>
 				</ul>
-				<p><a href="/blog/why-does-my-dog-eat-so-fast/">Why does my dog eat so fast?</a> · <a href="/blog/slow-feeder-bowl-size-guide/">Slow feeder bowl size guide</a></p>
+				<p><a href="/blog/why-does-my-dog-eat-so-fast/">Why does my pet eat so fast?</a> · <a href="/blog/slow-feeder-bowl-size-guide/">Slow feeder bowl size guide</a></p>
 			</div>
 
 			<div class="milestone-card">
 				<span class="milestone-icon">🎾</span>
 				<h3>Young Adult</h3>
-				<p><strong>Small: 1–3 · Medium: 1–3 · Large/Giant: 1–2</strong></p>
+				<p><strong>1–6 years</strong></p>
 				<ul>
 					<li>Annual wellness exam</li>
-					<li>First dental assessment</li>
-					<li>Establish exercise routine</li>
-					<li>Body-condition scoring</li>
+					<li>Dental assessment and home care</li>
+					<li>Weight and body-condition monitoring</li>
+					<li>Establish play and enrichment routines</li>
 				</ul>
 			</div>
 
 			<div class="milestone-card">
 				<span class="milestone-icon">💪</span>
-				<h3>Adult</h3>
-				<p><strong>Small: 3–8 · Medium: 3–7 · Large: 2–6 · Giant: 2–5</strong></p>
+				<h3>Mature Adult</h3>
+				<p><strong>7–10 years</strong></p>
 				<ul>
-					<li>Continue annual exams and dental cleanings</li>
-					<li>Weight management</li>
-					<li>Enrichment feeding for mental stimulation</li>
+					<li>Continue annual exams</li>
+					<li>Screen for early kidney and thyroid changes</li>
+					<li>Maintain dental health</li>
+					<li>Adjust calories to prevent weight gain</li>
 				</ul>
-				<p><a href="/blog/best-slow-feeder-dog-bowls/">Best slow feeder dog bowls</a> · <a href="/blog/best-puzzle-feeders-for-anxious-dogs/">Best puzzle feeders for anxious dogs</a></p>
+				<p><a href="/blog/best-slow-feeder-dog-bowls/">Best slow feeder bowls</a> · <a href="/blog/best-puzzle-feeders-for-anxious-dogs/">Best puzzle feeders</a></p>
 			</div>
 
 			<div class="milestone-card">
 				<span class="milestone-icon">🩺</span>
 				<h3>Senior</h3>
-				<p><strong>Small: 8–12 · Medium: 7–10 · Large: 6–9 · Giant: 5–8</strong></p>
+				<p><strong>11–14 years</strong></p>
 				<ul>
 					<li>Semi-annual vet visits</li>
-					<li>Bloodwork and urinalysis</li>
-					<li>Joint support for large/giant breeds</li>
-					<li>Calorie adjustment</li>
+					<li>Bloodwork, urinalysis, blood pressure</li>
+					<li>Joint comfort and mobility support</li>
+					<li>Easy-access food and water stations</li>
 				</ul>
-				<p><a href="/blog/best-slow-feeder-for-large-dogs/">Best slow feeder for large dogs</a> · <a href="/blog/slow-feeder-bowl-size-guide/">Bowl size guide</a></p>
 			</div>
 
 			<div class="milestone-card">
 				<span class="milestone-icon">🏠</span>
 				<h3>Geriatric</h3>
-				<p><strong>Small: 12+ · Medium: 10+ · Large: 9+ · Giant: 8+</strong></p>
+				<p><strong>15+ years</strong></p>
 				<ul>
-					<li>Pain and mobility assessment</li>
-					<li>Cognitive health support</li>
+					<li>Pain, mobility, and cognitive assessments</li>
+					<li>More frequent veterinary check-ins</li>
 					<li>Home comfort modifications</li>
 					<li>Quality-of-life planning with your vet</li>
 				</ul>
@@ -264,7 +240,7 @@ const schemaJson = {
 		<ul class="related-list">
 			<li><a href="/blog/best-slow-feeder-dog-bowls/">Best Slow Feeder Dog Bowls</a> — Help fast eaters slow down safely.</li>
 			<li><a href="/blog/why-does-my-dog-eat-so-fast/">Why Does My Dog Eat So Fast?</a> — Causes, risks, and vet-backed solutions.</li>
-			<li><a href="/blog/slow-feeder-bowl-size-guide/">Slow Feeder Bowl Size Guide</a> — Choose the right bowl for your dog's breed and build.</li>
+			<li><a href="/blog/slow-feeder-bowl-size-guide/">Slow Feeder Bowl Size Guide</a> — Choose the right bowl for your pet's build.</li>
 			<li><a href="/blog/best-puzzle-feeders-for-anxious-dogs/">Best Puzzle Feeders for Anxious Dogs</a> — Mental enrichment for mealtime.</li>
 			<li><a href="/blog/best-lick-mats-for-dogs/">Best Lick Mats for Dogs</a> — Calming enrichment for all life stages.</li>
 		</ul>
@@ -273,7 +249,7 @@ const schemaJson = {
 	<section class="section-content">
 		<h2>Other Pet Age Calculators</h2>
 		<p>
-			Have a cat? Try our <a href="/tools/cat-age-calculator/">Cat Age Calculator</a> for an AVMA/AAFP-aligned estimate.
+			Have a dog? Try our <a href="/tools/dog-age-calculator/">Dog Age Calculator</a> for a size-based estimate.
 		</p>
 	</section>
 
@@ -281,29 +257,22 @@ const schemaJson = {
 </Page>
 
 <script is:inline>
-	const SIZE_MULTIPLIERS = {
-		small: 4,
-		medium: 5,
-		large: 6,
-		giant: 7,
-	};
-
 	const LIFE_STAGES = {
-		puppy: {
-			label: 'Puppy',
+		kitten: {
+			label: 'Kitten',
 			description: 'Rapid growth, vaccinations, and socialization.'
 		},
 		youngAdult: {
 			label: 'Young Adult',
-			description: 'Physically mature; building routines and long-term habits.'
+			description: 'Physically mature; focus on prevention and healthy routines.'
 		},
-		adult: {
-			label: 'Adult',
-			description: 'Prime years; focus on weight management and prevention.'
+		matureAdult: {
+			label: 'Mature Adult',
+			description: 'Stable prime years; watch weight and early disease signs.'
 		},
 		senior: {
 			label: 'Senior',
-			description: 'Slowing metabolism; increase screening and joint support.'
+			description: 'Slowing metabolism; increase screening and comfort support.'
 		},
 		geriatric: {
 			label: 'Geriatric',
@@ -311,14 +280,7 @@ const schemaJson = {
 		}
 	};
 
-	const STAGE_BOUNDARIES = {
-		small:  { puppy: 1, youngAdult: 3, adult: 8,  senior: 12 },
-		medium: { puppy: 1, youngAdult: 3, adult: 7,  senior: 10 },
-		large:  { puppy: 1, youngAdult: 2, adult: 6,  senior: 9  },
-		giant:  { puppy: 1, youngAdult: 2, adult: 5,  senior: 8  }
-	};
-
-	function calculateHumanAge(years, months, size) {
+	function calculateHumanAge(years, months) {
 		const ageYears = years + months / 12;
 		if (ageYears <= 1) {
 			return Math.round(ageYears * 15);
@@ -326,16 +288,14 @@ const schemaJson = {
 		if (ageYears <= 2) {
 			return Math.round(15 + (ageYears - 1) * 9);
 		}
-		const multiplier = SIZE_MULTIPLIERS[size] || SIZE_MULTIPLIERS.medium;
-		return Math.round(24 + (ageYears - 2) * multiplier);
+		return Math.round(24 + (ageYears - 2) * 4);
 	}
 
-	function getLifeStage(ageYears, size) {
-		const b = STAGE_BOUNDARIES[size] || STAGE_BOUNDARIES.medium;
-		if (ageYears < 1) return 'puppy';
-		if (ageYears <= b.youngAdult) return 'youngAdult';
-		if (ageYears <= b.adult) return 'adult';
-		if (ageYears <= b.senior) return 'senior';
+	function getLifeStage(ageYears) {
+		if (ageYears < 1) return 'kitten';
+		if (ageYears <= 6) return 'youngAdult';
+		if (ageYears <= 10) return 'matureAdult';
+		if (ageYears <= 14) return 'senior';
 		return 'geriatric';
 	}
 
@@ -345,12 +305,12 @@ const schemaJson = {
 		return `${years}-year, ${months}-month-old`;
 	}
 
-	const form = document.getElementById('dog-age-form');
-	const yearsInput = document.getElementById('years');
-	const resultPanel = document.getElementById('result-panel');
-	const errorMessage = document.getElementById('error-message');
-	const shareBtn = document.getElementById('share-btn');
-	const shareFeedback = document.getElementById('share-feedback');
+	const form = document.getElementById('cat-age-form');
+	const yearsInput = document.getElementById('cat-years');
+	const resultPanel = document.getElementById('cat-result-panel');
+	const errorMessage = document.getElementById('cat-error-message');
+	const shareBtn = document.getElementById('cat-share-btn');
+	const shareFeedback = document.getElementById('cat-share-feedback');
 
 	let lastResult = null;
 
@@ -363,13 +323,8 @@ const schemaJson = {
 		return checked ? parseInt(checked.value, 10) : 0;
 	}
 
-	function getSizeValue() {
-		const checked = form.querySelector('input[name="size"]:checked');
-		return checked ? checked.value : 'medium';
-	}
-
 	function showError(message) {
-		errorMessage.textContent = message;
+		errorMessage.querySelector('.error-text').textContent = message;
 		errorMessage.hidden = false;
 		resultPanel.hidden = true;
 	}
@@ -431,7 +386,6 @@ const schemaJson = {
 
 		const years = getYearsValue();
 		const months = getMonthsValue();
-		const size = getSizeValue();
 
 		const error = validate(years, months);
 		if (error) {
@@ -442,8 +396,8 @@ const schemaJson = {
 		hideError();
 
 		const ageYears = years + months / 12;
-		const humanAge = calculateHumanAge(years, months, size);
-		const stageKey = getLifeStage(ageYears, size);
+		const humanAge = calculateHumanAge(years, months);
+		const stageKey = getLifeStage(ageYears);
 		const stage = LIFE_STAGES[stageKey];
 
 		resultPanel.querySelector('[data-human-age]').textContent = humanAge;
@@ -453,7 +407,6 @@ const schemaJson = {
 		lastResult = {
 			years,
 			months,
-			sizeLabel: size.charAt(0).toUpperCase() + size.slice(1),
 			humanAge,
 			stageLabel: stage.label
 		};
@@ -466,11 +419,11 @@ const schemaJson = {
 		if (!lastResult) return;
 
 		const ageText = formatAgeText(lastResult.years, lastResult.months);
-		const shareText = `My ${ageText} ${lastResult.sizeLabel} dog is about ${lastResult.humanAge} in human years — ${lastResult.stageLabel} stage. Calculate your dog's age at thecaringpet.com/tools/dog-age-calculator/`;
+		const shareText = `My ${ageText} cat is about ${lastResult.humanAge} in human years — ${lastResult.stageLabel} stage. Calculate your cat's age at thecaringpet.com/tools/cat-age-calculator/`;
 		const shareData = {
-			title: 'Dog Age Calculator — The Caring Pet',
+			title: 'Cat Age Calculator — The Caring Pet',
 			text: shareText,
-			url: 'https://thecaringpet.com/tools/dog-age-calculator/'
+			url: 'https://thecaringpet.com/tools/cat-age-calculator/'
 		};
 
 		try {
@@ -481,7 +434,6 @@ const schemaJson = {
 				shareFeedback.hidden = false;
 				setTimeout(() => { shareFeedback.hidden = true; }, 2000);
 			} else {
-				// Final fallback: select text for manual copy
 				const textArea = document.createElement('textarea');
 				textArea.value = shareText;
 				textArea.style.position = 'fixed';
@@ -494,7 +446,6 @@ const schemaJson = {
 				setTimeout(() => { shareFeedback.hidden = true; }, 2000);
 			}
 		} catch (err) {
-			// User cancelled share or permission denied — no action needed
 			if (err.name !== 'AbortError') {
 				console.error('Share failed:', err);
 			}
@@ -644,54 +595,6 @@ const schemaJson = {
 
 	.month-pill:has(input:checked) span {
 		color: hsl(var(--primary-foreground));
-	}
-
-	.size-options {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--spacing-sm);
-	}
-
-	.size-option {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: var(--spacing-xs);
-		padding: var(--spacing-md);
-		border: 1px solid hsl(var(--border));
-		border-radius: var(--radius-md);
-		cursor: pointer;
-		transition: all 0.2s ease;
-		background-color: hsl(var(--card));
-	}
-
-	.size-option:hover {
-		border-color: hsl(var(--primary));
-		background-color: hsl(var(--primary) / 0.03);
-	}
-
-	.size-option input[type="radio"] {
-		position: absolute;
-		opacity: 0;
-		width: 0;
-		height: 0;
-	}
-
-	.size-option:has(input:checked) {
-		border-color: hsl(var(--primary));
-		background-color: hsl(var(--primary) / 0.08);
-		box-shadow: 0 0 0 1px hsl(var(--primary));
-	}
-
-	.size-label {
-		font-weight: 600;
-		font-size: 1rem;
-	}
-
-	.size-weight {
-		font-size: 0.8rem;
-		color: hsl(var(--muted-foreground));
 	}
 
 	.calculate-btn {
@@ -854,10 +757,6 @@ const schemaJson = {
 	}
 
 	@media (min-width: 640px) {
-		.size-options {
-			grid-template-columns: repeat(4, 1fr);
-		}
-
 		.milestone-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}

@@ -1,0 +1,155 @@
+---
+import Page from '../../layouts/Page.astro';
+
+const title = 'Free Pet Tools';
+const description = 'Simple, research-backed calculators and tools to help you understand your dog or cat better.';
+const image = '/images/hero.jpg';
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Tools', href: '/tools/' },
+];
+
+const tools = [
+	{
+		slug: 'dog-age-calculator',
+		name: 'Dog Age Calculator',
+		description: 'Convert your dog\'s age to human years based on size — more accurate than the old 7-year rule.',
+		icon: 'dog',
+	},
+	{
+		slug: 'cat-age-calculator',
+		name: 'Cat Age Calculator',
+		description: 'Convert your cat\'s age to human years using the AVMA/AAFP-aligned 15-24-4 model.',
+		icon: 'cat',
+	},
+];
+---
+
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs}>
+	<section class="tools-intro">
+		<p class="lead">
+			Each tool is built from veterinary guidelines and designed to give you a quick, trustworthy answer you can discuss with your vet.
+		</p>
+	</section>
+
+	<section class="tools-list" aria-label="Pet tools">
+		<div class="tools-grid">
+			{tools.map((tool) => (
+				<a href={`/tools/${tool.slug}/`} class="tool-card">
+					<div class="tool-icon" aria-hidden="true">
+						{tool.icon === 'dog' && (
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M10 5.172C10 3.782 8.423 2.679 6.5 3c-2.823.47-4.113 6.006-4 7 .08.703 1.725 1.722 3.656 1 1.261-.472 1.855-1.24 2.344-2.5"/>
+								<path d="M14.267 5.172c0-1.39 1.577-2.493 3.5-2.172 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.24-2.344-2.5"/>
+								<path d="M8 14v.5"/>
+								<path d="M16 14v.5"/>
+								<path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/>
+								<path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444c0-1.061-.162-2.2-.493-3.309m-9.243-6.082A8.801 8.801 0 0 1 12 5c.78 0 1.5.108 2.161.306"/>
+							</svg>
+						)}
+						{tool.icon === 'cat' && (
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3.1-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/>
+								<path d="M8 14v.5"/>
+								<path d="M16 14v.5"/>
+								<path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/>
+							</svg>
+						)}
+					</div>
+					<div class="tool-content">
+						<h2>{tool.name}</h2>
+						<p class="text-muted">{tool.description}</p>
+						<span class="tool-link">Try it →</span>
+					</div>
+				</a>
+			))}
+		</div>
+	</section>
+</Page>
+
+<style>
+	.tools-intro {
+		margin-bottom: var(--spacing-xl);
+	}
+
+	.tools-intro .lead {
+		font-size: 1.15rem;
+		color: hsl(var(--muted-foreground));
+		line-height: 1.7;
+		margin: 0;
+	}
+
+	.tools-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-md);
+	}
+
+	.tool-card {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--spacing-md);
+		padding: var(--spacing-lg);
+		background-color: hsl(var(--card));
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-card);
+		text-decoration: none;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	}
+
+	.tool-card:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--shadow-lg);
+		border-color: hsl(var(--primary) / 0.3);
+	}
+
+	.tool-card:hover .tool-link {
+		color: hsl(var(--primary-dark));
+	}
+
+	.tool-icon {
+		width: 3rem;
+		height: 3rem;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: hsl(var(--primary) / 0.08);
+		border-radius: var(--radius-md);
+		color: hsl(var(--primary));
+	}
+
+	.tool-icon svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
+	.tool-content {
+		flex: 1;
+	}
+
+	.tool-content h2 {
+		font-size: 1.25rem;
+		margin-bottom: var(--spacing-xs);
+		color: hsl(var(--foreground));
+	}
+
+	.tool-content p {
+		margin-bottom: var(--spacing-sm);
+		line-height: 1.6;
+	}
+
+	.tool-link {
+		font-weight: 600;
+		color: hsl(var(--primary));
+		transition: color 0.2s ease;
+	}
+
+	@media (min-width: 640px) {
+		.tools-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>
