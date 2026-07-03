@@ -3,16 +3,21 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
+import cloudflare from '@astrojs/cloudflare';
+
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://thecaringpet.com',
-	base: '/',
-	output: 'static',
-	trailingSlash: 'always',
-	integrations: [mdx(), sitemap()],
-	markdown: {
-		shikiConfig: {
-			theme: 'github-light',
-		},
+  site: 'https://thecaringpet.com',
+  base: '/',
+  output: 'static',
+  trailingSlash: 'always',
+  integrations: [mdx(), sitemap()],
+
+  markdown: {
+      shikiConfig: {
+          theme: 'github-light',
+      },
 	},
+
+  adapter: cloudflare(),
 });
