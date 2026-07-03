@@ -22,7 +22,7 @@ Use `npm run build` to validate changes before committing. Use `npm run preview`
 
 ### Deployment
 
-The site auto-deploys to **Cloudflare Pages** on every push to `main` (GitHub repo `CatInTheCage/thethoughtfulpet`). Cloudflare runs `npm run build` and serves `dist/`. The Node version is pinned by `.nvmrc` (`22`) and `package.json` `engines` (`>=22.12.0`) — Cloudflare reads `.nvmrc`, so keep it satisfying the engines floor or the build fails. There is no GitHub Actions workflow; the old GitHub Pages workflow was removed in favor of Cloudflare.
+The site auto-deploys to **Cloudflare Pages** on every push to `main` (GitHub repo `CatInTheCage/thecaringpet`). Cloudflare runs `npm run build` and serves `dist/`. The Node version is pinned by `.nvmrc` (`22`) and `package.json` `engines` (`>=22.12.0`) — Cloudflare reads `.nvmrc`, so keep it satisfying the engines floor or the build fails. There is no GitHub Actions workflow; the old GitHub Pages workflow was removed in favor of Cloudflare.
 
 ## Architecture
 
