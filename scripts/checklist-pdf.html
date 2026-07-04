@@ -17,8 +17,6 @@
 			--text: #2A2622;
 			--text-muted: #5E574F;
 			--border: #E8E2D9;
-			--placeholder-bg: #F3F0EA;
-			--placeholder-border: #D6CFC4;
 		}
 
 		* {
@@ -103,18 +101,32 @@
 		.cover-illustration {
 			width: 100%;
 			max-width: 5.8in;
-			height: 2.6in;
+			height: auto;
+			max-height: 2.8in;
 			margin: 0 auto 16pt auto;
-			background: var(--placeholder-bg);
-			border: 2px dashed var(--placeholder-border);
 			border-radius: 10pt;
+			object-fit: contain;
+			display: block;
+		}
+
+		.section-icon {
+			width: 28pt;
+			height: 28pt;
+			color: var(--primary);
+			flex-shrink: 0;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: var(--text-muted);
-			font-size: 10pt;
-			text-align: center;
-			padding: 12pt;
+		}
+
+		.emergency-icon {
+			width: 36pt;
+			height: 36pt;
+			color: #C62828;
+			flex-shrink: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
 		/* Disclaimer */
@@ -144,22 +156,6 @@
 			margin-bottom: 10pt;
 			padding-bottom: 5pt;
 			border-bottom: 1pt solid var(--border);
-		}
-
-		.section-icon {
-			width: 28pt;
-			height: 28pt;
-			background: var(--placeholder-bg);
-			border: 1.5pt dashed var(--placeholder-border);
-			border-radius: 6pt;
-			flex-shrink: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 7pt;
-			color: var(--text-muted);
-			text-align: center;
-			line-height: 1.1;
 		}
 
 		.section h2 {
@@ -223,21 +219,6 @@
 			display: flex;
 			align-items: flex-start;
 			gap: 12pt;
-		}
-
-		.emergency-icon {
-			width: 40pt;
-			height: 40pt;
-			background: var(--placeholder-bg);
-			border: 1.5pt dashed var(--placeholder-border);
-			border-radius: 50%;
-			flex-shrink: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 7pt;
-			color: var(--text-muted);
-			text-align: center;
 		}
 
 		.emergency h3 {
@@ -311,9 +292,7 @@
 		<section class="cover">
 			<h1>Dog Feeding Safety Checklist</h1>
 			<p class="cover-subtitle">15 vet-aligned checks every dog owner should know</p>
-			<div class="cover-illustration">
-				[AI illustration: warm, friendly dog with a feeding bowl — 600 × 300 px]
-			</div>
+			<img class="cover-illustration" src="../public/images/checklist/cover.jpg" alt="A friendly dog waiting beside a food bowl">
 		</section>
 
 		<section class="disclaimer">
@@ -323,7 +302,12 @@
 
 		<section class="section">
 			<div class="section-header">
-				<div class="section-icon">[AI<br>icon]</div>
+				<div class="section-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M4 10c0 4.4 3.6 8 8 8s8-3.6 8-8H4z"></path>
+						<path d="M6 10V6a6 6 0 0 1 12 0v4"></path>
+					</svg>
+				</div>
 				<h2>A. Bowl Setup &amp; Material</h2>
 			</div>
 			<ul class="checklist">
@@ -360,7 +344,12 @@
 
 		<section class="section">
 			<div class="section-header">
-				<div class="section-icon">[AI<br>icon]</div>
+				<div class="section-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="12" cy="12" r="10"></circle>
+						<polyline points="12 6 12 12 16 14"></polyline>
+					</svg>
+				</div>
 				<h2>B. Eating Pace &amp; Environment</h2>
 			</div>
 			<ul class="checklist">
@@ -390,7 +379,16 @@
 
 		<section class="section">
 			<div class="section-header">
-				<div class="section-icon">[AI<br>icon]</div>
+				<div class="section-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M12 2v4"></path>
+						<path d="m4.93 4.93 2.83 2.83"></path>
+						<path d="M20 12h4"></path>
+						<path d="m19.07 4.93-2.83 2.83"></path>
+						<path d="M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"></path>
+						<path d="M12 15.5V22"></path>
+					</svg>
+				</div>
 				<h2>C. Cleaning &amp; Hygiene</h2>
 			</div>
 			<ul class="checklist">
@@ -427,7 +425,13 @@
 
 		<section class="section">
 			<div class="section-header">
-				<div class="section-icon">[AI<br>icon]</div>
+				<div class="section-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M8 21h8a2 2 0 0 0 2-2v-6H6v6a2 2 0 0 0 2 2z"></path>
+						<path d="M6 13V7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v6"></path>
+						<path d="M10 11h4"></path>
+					</svg>
+				</div>
 				<h2>D. Food Handling</h2>
 			</div>
 			<ul class="checklist">
@@ -456,7 +460,13 @@
 		</section>
 
 		<section class="emergency">
-			<div class="emergency-icon">[AI<br>icon]</div>
+			<div class="emergency-icon">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+					<line x1="12" y1="9" x2="12" y2="13"></line>
+					<line x1="12" y1="17" x2="12.01" y2="17"></line>
+				</svg>
+			</div>
 			<div>
 				<h3>When to Call Your Veterinarian Immediately</h3>
 				<p>Call your veterinarian or the nearest emergency animal hospital if you notice a sudden change in appetite or eating behavior, or any signs of possible bloat: a distended hard abdomen, unproductive retching, restlessness, excessive drooling, pale gums, or collapse.</p>
