@@ -125,7 +125,7 @@ const schemaJson = {
 				</div>
 				<div class="result-actions">
 					<button id="share-btn" class="btn btn-secondary" type="button">Share result</button>
-					<span id="share-feedback" class="share-feedback" hidden>Copied to clipboard!</span>
+					<span id="share-feedback" class="share-feedback" hidden role="status" aria-live="polite"></span>
 				</div>
 			</div>
 
@@ -278,9 +278,7 @@ const schemaJson = {
 	</section>
 
 	<FAQ items={faqItems} />
-</Page>
-
-<script is:inline>
+	<script is:inline>
 	const SIZE_MULTIPLIERS = {
 		small: 4,
 		medium: 5,
@@ -462,45 +460,89 @@ const schemaJson = {
 		resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 	});
 
-	shareBtn?.addEventListener('click', async () => {
-		if (!lastResult) return;
+	function buildShareText(result) {
+		return `🐶 Wait, my ${result.sizeLabel} dog is basically ${result.humanAge} years old?!\nAccording to the size-based dog age calculator, ${result.years} years and ${result.months} months puts them in the ${result.stageLabel} stage.\nSee how old your dog really is → https://thecaringpet.com/tools/dog-age-calculator/`;
+	}
 
-		const ageText = formatAgeText(lastResult.years, lastResult.months);
-		const shareText = `My ${ageText} ${lastResult.sizeLabel} dog is about ${lastResult.humanAge} in human years — ${lastResult.stageLabel} stage. Calculate your dog's age at thecaringpet.com/tools/dog-age-calculator/`;
-		const shareData = {
+	function buildShareData(shareText) {
+		return {
 			title: 'Dog Age Calculator — The Caring Pet',
 			text: shareText,
 			url: 'https://thecaringpet.com/tools/dog-age-calculator/'
 		};
+	}
 
-		try {
-			if (navigator.share) {
-				await navigator.share(shareData);
-			} else if (navigator.clipboard) {
-				await navigator.clipboard.writeText(shareText);
-				shareFeedback.hidden = false;
-				setTimeout(() => { shareFeedback.hidden = true; }, 2000);
-			} else {
-				// Final fallback: select text for manual copy
-				const textArea = document.createElement('textarea');
-				textArea.value = shareText;
-				textArea.style.position = 'fixed';
-				textArea.style.opacity = '0';
-				document.body.appendChild(textArea);
-				textArea.select();
-				document.execCommand('copy');
-				document.body.removeChild(textArea);
-				shareFeedback.hidden = false;
-				setTimeout(() => { shareFeedback.hidden = true; }, 2000);
-			}
-		} catch (err) {
-			// User cancelled share or permission denied — no action needed
-			if (err.name !== 'AbortError') {
-				console.error('Share failed:', err);
+	async function copyToClipboard(text) {
+		if (navigator.clipboard && window.isSecureContext) {
+			try {
+				await navigator.clipboard.writeText(text);
+				return true;
+			} catch (err) {
+				console.error('Clipboard API failed:', err);
 			}
 		}
+		return copyWithExecCommand(text);
+	}
+
+	function copyWithExecCommand(text) {
+		const textarea = document.createElement('textarea');
+		textarea.value = text;
+		textarea.setAttribute('readonly', '');
+		textarea.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+		document.body.appendChild(textarea);
+		textarea.focus();
+		textarea.select();
+		textarea.setSelectionRange(0, text.length);
+
+		let success = false;
+		try {
+			success = document.execCommand('copy');
+		} catch (err) {
+			console.error('execCommand copy failed:', err);
+		}
+
+		if (textarea.parentNode) {
+			document.body.removeChild(textarea);
+		}
+		return success;
+	}
+
+	function showShareFeedback(message, type) {
+		if (!shareFeedback) return;
+		shareFeedback.textContent = message;
+		shareFeedback.className = `share-feedback share-feedback--${type}`;
+		shareFeedback.hidden = false;
+		clearTimeout(shareFeedback._hideTimeout);
+		shareFeedback._hideTimeout = setTimeout(() => {
+			shareFeedback.hidden = true;
+		}, 2500);
+	}
+
+	shareBtn?.addEventListener('click', async () => {
+		if (!lastResult) return;
+
+		const shareText = buildShareText(lastResult);
+		const shareData = buildShareData(shareText);
+
+		try {
+			if (typeof navigator.share === 'function') {
+				await navigator.share(shareData);
+				return;
+			}
+		} catch (err) {
+			if (err.name === 'AbortError') return;
+			console.error('Native share failed, falling back to clipboard:', err);
+		}
+
+		const copied = await copyToClipboard(shareText);
+		if (copied) {
+			showShareFeedback('Copied to clipboard!', 'success');
+		} else {
+			showShareFeedback('Unable to copy. Please copy the text manually.', 'error');
+		}
 	});
-</script>
+	</script>
+</Page>
 
 <style>
 	.calculator-section {
@@ -757,8 +799,22 @@ const schemaJson = {
 
 	.share-feedback {
 		font-size: 0.9rem;
-		color: hsl(var(--secondary-dark));
 		font-weight: 500;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+	}
+
+	.share-feedback[hidden] {
+		display: none;
+	}
+
+	.share-feedback--success {
+		color: hsl(var(--secondary-dark));
+	}
+
+	.share-feedback--error {
+		color: hsl(var(--destructive));
 	}
 
 	.error-message {

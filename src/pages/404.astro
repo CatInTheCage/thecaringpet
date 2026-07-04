@@ -1,0 +1,55 @@
+---
+import Page from '../layouts/Page.astro';
+
+const title = 'Page Not Found';
+const description = "We couldn't find the page you were looking for. Browse our articles or head back home.";
+---
+
+<Page title={title} description={description} breadcrumbs={[{ label: 'Home', href: '/' }]} showNewsletter={false}>
+  <div class="not-found">
+    <span class="not-found-code">404</span>
+    <h2>Oops! This page seems to have wandered off.</h2>
+    <p class="text-muted">
+      The page you're looking for doesn't exist or has been moved. Let's get you back on track.
+    </p>
+    <div class="not-found-actions">
+      <a href="/" class="btn btn-primary">Go Home</a>
+      <a href="/blog/" class="btn btn-secondary">Browse Articles</a>
+    </div>
+  </div>
+</Page>
+
+<style>
+  .not-found {
+    text-align: center;
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .not-found-code {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: hsl(var(--primary));
+    margin-bottom: var(--spacing-md);
+  }
+
+  .not-found h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .not-found p {
+    font-size: 1.1rem;
+    max-width: 480px;
+    margin: 0 auto var(--spacing-xl);
+  }
+
+  .not-found-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+  }
+</style>
