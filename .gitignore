@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 # temporary working files
 .tmp/
+
+# project planning documents (private)
+todo.md
+STRATEGY.md
+ACCOUNT_SETUP_TONIGHT.md
