@@ -110,6 +110,78 @@ const primaryCategory = categories?.[0] || 'pet-knowledge';
 			</article>
 		</main>
 		<Footer />
+
+		<script is:inline>
+			(function () {
+				const LIGHTBOX_OPEN_CLASS = 'lightbox-open';
+
+				function openLightbox(src, alt) {
+					const existing = document.getElementById('post-lightbox');
+					if (existing) existing.remove();
+
+					const overlay = document.createElement('div');
+					overlay.id = 'post-lightbox';
+					overlay.className = 'post-lightbox';
+					overlay.setAttribute('role', 'dialog');
+					overlay.setAttribute('aria-modal', 'true');
+					overlay.setAttribute('aria-label', 'Image preview');
+
+					const img = document.createElement('img');
+					img.src = src;
+					img.alt = alt || '';
+
+					const closeBtn = document.createElement('button');
+					closeBtn.className = 'lightbox-close';
+					closeBtn.setAttribute('aria-label', 'Close image preview');
+					closeBtn.innerHTML = '&times;';
+
+					overlay.appendChild(img);
+					overlay.appendChild(closeBtn);
+					document.body.appendChild(overlay);
+					document.body.classList.add(LIGHTBOX_OPEN_CLASS);
+
+					requestAnimationFrame(() => overlay.classList.add('is-visible'));
+				}
+
+				function closeLightbox() {
+					const overlay = document.getElementById('post-lightbox');
+					if (!overlay) return;
+					overlay.classList.remove('is-visible');
+					setTimeout(() => {
+						overlay.remove();
+						document.body.classList.remove(LIGHTBOX_OPEN_CLASS);
+					}, 200);
+				}
+
+				function initLightbox() {
+					const images = document.querySelectorAll('.post-content img, .post-hero-image img');
+					images.forEach((img) => {
+						img.addEventListener('click', (e) => {
+							e.preventDefault();
+							openLightbox(img.src, img.alt);
+						});
+					});
+
+					document.addEventListener('click', (e) => {
+						const overlay = document.getElementById('post-lightbox');
+						if (!overlay) return;
+						if (e.target === overlay || e.target.closest('.lightbox-close')) {
+							closeLightbox();
+						}
+					});
+
+					document.addEventListener('keydown', (e) => {
+						if (e.key === 'Escape') closeLightbox();
+					});
+				}
+
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', initLightbox);
+				} else {
+					initLightbox();
+				}
+			})();
+		</script>
 	</body>
 </html>
 
@@ -205,5 +277,66 @@ const primaryCategory = categories?.[0] || 'pet-knowledge';
 	.post-cta p {
 		margin: 0 auto;
 		max-width: 50ch;
+	}
+</style>
+
+<style is:global>
+	.post-content img,
+	.post-hero-image img {
+		cursor: zoom-in;
+	}
+
+	.post-lightbox {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: rgba(0, 0, 0, 0.92);
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s ease, visibility 0.2s ease;
+		padding: var(--spacing-lg);
+	}
+
+	.post-lightbox.is-visible {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.post-lightbox img {
+		max-width: 100%;
+		max-height: 90vh;
+		object-fit: contain;
+		border-radius: var(--radius-md);
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+	}
+
+	.lightbox-close {
+		position: absolute;
+		top: var(--spacing-lg);
+		right: var(--spacing-lg);
+		width: 44px;
+		height: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(255, 255, 255, 0.15);
+		border: none;
+		border-radius: 50%;
+		color: #fff;
+		font-size: 2rem;
+		line-height: 1;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+	.lightbox-close:hover {
+		background: rgba(255, 255, 255, 0.3);
+	}
+
+	body.lightbox-open {
+		overflow: hidden;
 	}
 </style>

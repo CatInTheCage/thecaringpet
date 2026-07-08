@@ -1,0 +1,78 @@
+---
+import Page from '../layouts/Page.astro';
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Search', href: '/search/' },
+];
+---
+
+<Page
+	title="Search"
+	description="Search articles, guides, and reviews on The Caring Pet."
+	breadcrumbs={breadcrumbs}
+	showNewsletter={true}
+	wide={true}
+>
+	<Fragment slot="head">
+		<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+		<script src="/pagefind/pagefind-ui.js" type="text/javascript"></script>
+	</Fragment>
+
+	<div class="search-intro">
+		<p class="text-muted">
+			Search our library of pet feeding guides, product reviews, and care tips.
+		</p>
+	</div>
+
+	<div id="search"></div>
+
+	<script is:inline>
+		window.addEventListener('DOMContentLoaded', function () {
+			if (typeof PagefindUI === 'undefined') {
+				document.getElementById('search').innerHTML = '<p class="text-muted">Search is only available in the production build. Run <code>npm run build && npm run preview</code> to test it locally.</p>';
+				return;
+			}
+			new PagefindUI({
+				element: '#search',
+				showSubResults: true,
+				showImages: false,
+				excerptLength: 24,
+			});
+		});
+	</script>
+</Page>
+
+<style is:global>
+	.search-intro {
+		margin-bottom: var(--spacing-xl);
+	}
+
+	/* Pagefind UI theme overrides to match site palette */
+	.pagefind-ui {
+		--pagefind-ui-scale: 1;
+		--pagefind-ui-primary: hsl(var(--primary));
+		--pagefind-ui-text: hsl(var(--foreground));
+		--pagefind-ui-background: hsl(var(--background));
+		--pagefind-ui-border: hsl(var(--border));
+		--pagefind-ui-tag: hsl(var(--muted));
+		--pagefind-ui-border-width: 1px;
+		--pagefind-ui-border-radius: var(--radius-md);
+		--pagefind-ui-image-border-radius: var(--radius-md);
+		--pagefind-ui-image-box-ratio: 3 / 2;
+		--pagefind-ui-font: var(--font-body);
+	}
+
+	.pagefind-ui .pagefind-ui__search-input {
+		font-size: 1.05rem;
+		padding: 0.875rem 1rem 0.875rem 3rem;
+	}
+
+	.pagefind-ui .pagefind-ui__search-input::placeholder {
+		opacity: 0.5;
+	}
+
+	.pagefind-ui .pagefind-ui__search-clear {
+		padding: 0.75rem 1rem;
+	}
+</style>
