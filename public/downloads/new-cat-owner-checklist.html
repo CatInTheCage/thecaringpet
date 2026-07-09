@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New Cat Owner Checklist: First 30 Days</title>
+<style>
+  @page { size: letter; margin: 0.5in; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #2B2320;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page { page-break-after: always; padding: 0.2in 0; }
+  .page:last-child { page-break-after: auto; }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #C86B4A;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+  .brand { display: flex; align-items: center; gap: 8px; }
+  .paw { width: 28px; height: 28px; }
+  .brand-name { font-size: 16px; font-weight: 700; color: #C86B4A; letter-spacing: 0.5px; }
+  .h1 { font-size: 22px; font-weight: 800; color: #2B2320; margin-bottom: 4px; }
+  .sub { font-size: 12px; color: #6B5D52; }
+
+  h2 {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    background: #C86B4A;
+    padding: 7px 12px;
+    border-radius: 5px;
+    margin: 18px 0 10px;
+  }
+  h3 {
+    font-size: 13px;
+    color: #6B7F60;
+    margin: 12px 0 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Checklist */
+  ul.checklist { list-style: none; }
+  ul.checklist li {
+    font-size: 12px;
+    padding: 4px 0;
+    padding-left: 24px;
+    position: relative;
+  }
+  ul.checklist li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 4px;
+    width: 14px; height: 14px;
+    border: 2px solid #C86B4A;
+    border-radius: 3px;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+
+  /* Timeline */
+  .timeline { margin-top: 6px; }
+  .phase {
+    border-left: 4px solid #8FA68E;
+    padding: 6px 0 6px 14px;
+    margin-bottom: 12px;
+  }
+  .phase-title { font-size: 14px; font-weight: 700; color: #2B2320; }
+  .phase-body { font-size: 12px; color: #4A3F38; margin-top: 3px; }
+  ul.phase-list { list-style: none; margin-top: 4px; }
+  ul.phase-list li { font-size: 11.5px; padding: 2px 0 2px 16px; position: relative; }
+  ul.phase-list li::before {
+    content: "▸"; position: absolute; left: 0; color: #8FA68E; font-size: 10px;
+  }
+
+  /* Daily table */
+  table.daily {
+    width: 100%; border-collapse: collapse; margin-top: 6px;
+  }
+  table.daily th {
+    background: #F3E9DF; font-size: 11px; text-align: left;
+    padding: 6px 8px; border: 1px solid #EADFd0;
+  }
+  table.daily td {
+    font-size: 11.5px; padding: 6px 8px; border: 1px solid #EADFd0; vertical-align: top;
+  }
+  table.daily td.day { font-weight: 700; color: #C86B4A; width: 50px; white-space: nowrap; }
+  table.daily td.box { width: 34px; text-align: center; }
+
+  .note {
+    background: #F7F2EC; border: 1px dashed #C86B4A;
+    border-radius: 6px; padding: 10px 12px; font-size: 11.5px;
+    color: #4A3F38; margin-top: 12px;
+  }
+
+  .footer {
+    margin-top: 20px; padding-top: 10px;
+    border-top: 1px solid #EADFd0;
+    font-size: 10px; color: #8C7A6B; text-align: center;
+  }
+  .footer a { color: #C86B4A; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: Shopping List -->
+<div class="page">
+  <div class="header">
+    <div class="brand">
+      <svg class="paw" viewBox="0 0 100 100"><g fill="#C86B4A"><ellipse cx="50" cy="62" rx="22" ry="20"/><ellipse cx="22" cy="42" rx="11" ry="14"/><ellipse cx="42" cy="28" rx="11" ry="14"/><ellipse cx="62" cy="28" rx="11" ry="14"/><ellipse cx="80" cy="42" rx="11" ry="14"/></g></svg>
+      <span class="brand-name">THE CARING PET</span>
+    </div>
+    <span class="sub">Page 1 of 3</span>
+  </div>
+
+  <div class="h1">New Cat Owner Checklist</div>
+  <div class="sub">Your first 30 days with a new cat — printable guide</div>
+
+  <h2>Before You Bring Your Cat Home</h2>
+
+  <div class="grid2">
+    <div>
+      <h3>Food &amp; Water</h3>
+      <ul class="checklist">
+        <li>Food bowls (ceramic or stainless steel)</li>
+        <li>Water bowl or fountain</li>
+        <li>Cat food (same brand as shelter/breeder)</li>
+        <li>Healthy treats</li>
+      </ul>
+
+      <h3>Comfort &amp; Safety</h3>
+      <ul class="checklist">
+        <li>Covered bed or hiding box</li>
+        <li>Scratching post (vertical + horizontal)</li>
+        <li>Breakaway collar + ID tag</li>
+        <li>Carrier</li>
+        <li>Microchip registered to you</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Litter &amp; Cleanup</h3>
+      <ul class="checklist">
+        <li>Litter box (large, uncovered)</li>
+        <li>Unscented clumping litter</li>
+        <li>Litter scoop</li>
+        <li>Litter mat</li>
+        <li>Enzyme cleaner</li>
+      </ul>
+
+      <h3>Play &amp; Enrichment</h3>
+      <ul class="checklist">
+        <li>Wand toy</li>
+        <li>Puzzle feeder or treat ball</li>
+        <li>Cat tree or window perch</li>
+      </ul>
+
+      <h3>Optional</h3>
+      <ul class="checklist">
+        <li>Automatic feeder</li>
+        <li>Feliway diffuser</li>
+        <li>Grooming brush &amp; nail trimmers</li>
+        <li>Pet camera</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Quick tip:</strong> Start with the same food the shelter or previous owner used. Transition to a new brand gradually over 7–10 days to avoid stomach upset.
+  </div>
+
+  <div class="footer">
+    Free printable from <a href="https://thecaringpet.com">thecaringpet.com</a> · For educational purposes only. Not a substitute for veterinary advice.
+  </div>
+</div>
+
+<!-- PAGE 2: 3-3-3 Timeline -->
+<div class="page">
+  <div class="header">
+    <div class="brand">
+      <svg class="paw" viewBox="0 0 100 100"><g fill="#C86B4A"><ellipse cx="50" cy="62" rx="22" ry="20"/><ellipse cx="22" cy="42" rx="11" ry="14"/><ellipse cx="42" cy="28" rx="11" ry="14"/><ellipse cx="62" cy="28" rx="11" ry="14"/><ellipse cx="80" cy="42" rx="11" ry="14"/></g></svg>
+      <span class="brand-name">THE CARING PET</span>
+    </div>
+    <span class="sub">Page 2 of 3</span>
+  </div>
+
+  <div class="h1">The 3-3-3 Rule</div>
+  <div class="sub">What to expect in your cat's first 3 months</div>
+
+  <div class="timeline">
+    <div class="phase">
+      <div class="phase-title">3 Days — Decompress</div>
+      <div class="phase-body">Your cat is overwhelmed. Give them a small, quiet safe room and let them hide.</div>
+      <ul class="phase-list">
+        <li>Keep in one safe room with the door closed</li>
+        <li>Let the cat exit the carrier on their own</li>
+        <li>No forced interaction or handling</li>
+        <li>Same food, fresh water, clean litter</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-title">3 Weeks — Settle In</div>
+      <div class="phase-body">Routine starts to feel familiar. Your cat's real personality begins to emerge.</div>
+      <ul class="phase-list">
+        <li>Gradual, supervised exploration beyond the safe room</li>
+        <li>Establish consistent feeding and play times</li>
+        <li>Bond through short play sessions and treats</li>
+        <li>Watch appetite, litter habits, and energy</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-title">3 Months — Full Trust</div>
+      <div class="phase-body">The cat treats the home as territory and feels like part of the family.</div>
+      <ul class="phase-list">
+        <li>Full home access if the cat is confident</li>
+        <li>Behavior patterns are stable</li>
+        <li>Begin slow introductions to other pets (if any)</li>
+        <li>Continue daily play and enrichment</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Remember:</strong> Every cat is different. Shy or previously traumatized cats may take longer — that's normal, not a sign something is wrong. Let your cat set the pace.
+  </div>
+
+  <div class="footer">
+    Free printable from <a href="https://thecaringpet.com">thecaringpet.com</a> · For educational purposes only. Not a substitute for veterinary advice.
+  </div>
+</div>
+
+<!-- PAGE 3: First Week Daily -->
+<div class="page">
+  <div class="header">
+    <div class="brand">
+      <svg class="paw" viewBox="0 0 100 100"><g fill="#C86B4A"><ellipse cx="50" cy="62" rx="22" ry="20"/><ellipse cx="22" cy="42" rx="11" ry="14"/><ellipse cx="42" cy="28" rx="11" ry="14"/><ellipse cx="62" cy="28" rx="11" ry="14"/><ellipse cx="80" cy="42" rx="11" ry="14"/></g></svg>
+      <span class="brand-name">THE CARING PET</span>
+    </div>
+    <span class="sub">Page 3 of 3</span>
+  </div>
+
+  <div class="h1">Your First Week: Daily Checklist</div>
+  <div class="sub">Tick off one task each day to build trust the right way</div>
+
+  <table class="daily">
+    <tr><th>Day</th><th>Task</th><th>Done</th></tr>
+    <tr><td class="day">Day 1</td><td>Set up safe room; open carrier; let the cat exit on their own</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 1</td><td>Show food, water, and litter box locations gently</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 1</td><td>Keep environment quiet; limit visitors</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 2</td><td>Scoop litter; refresh water</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 2</td><td>Sit quietly in the room for 10 minutes</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 3</td><td>Offer a treat from your hand (do not force)</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 3</td><td>Observe eating, drinking, and litter habits</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 4</td><td>First gentle play session with a wand toy</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 5</td><td>Schedule a wellness vet visit</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 6</td><td>Begin short, supervised exploration outside the safe room</td><td class="box">☐</td></tr>
+    <tr><td class="day">Day 7</td><td>Review the week; adjust routine as needed</td><td class="box">☐</td></tr>
+  </table>
+
+  <h3 style="margin-top:16px;">When to Call the Vet Immediately</h3>
+  <ul class="checklist">
+    <li>Not eating for more than 24 hours</li>
+    <li>No urination in 24 hours, or straining in the litter box</li>
+    <li>Vomiting or diarrhea lasting more than a day</li>
+    <li>Lethargy, weakness, or difficulty breathing</li>
+    <li>Sudden behavior change combined with refusing food</li>
+  </ul>
+
+  <div class="note">
+    <strong>Full guide:</strong> Read the complete first-30-days article with shopping links and photos at <a href="https://thecaringpet.com/blog/new-cat-owner-checklist/" style="color:#C86B4A;">thecaringpet.com/blog/new-cat-owner-checklist/</a>
+  </div>
+
+  <div class="footer">
+    Free printable from <a href="https://thecaringpet.com">thecaringpet.com</a> · For educational purposes only. Not a substitute for veterinary advice.
+  </div>
+</div>
+
+</body>
+</html>
