@@ -26,6 +26,10 @@ pnpm-debug.log*
 # temporary working files
 .tmp/
 
+# generated Pinterest Pin images (regenerable via scripts/make-pinterest-pins.mjs)
+public/images/pins/
+public/images/pins-upload/
+
 # project planning documents (private)
 todo.md
 STRATEGY.md
