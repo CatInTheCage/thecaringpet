@@ -12,3 +12,4 @@ export const GA_TRACKING_ID = 'G-3J7J1Y6XGP';                                   
 export const AMAZON_ASSOCIATES_TAG = 'thecaringpet-20';                                 // Amazon Associates store ID
 export const NEWSLETTER_FORM_URL = 'https://forms.gle/b7ZyTVz7vmLqpwkn7'; // Newsletter signup / lead magnet form URL (Dog Feeding Safety Checklist)
 export const CAT_CHECKLIST_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScjx_zl5GZ74gX9TpbnQswhL8tVnZ5O2PKs3j1fUXr7oWczUQ/viewform?usp=sharing'; // New Cat Owner Checklist lead magnet form URL
+export const PUPPY_CHECKLIST_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdexyHZluvs7k_hY26LWaEcZko9LCavYc7gZT-pz1Fb5yPosQ/viewform?usp=sharing'; // New Puppy Essentials Checklist lead magnet form URL
