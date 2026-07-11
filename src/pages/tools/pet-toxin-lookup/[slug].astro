@@ -1,0 +1,375 @@
+---
+import Page from '../../../layouts/Page.astro';
+import FAQ from '../../../components/FAQ.astro';
+import ToxinDisclaimer from '../../../components/ToxinDisclaimer.astro';
+import PoisonHotlines from '../../../components/PoisonHotlines.astro';
+import { toxins } from '../../../data/toxins';
+import { SITE_URL } from '../../../consts';
+import type { Toxin, ToxinLevel, SpeciesInfo } from '../../../types/toxin';
+
+export async function getStaticPaths() {
+	return toxins.map((toxin) => ({
+		params: { slug: toxin.slug },
+		props: { toxin, toxins },
+	}));
+}
+
+interface Props {
+	toxin: Toxin;
+	toxins: Toxin[];
+}
+const { toxin, toxins } = Astro.props;
+
+const title = `Is ${toxin.name} Toxic to Cats and Dogs?`;
+const description = toxin.description; // already ≤155 chars with species split
+const image = '/images/hero.jpg';
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Tools', href: '/tools/' },
+	{ label: 'Pet Toxin Lookup', href: '/tools/pet-toxin-lookup/' },
+	{ label: toxin.name, href: `/tools/pet-toxin-lookup/${toxin.slug}/` },
+];
+
+const levelLabel: Record<ToxinLevel, string> = {
+	severe: 'Severe',
+	moderate: 'Moderate',
+	mild: 'Mild',
+	safe: 'Generally Safe',
+};
+
+const levelBlurb: Record<ToxinLevel, string> = {
+	severe: 'Potentially life-threatening — treat any exposure as an emergency.',
+	moderate: 'Can cause real harm — call a vet for guidance.',
+	mild: 'Usually minor, but watch for symptoms.',
+	safe: 'Low risk in small amounts, but monitor.',
+};
+
+// The more-severe species leads visually so the urgency is clear at a glance.
+const severityRank: Record<ToxinLevel, number> = { severe: 0, moderate: 1, mild: 2, safe: 3 };
+const speciesOrder =
+	severityRank[toxin.species.dog.level] <= severityRank[toxin.species.cat.level]
+		? (['dog', 'cat'] as const)
+		: (['cat', 'dog'] as const);
+
+const speciesMeta: Record<'dog' | 'cat', { label: string; emoji: string }> = {
+	dog: { label: 'Dogs', emoji: '🐕' },
+	cat: { label: 'Cats', emoji: '🐈' },
+};
+
+// Related toxins in the same category, excluding the current one.
+const relatedToxins = toxins
+	.filter((t) => t.slug !== toxin.slug && t.category === toxin.category)
+	.slice(0, 4);
+
+const detailUrl = `${SITE_URL}/tools/pet-toxin-lookup/${toxin.slug}/`;
+
+const schemaJson = {
+	'@context': 'https://schema.org',
+	'@type': 'MedicalWebPage',
+	name: title,
+	description,
+	url: detailUrl,
+	about: {
+		'@type': 'MedicalEntity',
+		name: `${toxin.name} toxicity in pets`,
+	},
+	audience: {
+		'@type': 'Patient',
+		name: 'Pet owners',
+	},
+	lastReviewed: toxin.lastReviewed,
+	author: {
+		'@type': 'Organization',
+		name: 'The Caring Pet',
+		url: SITE_URL,
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'The Caring Pet',
+		url: SITE_URL,
+	},
+	mainEntity: toxin.faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.question,
+		acceptedAnswer: { '@type': 'Answer', text: f.answer },
+	})),
+};
+---
+
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs}>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(schemaJson)} slot="head" />
+
+	<section class="toxin-detail">
+		{/* Toxicity signal cards */}
+		<div class="tox-signal-grid">
+			{speciesOrder.map((sp) => {
+				const info: SpeciesInfo = toxin.species[sp];
+				return (
+					<div class={`tox-signal-card tox-signal-card--${info.level}`}>
+						<span class="tox-signal-emoji" aria-hidden="true">{speciesMeta[sp].emoji}</span>
+						<span class="tox-signal-label">Toxicity in {speciesMeta[sp].label}</span>
+						<span class={`tox-badge tox-badge--${info.level}`}>{levelLabel[info.level]}</span>
+						<p class="tox-signal-blurb">{levelBlurb[info.level]}</p>
+					</div>
+				);
+			})}
+		</div>
+
+		<ToxinDisclaimer lead="In an emergency, do not wait." />
+
+		<section>
+			<h2>What is {toxin.name}?</h2>
+			<p>{toxin.description}</p>
+			{toxin.aliases.length > 0 && (
+				<p class="text-muted text-small">
+					Also known as: {toxin.aliases.join(', ')}.
+				</p>
+			)}
+		</section>
+
+		<section>
+			<h2>Symptoms to Watch For</h2>
+			<div class="tox-symptoms-grid">
+				{speciesOrder.map((sp) => (
+					<div class="tox-symptoms-col">
+						<h3>{speciesMeta[sp].emoji} In {speciesMeta[sp].label}</h3>
+						<ul>
+							{toxin.species[sp].symptoms.map((s) => <li>{s}</li>)}
+						</ul>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section>
+			<h2>What to Do If Ingested</h2>
+			<ol class="tox-steps">
+				{toxin.species.dog.firstAid.map((step) => <li>{step}</li>)}
+			</ol>
+			<p class="text-muted text-small">
+				Steps apply to both cats and dogs. When in doubt, call a vet or poison hotline before acting.
+			</p>
+		</section>
+
+		<div class="tox-alert">
+			<h2>When to Call the Vet Immediately</h2>
+			<p>Call your veterinarian or a poison control hotline right away if you notice any of these:</p>
+			<ul>
+				{toxin.species.dog.callVetIf.map((sign) => <li>{sign}</li>)}
+			</ul>
+			<PoisonHotlines title="Call a Poison Control Hotline Now" />
+		</div>
+
+		{toxin.relatedProducts && toxin.relatedProducts.length > 0 && (
+			<section>
+				<h2>Related Safety Products</h2>
+				<p class="text-muted">Affiliate links — we may earn a commission at no extra cost to you.</p>
+				{/* ProductCard rendered here once real ASINs + images are added. */}
+			</section>
+		)}
+
+		<section>
+			<h2>Frequently Asked Questions</h2>
+			<FAQ items={toxin.faqs} />
+		</section>
+
+		<section>
+			<h2>Sources</h2>
+			<p class="text-muted text-small">This entry is reviewed against the following authoritative veterinary sources.</p>
+			<ul class="tox-sources">
+				{toxin.sources.map((src) => (
+					<li>
+						<a href={src.url} target="_blank" rel="noopener noreferrer">{src.name}</a>
+					</li>
+				))}
+			</ul>
+			<p class="text-muted text-small">Last reviewed: {toxin.lastReviewed}</p>
+		</section>
+
+		{relatedToxins.length > 0 && (
+			<section class="tox-related">
+				<h2>Other {toxin.category} items to check</h2>
+				<div class="tox-related-grid">
+					{relatedToxins.map((t) => (
+						<a class="tox-related-card" href={`/tools/pet-toxin-lookup/${t.slug}/`}>
+							<span class="tox-related-name">{t.name}</span>
+							<span class="tox-related-badges">
+								<span class={`tox-badge tox-badge--${t.species.cat.level}`}>Cat</span>
+								<span class={`tox-badge tox-badge--${t.species.dog.level}`}>Dog</span>
+							</span>
+						</a>
+					))}
+				</div>
+			</section>
+		)}
+
+		<section class="tox-back-link">
+			<a href="/tools/pet-toxin-lookup/" class="btn btn-secondary">← Back to Pet Toxin Lookup</a>
+		</section>
+	</section>
+</Page>
+
+<style>
+	.toxin-detail section {
+		margin-bottom: var(--spacing-xl);
+	}
+
+	.tox-signal-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-md);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	@media (min-width: 560px) {
+		.tox-signal-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.tox-signal-card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xs);
+		padding: var(--spacing-lg);
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+		background-color: hsl(var(--card));
+		box-shadow: var(--shadow-card);
+	}
+
+	.tox-signal-card--severe {
+		border-color: hsl(var(--tox-severe) / 0.3);
+		background-color: hsl(var(--tox-severe) / 0.04);
+	}
+
+	.tox-signal-card--moderate {
+		border-color: hsl(var(--tox-moderate) / 0.3);
+		background-color: hsl(var(--tox-moderate) / 0.04);
+	}
+
+	.tox-signal-card--mild {
+		border-color: hsl(var(--tox-mild) / 0.3);
+		background-color: hsl(var(--tox-mild) / 0.05);
+	}
+
+	.tox-signal-card--safe {
+		border-color: hsl(var(--tox-safe) / 0.3);
+		background-color: hsl(var(--tox-safe) / 0.04);
+	}
+
+	.tox-signal-emoji {
+		font-size: 1.75rem;
+		line-height: 1;
+	}
+
+	.tox-signal-label {
+		font-weight: 600;
+		color: hsl(var(--muted-foreground));
+		font-size: 0.95rem;
+	}
+
+	.tox-signal-blurb {
+		margin: 0;
+		font-size: 0.9rem;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.tox-symptoms-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-lg);
+	}
+
+	@media (min-width: 560px) {
+		.tox-symptoms-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.tox-symptoms-col h3 {
+		font-size: 1.1rem;
+	}
+
+	.tox-steps {
+		padding-left: var(--spacing-lg);
+	}
+
+	.tox-steps li {
+		margin-bottom: var(--spacing-sm);
+		line-height: 1.6;
+	}
+
+	.tox-sources {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	.tox-sources li {
+		padding: var(--spacing-sm) 0;
+		border-bottom: 1px solid hsl(var(--border));
+	}
+
+	.tox-sources li:last-child {
+		border-bottom: none;
+	}
+
+	.tox-related {
+		padding-top: var(--spacing-xl);
+		border-top: 1px solid hsl(var(--border));
+	}
+
+	.tox-related-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-sm);
+	}
+
+	@media (min-width: 560px) {
+		.tox-related-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.tox-related-card {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-sm);
+		padding: var(--spacing-md);
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		background-color: hsl(var(--card));
+		text-decoration: none;
+		transition: transform 0.2s ease, border-color 0.2s ease;
+	}
+
+	.tox-related-card:hover {
+		transform: translateY(-2px);
+		border-color: hsl(var(--primary) / 0.3);
+	}
+
+	.tox-related-name {
+		font-weight: 600;
+		color: hsl(var(--foreground));
+	}
+
+	.tox-related-badges {
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.tox-related-badges .tox-badge {
+		font-size: 0.62rem;
+		padding: 0.2rem 0.5rem;
+	}
+
+	.tox-related-badges .tox-badge::before {
+		display: none;
+	}
+
+	.tox-back-link {
+		margin-top: var(--spacing-xl);
+	}
+</style>
