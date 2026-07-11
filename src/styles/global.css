@@ -48,6 +48,13 @@
 	--color-success: hsl(var(--secondary));
 	--color-warning: hsl(32 50% 65%);
 
+	/* Pet Toxin Lookup severity scale — raw HSL triplets (consumed as hsl(var(--tox-*))).
+	   Used by .tox-badge--{level} and .tox-alert on the toxin tool pages. */
+	--tox-severe: 0 84% 56%;
+	--tox-moderate: 25 88% 53%;
+	--tox-mild: 45 92% 50%;
+	--tox-safe: 130 16% 45%;
+
 	/* Typography */
 	--font-heading: 'Playfair Display', Georgia, serif;
 	--font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -470,6 +477,149 @@ blockquote p:last-child {
 	border-radius: var(--radius-md);
 	font-size: 0.875rem;
 	color: hsl(var(--muted-foreground));
+}
+
+/* Pet Toxin Lookup — severity badges (traffic-light) and emergency alert.
+   Used by the toxin search page and every toxin detail page. */
+.tox-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	padding: 0.3rem 0.75rem;
+	border-radius: 9999px;
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1;
+	border: 1px solid transparent;
+	white-space: nowrap;
+}
+
+.tox-badge::before {
+	content: '';
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 9999px;
+	background: currentColor;
+}
+
+.tox-badge--severe {
+	background-color: hsl(var(--tox-severe) / 0.12);
+	border-color: hsl(var(--tox-severe) / 0.3);
+	color: hsl(var(--tox-severe));
+}
+
+.tox-badge--moderate {
+	background-color: hsl(var(--tox-moderate) / 0.14);
+	border-color: hsl(var(--tox-moderate) / 0.3);
+	color: hsl(var(--tox-moderate));
+}
+
+.tox-badge--mild {
+	background-color: hsl(var(--tox-mild) / 0.16);
+	border-color: hsl(var(--tox-mild) / 0.35);
+	color: hsl(40 90% 38%);
+}
+
+.tox-badge--safe {
+	background-color: hsl(var(--tox-safe) / 0.12);
+	border-color: hsl(var(--tox-safe) / 0.3);
+	color: hsl(var(--tox-safe));
+}
+
+/* Red emergency alert box for the "When to Call the Vet" section. */
+.tox-alert {
+	background-color: hsl(var(--tox-severe) / 0.08);
+	border: 1px solid hsl(var(--tox-severe) / 0.25);
+	border-left: 4px solid hsl(var(--tox-severe));
+	border-radius: var(--radius-md);
+	padding: var(--spacing-lg);
+	margin: var(--spacing-lg) 0;
+	color: hsl(var(--foreground));
+}
+
+.tox-alert h2,
+.tox-alert h3 {
+	color: hsl(var(--tox-severe));
+	margin-top: 0;
+}
+
+/* Toxin medical disclaimer banner. */
+.toxin-disclaimer {
+	background-color: hsl(var(--primary) / 0.05);
+	border: 1px solid hsl(var(--border));
+	border-left: 4px solid hsl(var(--primary));
+	padding: var(--spacing-md) var(--spacing-lg);
+	margin: var(--spacing-xl) 0;
+	border-radius: var(--radius-md);
+	font-size: 0.875rem;
+	color: hsl(var(--muted-foreground));
+}
+
+.toxin-disclaimer strong {
+	color: hsl(var(--foreground));
+}
+
+/* Poison-hotline CTA block (search empty state + detail "call vet" section). */
+.poison-hotlines {
+	margin: var(--spacing-lg) 0;
+}
+
+.poison-hotlines-title {
+	font-size: 1.05rem;
+	font-weight: 700;
+	margin-bottom: var(--spacing-sm);
+	color: hsl(var(--foreground));
+}
+
+.poison-hotlines-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--spacing-sm);
+}
+
+.poison-hotline-card {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	padding: var(--spacing-md);
+	border: 1px solid hsl(var(--tox-severe) / 0.2);
+	border-radius: var(--radius-md);
+	background-color: hsl(var(--card));
+	text-decoration: none;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.poison-hotline-card:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-card-hover);
+	border-color: hsl(var(--tox-severe) / 0.4);
+}
+
+.poison-hotline-name {
+	font-weight: 700;
+	color: hsl(var(--foreground));
+	font-size: 1rem;
+}
+
+.poison-hotline-phone {
+	font-size: 1.35rem;
+	font-weight: 700;
+	color: hsl(var(--tox-severe));
+	font-family: var(--font-heading);
+	line-height: 1.2;
+}
+
+.poison-hotline-note {
+	font-size: 0.8rem;
+	color: hsl(var(--muted-foreground));
+}
+
+@media (min-width: 560px) {
+	.poison-hotlines-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 /* Newsletter Form */

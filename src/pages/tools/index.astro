@@ -23,6 +23,12 @@ const tools = [
 		description: 'Convert your cat\'s age to human years using the AVMA/AAFP-aligned 15-24-4 model.',
 		icon: 'cat',
 	},
+	{
+		slug: 'pet-toxin-lookup',
+		name: 'Pet Toxin Lookup',
+		description: 'Search foods, plants, and household items to check toxicity for dogs and cats — with symptoms and what to do.',
+		icon: 'toxin',
+	},
 ];
 ---
 
@@ -54,6 +60,13 @@ const tools = [
 								<path d="M8 14v.5"/>
 								<path d="M16 14v.5"/>
 								<path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/>
+							</svg>
+						)}
+						{tool.icon === 'toxin' && (
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z" />
+								<path d="M12 8v6" />
+								<path d="M9 11h6" />
 							</svg>
 						)}
 					</div>

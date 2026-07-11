@@ -1,0 +1,24 @@
+---
+// Medical disclaimer banner for the Pet Toxin Lookup tool.
+// AffiliateDisclosure.astro cannot be reused here because it takes no props and
+// is hardwired to the affiliate-commission text + /affiliate-disclosure/ link.
+// This is a distinct medical "not a substitute for veterinary care" warning.
+import { ASPCA_POISON_HOTLINE, PPH_POISON_HOTLINE } from '../consts';
+
+interface Props {
+	/** Optional extra emphasis shown first, e.g. "In an emergency, do not wait." */
+	lead?: string;
+}
+const { lead } = Astro.props;
+---
+
+<div class="toxin-disclaimer" role="note">
+	{lead && <p><strong>{lead}</strong></p>}
+	<p>
+		<strong>Medical disclaimer:</strong> This tool is for general information only and is
+		<strong>not a substitute for veterinary diagnosis or treatment</strong>. Toxicity depends on
+		the amount, your pet&rsquo;s size, and health history. If your pet may have ingested something
+		harmful, contact your veterinarian or a poison control hotline
+		({ASPCA_POISON_HOTLINE.phone} / {PPH_POISON_HOTLINE.phone}) immediately — do not wait for symptoms to appear.
+	</p>
+</div>

@@ -13,3 +13,24 @@ export const AMAZON_ASSOCIATES_TAG = 'thecaringpet-20';                         
 export const NEWSLETTER_FORM_URL = 'https://forms.gle/b7ZyTVz7vmLqpwkn7'; // Newsletter signup / lead magnet form URL (Dog Feeding Safety Checklist)
 export const CAT_CHECKLIST_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScjx_zl5GZ74gX9TpbnQswhL8tVnZ5O2PKs3j1fUXr7oWczUQ/viewform?usp=sharing'; // New Cat Owner Checklist lead magnet form URL
 export const PUPPY_CHECKLIST_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdexyHZluvs7k_hY26LWaEcZko9LCavYc7gZT-pz1Fb5yPosQ/viewform?usp=sharing'; // New Puppy Essentials Checklist lead magnet form URL
+
+// Poison control hotlines — VERIFY PERIODICALLY. Numbers rarely change, but an
+// outdated number here would actively mislead someone in an emergency. Re-check
+// against the ASPCA & PPH official sites on a recurring schedule (see the
+// poison-hotline-recheck memory note). lastVerified = the date the phone number
+// was last confirmed correct against the official source.
+export const ASPCA_POISON_HOTLINE = {
+	name: 'ASPCA Animal Poison Control Center',
+	phone: '(888) 426-4435',
+	tel: '+18884264435',
+	url: 'https://www.aspca.org/pet-care/aspca-poison-control',
+	lastVerified: '2026-07-11',
+};
+
+export const PPH_POISON_HOTLINE = {
+	name: 'Pet Poison Helpline',
+	phone: '(855) 764-7661',
+	tel: '+18557647661',
+	url: 'https://www.petpoisonhelpline.com',
+	lastVerified: '2026-07-11',
+};
