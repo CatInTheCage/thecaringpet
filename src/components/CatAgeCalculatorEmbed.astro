@@ -1,0 +1,331 @@
+---
+// A self-contained, embeddable cat-age calculator for use inside blog posts.
+// Uses the 16-5-4 model (year 1 = 16, year 2 = +5 → 21, each year after = +4),
+// matching the age-comparison guidance from the Cornell Feline Health Center.
+// Scoped with unique class/data prefixes so it can coexist on any page.
+// Life stages: AAHA/AAFP 2021 Feline Life Stage Guidelines (Kitten 0-1,
+// Young Adult 1-6, Mature 7-10, Senior >10) plus a commonly used 15+ label.
+---
+
+<section class="cat-age-embed" aria-label="Cat age to human years calculator">
+	<div class="ca-card">
+		<h2 class="ca-title">How Old Is Your Cat in Human Years?</h2>
+		<p class="ca-intro text-muted">Enter your cat's age, then calculate to see the human-year equivalent and life stage. Based on the Cornell Feline Health Center's 16-5-4 model.</p>
+
+		<form class="ca-form" data-cat-age-form novalidate>
+			<div class="ca-form-row">
+				<div class="ca-field">
+					<label for="ca-years">Years</label>
+					<div class="ca-stepper">
+						<button type="button" class="ca-step" data-step="down" aria-label="Decrease years">−</button>
+						<input type="number" id="ca-years" name="years" min="0" max="30" value="2" aria-label="Years" />
+						<button type="button" class="ca-step" data-step="up" aria-label="Increase years">+</button>
+					</div>
+				</div>
+				<div class="ca-field">
+					<label>Months</label>
+					<div class="ca-months" role="radiogroup" aria-label="Months">
+						{Array.from({ length: 12 }, (_, i) => (
+							<label class="ca-month">
+								<input type="radio" name="ca-months" value={i} checked={i === 0} />
+								<span>{i}</span>
+							</label>
+						))}
+					</div>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-primary ca-submit">Calculate human age</button>
+		</form>
+
+		<div class="ca-result" data-ca-result hidden aria-live="polite">
+			<span class="ca-result-label">Your cat is about</span>
+			<div class="ca-result-age">
+				<span data-ca-human>—</span>
+				<span class="ca-result-unit">human years old</span>
+			</div>
+			<span data-ca-stage class="badge badge-secondary ca-stage">—</span>
+			<p data-ca-stage-desc class="ca-stage-desc text-muted">—</p>
+		</div>
+
+		<p class="ca-error" data-ca-error hidden>Please enter a valid age greater than 0.</p>
+
+		<p class="ca-footnote text-muted">
+			Estimate only, for educational purposes. Want the full version with health milestones? Visit our <a href="/tools/cat-age-calculator/">Cat Age Calculator</a>.
+		</p>
+	</div>
+</section>
+
+<script is:inline>
+	(() => {
+		const root = document.currentScript.closest('section.cat-age-embed') || document.querySelector('section.cat-age-embed');
+		if (!root) return;
+
+		const form = root.querySelector('[data-cat-age-form]');
+		const yearsInput = root.querySelector('#ca-years');
+		const result = root.querySelector('[data-ca-result]');
+		const errorEl = root.querySelector('[data-ca-error]');
+
+		const STAGES = {
+			kitten: { label: 'Kitten', desc: 'Rapid growth, vaccinations, and socialization (0–1 year).' },
+			youngAdult: { label: 'Young Adult', desc: 'Physically mature; focus on prevention and healthy routines (1–6 years).' },
+			matureAdult: { label: 'Mature', desc: 'Stable prime years; watch weight and early disease signs (7–10 years).' },
+			senior: { label: 'Senior', desc: 'Slowing metabolism; increase screening and comfort support (11–14 years).' },
+			geriatric: { label: 'Super Senior', desc: 'Advanced age; prioritize comfort, mobility, and quality of life (15+ years).' }
+		};
+
+		function humanAge(years, months) {
+			const a = years + months / 12;
+			if (a <= 1) return Math.round(a * 16);
+			if (a <= 2) return Math.round(16 + (a - 1) * 5);
+			return Math.round(21 + (a - 2) * 4);
+		}
+
+		function stage(years, months) {
+			const a = years + months / 12;
+			if (a < 1) return 'kitten';
+			if (a <= 6) return 'youngAdult';
+			if (a <= 10) return 'matureAdult';
+			if (a <= 14) return 'senior';
+			return 'geriatric';
+		}
+
+		function showError(msg) {
+			errorEl.textContent = msg || 'Please enter a valid age greater than 0.';
+			errorEl.hidden = false;
+			result.hidden = true;
+		}
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const y = parseInt(yearsInput.value, 10);
+			const m = parseInt(form.querySelector('input[name="ca-months"]:checked')?.value || '0', 10);
+			if (Number.isNaN(y) || y < 0 || y > 30 || Number.isNaN(m) || m < 0 || m > 11 || (y === 0 && m === 0)) {
+				showError();
+				return;
+			}
+			errorEl.hidden = true;
+			const h = humanAge(y, m);
+			const s = STAGES[stage(y, m)];
+			result.querySelector('[data-ca-human]').textContent = h;
+			result.querySelector('[data-ca-stage]').textContent = s.label;
+			result.querySelector('[data-ca-stage-desc]').textContent = s.desc;
+			result.hidden = false;
+			result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		});
+
+		root.querySelectorAll('[data-step]').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const cur = parseInt(yearsInput.value, 10) || 0;
+				const next = Math.min(Math.max(cur + (btn.dataset.step === 'up' ? 1 : -1), 0), 30);
+				yearsInput.value = next;
+			});
+		});
+	})();
+</script>
+
+<style>
+	.cat-age-embed {
+		margin: var(--spacing-2xl) 0;
+	}
+
+	.ca-card {
+		background-color: hsl(var(--card));
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-card);
+		padding: var(--spacing-xl);
+	}
+
+	.ca-title {
+		font-size: clamp(1.35rem, 3.5vw, 1.75rem);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.ca-intro {
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.ca-form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-lg);
+	}
+
+	.ca-form-row {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-md);
+	}
+
+	@media (min-width: 480px) {
+		.ca-form-row {
+			grid-template-columns: 1fr 2fr;
+		}
+	}
+
+	.ca-field {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xs);
+	}
+
+	.ca-field label {
+		font-weight: 600;
+		font-size: 0.95rem;
+	}
+
+	.ca-stepper {
+		display: flex;
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		background-color: hsl(var(--card));
+	}
+
+	.ca-stepper input[type="number"] {
+		flex: 1;
+		border: none;
+		text-align: center;
+		font-size: 1.25rem;
+		font-weight: 600;
+		padding: 0.75rem 0.5rem;
+		-moz-appearance: textfield;
+	}
+
+	.ca-stepper input[type="number"]::-webkit-outer-spin-button,
+	.ca-stepper input[type="number"]::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	.ca-step {
+		width: 48px;
+		border: none;
+		background-color: hsl(var(--muted));
+		color: hsl(var(--foreground));
+		font-size: 1.25rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+	.ca-step:hover {
+		background-color: hsl(var(--primary) / 0.12);
+	}
+
+	.ca-months {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		gap: var(--spacing-xs);
+	}
+
+	.ca-month {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 1;
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		cursor: pointer;
+		background-color: hsl(var(--card));
+		transition: all 0.2s ease;
+	}
+
+	.ca-month:hover {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.03);
+	}
+
+	.ca-month input[type="radio"] {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.ca-month span {
+		font-size: 0.95rem;
+		font-weight: 600;
+	}
+
+	.ca-month:has(input:checked) {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary));
+		box-shadow: 0 0 0 1px hsl(var(--primary));
+	}
+
+	.ca-month:has(input:checked) span {
+		color: hsl(var(--primary-foreground));
+	}
+
+	.ca-submit {
+		width: 100%;
+	}
+
+	.ca-result {
+		margin-top: var(--spacing-xl);
+		padding: var(--spacing-xl);
+		background: linear-gradient(135deg, hsl(var(--primary) / 0.08) 0%, hsl(var(--secondary) / 0.06) 100%);
+		border-radius: var(--radius-lg);
+		border: 1px solid hsl(var(--primary) / 0.15);
+		text-align: center;
+	}
+
+	.ca-result-label {
+		display: block;
+		font-size: 0.95rem;
+		color: hsl(var(--muted-foreground));
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.ca-result-age {
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+		gap: var(--spacing-sm);
+		margin-bottom: var(--spacing-md);
+		flex-wrap: wrap;
+	}
+
+	.ca-result-age [data-ca-human] {
+		font-family: var(--font-heading);
+		font-size: clamp(2.75rem, 7vw, 4.5rem);
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.ca-result-unit {
+		font-size: 1.05rem;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.ca-stage {
+		font-size: 0.75rem;
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.ca-stage-desc {
+		max-width: 480px;
+		margin: 0 auto;
+	}
+
+	.ca-error {
+		margin-top: var(--spacing-md);
+		padding: var(--spacing-md) var(--spacing-lg);
+		background-color: hsl(var(--destructive) / 0.08);
+		color: hsl(var(--destructive));
+		border: 1px solid hsl(var(--destructive) / 0.2);
+		border-radius: var(--radius-md);
+		font-size: 0.95rem;
+	}
+
+	.ca-error[hidden] {
+		display: none;
+	}
+
+	.ca-footnote {
+		margin-top: var(--spacing-lg);
+		font-size: 0.9rem;
+	}
+</style>
