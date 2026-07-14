@@ -3,7 +3,7 @@ import Page from '../../../layouts/Page.astro';
 import FAQ from '../../../components/FAQ.astro';
 
 const title = 'Cat Age Calculator — Convert Cat Years to Human Years';
-const description = 'Convert your cat\'s age to human years using the AVMA/AAFP-aligned 15-24-4 model. Find your cat\'s life stage and vet-backed health milestones.';
+const description = 'Convert your cat\'s age to human years using the Cornell-vetted 16-5-4 model. Find your cat\'s life stage and vet-backed health milestones.';
 const image = '/images/hero.jpg';
 
 const breadcrumbs = [
@@ -15,15 +15,15 @@ const breadcrumbs = [
 const faqItems = [
 	{
 		question: 'Is the "one cat year equals seven human years" rule accurate?',
-		answer: 'No. Cats mature rapidly in their first two years. The first year is roughly equivalent to 15 human years, the second year adds about 9 more, and each year after that adds roughly 4 human years.'
+		answer: 'No. Cats mature rapidly in their first two years. The first year is roughly equivalent to 16 human years, the second year adds about 5 more (reaching 21), and each year after that adds roughly 4 human years.'
 	},
 	{
 		question: 'What is the scientific basis for this calculator?',
-		answer: 'This calculator uses the three-stage model widely cited by the AVMA and pet-health organizations: year 1 ≈ 15 human years, year 2 ≈ +9, and each year after ≈ +4. Life-stage labels follow the 2021 AAHA/AAFP Feline Life Stage Guidelines.'
+		answer: 'This calculator uses the age-comparison model published by the Cornell Feline Health Center: year 1 ≈ 16 human years, year 2 ≈ +5 (total ≈ 21), and each year after ≈ +4. Life-stage labels follow the 2021 AAHA/AAFP Feline Life Stage Guidelines.'
 	},
 	{
 		question: 'When is a cat considered a senior?',
-		answer: 'The 2021 AAHA/AAFP Feline Life Stage Guidelines define cats over 10 years old as senior. Cats aged 15 and older are sometimes called geriatric or super-senior.'
+		answer: 'The 2021 AAHA/AAFP Feline Life Stage Guidelines define cats over 10 years old as senior. Cats aged 15 and older are commonly called super senior or geriatric — an informal label beyond the four official stages.'
 	},
 	{
 		question: 'Can this calculator replace a veterinary exam?',
@@ -121,15 +121,15 @@ const schemaJson = {
 			The idea that one cat year equals seven human years is a rough oversimplification. Cats age quickly in their first two years — reaching the equivalent of a young adult human by age two — and then their aging rate slows.
 		</p>
 		<p>
-			This calculator uses the veterinary-aligned three-stage model:
+			This calculator uses the age-comparison model published by the Cornell Feline Health Center:
 		</p>
 		<ul>
-			<li><strong>Year 1</strong> ≈ 15 human years</li>
-			<li><strong>Year 2</strong> ≈ +9 human years (total ≈ 24)</li>
+			<li><strong>Year 1</strong> ≈ 16 human years</li>
+			<li><strong>Year 2</strong> ≈ +5 human years (total ≈ 21)</li>
 			<li><strong>Each year after</strong> ≈ +4 human years</li>
 		</ul>
 		<p>
-			This model is widely used in client education by the <a href="https://www.avma.org/resources-tools/reports/avma-animal-health-studies-database" target="_blank" rel="noopener noreferrer">American Veterinary Medical Association (AVMA)</a>, aligns with the <a href="https://www.aaha.org/resources/2021-aaha-aafp-feline-life-stage-guidelines/" target="_blank" rel="noopener noreferrer">2021 AAHA/AAFP Feline Life Stage Guidelines</a>, and is published by <a href="https://icatcare.org/articles/how-to-tell-your-cats-age-in-human-years" target="_blank" rel="noopener noreferrer">International Cat Care</a>.
+			The conversion figures follow guidance from the <a href="https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/special-needs-senior-cat" target="_blank" rel="noopener noreferrer">Cornell Feline Health Center</a>, and the life-stage labels align with the <a href="https://www.aaha.org/resources/2021-aaha-aafp-feline-life-stage-guidelines/" target="_blank" rel="noopener noreferrer">2021 AAHA/AAFP Feline Life Stage Guidelines</a>.
 		</p>
 		<p class="text-small text-muted">
 			<strong>Disclaimer:</strong> This calculator provides estimates for educational purposes only and is not a substitute for professional veterinary advice, diagnosis, or treatment.
@@ -151,16 +151,16 @@ const schemaJson = {
 				<tbody>
 					<tr><td>3 months</td><td>4</td><td>Kitten</td></tr>
 					<tr><td>6 months</td><td>8</td><td>Kitten</td></tr>
-					<tr><td>1 year</td><td>15</td><td>Young Adult</td></tr>
-					<tr><td>2 years</td><td>24</td><td>Young Adult</td></tr>
-					<tr><td>3 years</td><td>28</td><td>Young Adult</td></tr>
-					<tr><td>5 years</td><td>36</td><td>Young Adult</td></tr>
-					<tr><td>7 years</td><td>44</td><td>Mature Adult</td></tr>
-					<tr><td>10 years</td><td>56</td><td>Senior</td></tr>
-					<tr><td>12 years</td><td>64</td><td>Senior</td></tr>
-					<tr><td>15 years</td><td>76</td><td>Geriatric</td></tr>
-					<tr><td>18 years</td><td>88</td><td>Geriatric</td></tr>
-					<tr><td>20 years</td><td>96</td><td>Geriatric</td></tr>
+					<tr><td>1 year</td><td>16</td><td>Young Adult</td></tr>
+					<tr><td>2 years</td><td>21</td><td>Young Adult</td></tr>
+					<tr><td>3 years</td><td>25</td><td>Young Adult</td></tr>
+					<tr><td>5 years</td><td>33</td><td>Young Adult</td></tr>
+					<tr><td>7 years</td><td>41</td><td>Mature Adult</td></tr>
+					<tr><td>10 years</td><td>53</td><td>Senior</td></tr>
+					<tr><td>12 years</td><td>61</td><td>Senior</td></tr>
+					<tr><td>15 years</td><td>73</td><td>Super Senior</td></tr>
+					<tr><td>18 years</td><td>85</td><td>Super Senior</td></tr>
+					<tr><td>20 years</td><td>93</td><td>Super Senior</td></tr>
 				</tbody>
 			</table>
 		</div>
@@ -223,7 +223,7 @@ const schemaJson = {
 
 			<div class="milestone-card">
 				<span class="milestone-icon">🏠</span>
-				<h3>Geriatric</h3>
+				<h3>Super Senior</h3>
 				<p><strong>15+ years</strong></p>
 				<ul>
 					<li>Pain, mobility, and cognitive assessments</li>
@@ -273,7 +273,7 @@ const schemaJson = {
 			description: 'Slowing metabolism; increase screening and comfort support.'
 		},
 		geriatric: {
-			label: 'Geriatric',
+			label: 'Super Senior',
 			description: 'Advanced age; prioritize comfort, mobility, and quality of life.'
 		}
 	};
@@ -281,12 +281,12 @@ const schemaJson = {
 	function calculateHumanAge(years, months) {
 		const ageYears = years + months / 12;
 		if (ageYears <= 1) {
-			return Math.round(ageYears * 15);
+			return Math.round(ageYears * 16);
 		}
 		if (ageYears <= 2) {
-			return Math.round(15 + (ageYears - 1) * 9);
+			return Math.round(16 + (ageYears - 1) * 5);
 		}
-		return Math.round(24 + (ageYears - 2) * 4);
+		return Math.round(21 + (ageYears - 2) * 4);
 	}
 
 	function getLifeStage(ageYears) {
