@@ -54,6 +54,7 @@ Posts are queried with `getCollection('blog')` and sorted by `updatedDate || pub
 - `src/pages/categories/[slug].astro` — dynamic category pages for `best-picks`, `pet-knowledge`, `problem-solving`, `care-guides`. Includes an "All" filter pill linking back to `/blog/`.
 - `src/pages/about.astro`, `src/pages/contact.astro`, `src/pages/newsletter.astro`, `src/pages/privacy-policy.astro`, `src/pages/affiliate-disclosure.astro` — static pages.
 - `src/pages/tools/cat-age-calculator/` and `src/pages/tools/dog-age-calculator/` — interactive age calculators (with share functionality).
+- `src/pages/tools/pet-toxin-lookup/` — static directory of toxin pages (`index.astro` + `[slug].astro`), each generated from the toxin data collections in `src/data/toxins/` (food, household, insecticides, medications, plants) typed by `src/types/toxin.ts`. Renders ASPCA/Pet Poison Helpline numbers from `consts.ts`.
 - `src/pages/search.astro` — client-side search powered by Pagefind.
 - `src/pages/rss.xml.js` — RSS feed using `@astrojs/rss`.
 
@@ -75,6 +76,9 @@ Posts are queried with `getCollection('blog')` and sorted by `updatedDate || pub
 - `src/components/FAQ.astro` — schema.org FAQ accordion.
 - `src/components/AffiliateDisclosure.astro` — disclosure banner linking to `/affiliate-disclosure/`.
 - `src/components/FormattedDate.astro` — date formatter.
+- `src/components/CatAgeCalculatorEmbed.astro` — a self-contained, embeddable cat-age calculator for use inside blog posts (scoped class/data prefixes so it can coexist on any page). Uses the 16-5-4 model; the full version lives at `/tools/cat-age-calculator/`.
+- `src/components/PoisonHotlines.astro` — renders the ASPCA / Pet Poison Helpline blocks from `consts.ts`; used across the toxin-lookup tool pages.
+- `src/components/ToxinDisclaimer.astro` — emergency disclaimer banner used on toxin-lookup pages.
 
 ### Styling
 
@@ -101,6 +105,11 @@ The site imports Google Fonts (`Inter` for body, `Playfair Display` for headings
 - `GA_TRACKING_ID` = `'G-3J7J1Y6XGP'` (real GA4 measurement ID)
 - `AMAZON_ASSOCIATES_TAG` = `'thecaringpet-20'` (real, used by `ProductCard`)
 - `NEWSLETTER_FORM_URL` / `CAT_CHECKLIST_FORM_URL` / `PUPPY_CHECKLIST_FORM_URL` — three Google Form URLs for the lead magnets (interim; upgrade to ConvertKit/Mailchimp later for email capture)
+- `ASPCA_POISON_HOTLINE` / `PPH_POISON_HOTLINE` — poison-control hotline objects (name, phone, tel, url, lastVerified) rendered across the toxin-lookup tool by `PoisonHotlines.astro`. Numbers must be re-verified periodically (see the `poison-hotline-recheck` memory note); an outdated number would mislead someone in an emergency.
+
+### Cat age conversion standard
+
+The site uses the **16-5-4 model** for cat-years-to-human-years: year 1 ≈ 16 human years, year 2 ≈ +5 (total ≈ 21), each year after ≈ +4. This is applied consistently in `/tools/cat-age-calculator/`, the `CatAgeCalculatorEmbed` component, and the `cat-years-to-human-years` article. Source: Cornell Feline Health Center ("The Special Needs of the Senior Cat"). Do not revert to the older 15-9-4 model or cite International Cat Care (icatcare.org) — it is a potential SEO/content competitor and its numbers differ from Cornell's. See the `cat-age-conversion-sources` memory note for the full verification record.
 
 ### Images and assets
 
