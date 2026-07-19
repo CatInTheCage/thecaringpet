@@ -560,6 +560,80 @@ export const householdToxins: Toxin[] = [
 		lastReviewed: '2026-07-11',
 	},
 	{
+		slug: 'plug-in-fragrance',
+		name: 'Plug-In Air Fresheners',
+		aliases: ['wall plug-in', 'plug-in fragrance', 'electric air freshener', 'scented oil warmer', 'air wick', 'febreeze plug', 'glade plug-ins', 'room freshener'],
+		category: 'household',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Coughing, sneezing, or watery eyes from the vapors',
+					'Drooling or vomiting if scented oil is licked from a spill or the unit',
+					'Wobbliness or lethargy after ingesting the concentrated oil',
+					'Skin or mouth irritation from direct contact with the oil',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline — especially if any oil was licked or swallowed.',
+					'Unplug the unit and move the dog to fresh, well-ventilated air.',
+					'Note the brand and, if visible on the label, the fragrance ingredients.',
+					'If oil is on the fur or skin, wash with dish soap and rinse well; do not let the dog lick it off.',
+				],
+				callVetIf: [
+					'Any scented oil was ingested or got on the skin',
+					'Persistent coughing, wheezing, or labored breathing',
+					'Vomiting, drooling, or wobbliness',
+					'Lethargy or refusal to eat after exposure',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Coughing, wheezing, and labored breathing (cats have highly sensitive airways)',
+					'Drooling, vomiting, and wobbliness if oil is ingested',
+					'Depression, low body temperature, or collapse with larger exposures',
+					'Possible liver effects from fragrance compounds and essential-oil ingredients',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — cats are especially vulnerable to inhaled fragrances and ingested oils.',
+					'Unplug the unit and move the cat to fresh air right away.',
+					'Note the brand and any listed ingredients; some plug-ins contain essential-oil components cats cannot metabolize.',
+					'If oil is on the fur, wash immediately with dish soap and rinse thoroughly — cats will lick it off while grooming.',
+					'Get to a clinic without delay if breathing changes or any oil was swallowed.',
+				],
+				callVetIf: [
+					'A cat is exposed to a plug-in fragrance (ingested, skin contact, or heavy inhalation)',
+					'Coughing, wheezing, or any change in breathing',
+					'Drooling, vomiting, wobbliness, or depression',
+					'Collapse, low body temperature, or jaundice',
+				],
+			},
+		},
+		description: 'Plug-in air fresheners are risky for cats and dogs — vapors irritate airways, and the scented oil is toxic if licked. Cats are most sensitive. Call a vet.',
+		sources: [ASPCA_POISON_CONTROL, PPH_POISONS, MERCK_TOXICOLOGY],
+		faqs: [
+			{
+				question: 'Are plug-in air fresheners safe for cats?',
+				answer: 'Not reliably. Plug-ins heat scented oil to release volatile fragrance compounds into the air, which can irritate a cat\'s sensitive airways and trigger coughing or wheezing. Some products also contain essential-oil ingredients (such as citrus, pine, or eucalyptus compounds) that cats cannot metabolize. The ASPCA and Pet Poison Helpline advise keeping cats away from strong fragrances and never letting them contact the oil.',
+			},
+			{
+				question: 'What happens if my pet licks the scented oil from a plug-in?',
+				answer: 'The concentrated oil in a plug-in refill can cause drooling, vomiting, wobbliness, and mouth or stomach irritation. In cats, ingested fragrance compounds and any essential-oil components can also affect the liver and nervous system. Wipe the mouth, wash any oil off the fur so it is not licked off again, and call a vet or poison hotline with the product name.',
+			},
+			{
+				question: 'How are plug-in air fresheners different from essential oil diffusers?',
+				answer: 'They overlap but are not identical. Essential oil diffusers release concentrated pure oils, which are directly toxic to cats because cats lack the liver enzyme to clear them. Plug-ins use synthetic fragrances and solvents, and sometimes essential-oil components, heated into the air — the main risks are airway irritation from the vapors and poisoning if the oil is ingested. Both warrant keeping cats away, especially in unventilated rooms.',
+			},
+			{
+				question: 'Which air fresheners are safest to use around pets?',
+				answer: 'Avoid plug-ins, aerosols, and scented oils in rooms pets cannot leave. Pet-safe options include ventilation, baking-soda-based odor absorbers, and cleaning the underlying cause of odors. If you use any fragrance, keep the room well-ventilated and let pets leave freely. Never apply essential oils or fragrance products directly to a pet.',
+			},
+		],
+		lastReviewed: '2026-07-18',
+	},
+	{
 		slug: 'potpourri',
 		name: 'Potpourri',
 		aliases: ['liquid potpourri', 'simmering potpourri', 'potpourri oil', 'scented botanicals', 'simmer pot'],

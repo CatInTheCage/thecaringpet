@@ -34,3 +34,6 @@ public/images/pins-upload/
 todo.md
 STRATEGY.md
 ACCOUNT_SETUP_TONIGHT.md
+
+# 本地热点扫描/选题草稿（scripts/trending-radar.mjs 自动生成，不提交）
+content-ideas/
