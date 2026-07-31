@@ -163,3 +163,19 @@ This is a content-heavy affiliate site. When writing or rewriting blog posts, ai
 - Hero images in `public/images/` named after the article slug.
 
 **Critical:** Product images in `public/images/products/` must match the actual ASIN being linked. Do not reuse images across different models, pack sizes, or variants.
+
+### Trending radar pipeline
+
+Weekly topic-scan (cron: Wednesdays 09:07 via `.claude/scheduled_tasks.json`). Three scripts write one report, `content-ideas/radar-YYYY-MM-DD.md` (the whole `content-ideas/` dir is gitignored; raw last30days JSON archives land in `content-ideas/raw/`). **Run order matters**: `trending-radar.mjs` full-overwrites the day's file; the browser/social scripts merge their block before the `## 下一步行动建议` marker, keyed on their own `<!-- BROWSER-RADAR-BEGIN/END -->` / `<!-- SOCIAL-RADAR-BEGIN/END -->` comments, so same-day re-runs replace rather than duplicate (shared helper: `scripts/lib/radar-merge.mjs`).
+
+| Script | npm run | Needs | Sources |
+|---|---|---|---|
+| `scripts/trending-radar.mjs` | `radar` | nothing | Petful recalls, Pet Poison Helpline RSS |
+| `scripts/trending-radar-browser.mjs` | `radar:browser` | kimi-webbridge daemon + browser | Reddit 9 subs, Google Suggest, Amazon, Pinterest Trends |
+| `scripts/trending-radar-social.mjs` | `radar:social` | python3, mcporter | last30days (reddit/web/youtube per topic) + Exa semantic news via agent-reach |
+
+`radar:social` runs 4 fixed pet topics through `~/.claude/skills/last30days/scripts/last30days.py` (`--quick --days 30 --emit json`, serial, 6-min per-topic kill) plus 2 Exa queries (`mcporter call exa.web_search_exa`, spawned with cwd=repo root because the Exa MCP server is configured in project-level `config/mcporter.json`). Useful flags: `--only-topic "<query>"`, `--skip-exa`, `--days N`. It always exits 0 unless writing the report fails — per-source failures are recorded as ⚠️ lines in the report; never fabricate data for them.
+
+**Known network limitations on this machine** (2026-07-27): `web`/grounding keyless is dead, hackernews/polymarket/github not working; reddit ✓ and youtube ⚠️ partial — but ONLY with `SSL_CERT_FILE` pointing at certifi's CA bundle (system Python 3.12 ships no root certs; `radar:social` resolves this automatically via `resolveCertFile`). The Exa lane works and is the strongest zero-config signal. The report's ⚠️ lines document failures honestly each week.
+
+Keys: `SCRAPECREATORS_API_KEY` is configured in `~/.config/last30days/.env` (free 10,000-call tier via `last30days.py setup --github`, set up 2026-07-27) — pinterest/tiktok are enabled in `radar:social`, though the deterministic fallback planner may not route to them in mixed-source runs (a hand-authored `--plan` file would fix routing). `XAI_API_KEY` is deliberately NOT wired in (paid; x.com unreachable from this network). OpenCLI Chrome extension (agent-reach) → richer Reddit/Twitter/XHS for manual agent-reach use; not part of the cron pipeline.

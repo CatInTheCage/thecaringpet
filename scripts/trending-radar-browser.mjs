@@ -5,13 +5,17 @@
 // 前提: Kimi WebBridge daemon 已启动（~/.kimi-webbridge/bin/kimi-webbridge start）+ 浏览器开着
 // 输出: 追加到 content-ideas/radar-YYYY-MM-DD.md（若不存在则新建）
 
-import { mkdir, readFile, writeFile, access } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import { mergeIntoRadar } from './lib/radar-merge.mjs';
 
 const ROOT = process.cwd();
 const DAEMON = 'http://127.0.0.1:10086/command';
 const SESSION = 'tcp-radar-browser';
 const OUT_DIR = path.join(ROOT, 'content-ideas');
+// 本脚本输出块的头尾标记：同日重跑时幂等替换（见 scripts/lib/radar-merge.mjs）
+const BEGIN_MARKER = '<!-- BROWSER-RADAR-BEGIN scripts/trending-radar-browser.mjs（Kimi WebBridge 浏览器抓取） -->';
+const END_MARKER = '<!-- BROWSER-RADAR-END -->';
 
 // === 配置：抓什么 ===
 // Reddit sub 列表：Reddit .rss 用 curl 抓不到（需登录态），走 webbridge 浏览器（带登录态）。
@@ -250,35 +254,27 @@ async function main() {
   await cmd('close_session', {});
 
   const md = [
-    '<!-- 来自 scripts/trending-radar-browser.mjs（Kimi WebBridge 浏览器抓取） -->',
+    BEGIN_MARKER,
     `## 浏览器抓取（${nowStr()}）`,
     '',
     redditMd(reddit),
     suggestMd(suggest),
     amazonMd(amazon),
     pinterestMd(pinterest),
+    END_MARKER,
   ].join('\n');
 
-  // 追加到今天的 radar 报告；若不存在则新建
-  const outFile = path.join(OUT_DIR, `radar-${stamp()}.md`);
-  let existing = '';
-  try { existing = await readFile(outFile, 'utf8'); } catch { /* 不存在 */ }
+  // 合并进今天的 radar 报告；同日重跑幂等替换本块（若不存在则新建）
+  const { file: outFile, action } = await mergeIntoRadar({
+    outDir: OUT_DIR,
+    block: md,
+    beginMarker: BEGIN_MARKER,
+    endMarker: END_MARKER,
+    stamp: stamp(),
+  });
+  const actionLabel = { created: '新建', inserted: '追加到', replaced: '更新', appended: '追加到' }[action];
 
-  if (existing) {
-    // 已有报告：在"下一步行动建议"之前插入浏览器抓取段落
-    const marker = '---\n\n## 下一步行动建议';
-    let merged;
-    if (existing.includes(marker)) {
-      merged = existing.replace(marker, md + '\n---\n\n## 下一步行动建议');
-    } else {
-      merged = existing + '\n\n' + md;
-    }
-    await writeFile(outFile, merged, 'utf8');
-  } else {
-    await writeFile(outFile, `# 热点扫描报告 ${stamp()}\n\n${md}`, 'utf8');
-  }
-
-  console.log(`\n✅ 四路抓取完成，已${existing ? '追加到' : '新建'} ${path.relative(ROOT, outFile)}`);
+  console.log(`\n✅ 四路抓取完成，已${actionLabel} ${path.relative(ROOT, outFile)}`);
   console.log('   Reddit subs: ' + reddit.filter((r) => r.items && r.items.length).length + `/${REDDIT_SUBS.length} 成功`);
   console.log('   Google Suggest: ' + suggest.filter((r) => r.items && r.items.length).length + `/${SUGGEST_SEEDS.length} 成功`);
   console.log('   Amazon 搜索: ' + amazon.filter((r) => r.items && r.items.length).length + `/${AMAZON_SEARCHES.length} 成功`);

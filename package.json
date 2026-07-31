@@ -11,7 +11,11 @@
     "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
-    "generate:pdf": "python3 scripts/generate-checklist-pdf.py"
+    "generate:pdf": "python3 scripts/generate-checklist-pdf.py",
+    "radar": "node scripts/trending-radar.mjs",
+    "radar:browser": "node scripts/trending-radar-browser.mjs",
+    "radar:social": "node scripts/trending-radar-social.mjs",
+    "radar:all": "npm run radar && npm run radar:browser && npm run radar:social"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.0",
