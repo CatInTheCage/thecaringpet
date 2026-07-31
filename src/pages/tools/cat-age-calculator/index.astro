@@ -54,7 +54,7 @@ const schemaJson = {
 };
 ---
 
-<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs}>
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} compactHeader={true}>
 	<script type="application/ld+json" is:inline set:html={JSON.stringify(schemaJson)} slot="head" />
 
 	<section class="calculator-section">
@@ -609,7 +609,7 @@ const schemaJson = {
 		border-radius: var(--radius-md);
 		cursor: pointer;
 		background-color: hsl(var(--card));
-		transition: all 0.2s ease;
+		transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
 		position: relative;
 	}
 

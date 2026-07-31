@@ -10,40 +10,28 @@ const posts = (await getCollection('blog')).sort(
 	(a, b) => (b.data.updatedDate || b.data.pubDate).valueOf() - (a.data.updatedDate || a.data.pubDate).valueOf()
 );
 
-const latestPosts = posts.slice(0, 3);
+const [featuredPost, ...restPosts] = posts;
+const railPosts = restPosts.slice(0, 2);
 
-const categories = [
+const tools = [
 	{
-		slug: 'best-picks',
-		title: 'Best Picks',
-		description: 'Top-rated feeding products, tested and compared.',
-		icon: 'bowl',
+		href: '/tools/dog-age-calculator/',
+		title: 'Dog Age Calculator',
+		description: 'Human years by size — more accurate than the old 7-year rule.',
+		icon: 'clock',
 	},
 	{
-		slug: 'pet-knowledge',
-		title: 'Pet Knowledge',
-		description: 'Understand your pet\'s eating behavior and health needs.',
-		icon: 'book',
+		href: '/tools/cat-age-calculator/',
+		title: 'Cat Age Calculator',
+		description: 'Human years using the Cornell-aligned 16-5-4 model.',
+		icon: 'paw',
 	},
 	{
-		slug: 'problem-solving',
-		title: 'Problem Solving',
-		description: 'Practical answers to common feeding challenges.',
-		icon: 'puzzle',
+		href: '/tools/pet-toxin-lookup/',
+		title: 'Pet Toxin Lookup',
+		description: 'Check foods, plants, and household items for toxicity.',
+		icon: 'shield',
 	},
-	{
-		slug: 'care-guides',
-		title: 'Care Guides',
-		description: 'Step-by-step routines for healthier mealtime habits.',
-		icon: 'heart',
-	},
-];
-
-const trustItems = [
-	{ icon: 'chart', title: 'Data-Driven', description: 'We analyze thousands of reviews' },
-	{ icon: 'shield', title: 'Research-Backed', description: 'Guides cite veterinary and academic sources' },
-	{ icon: 'paw', title: 'Pet-First', description: 'Recommendations prioritize safety' },
-	{ icon: 'scale', title: 'Unbiased', description: 'We earn from affiliates, not brands' },
 ];
 ---
 
@@ -54,20 +42,19 @@ const trustItems = [
 	<body>
 		<Header />
 		<main>
-			<!-- Hero Section -->
-			<section class="hero section-lg">
-				<div class="container hero-grid">
-					<div class="hero-content">
-						<span class="hero-eyebrow">Research-backed pet feeding guides</span>
-						<h1>Smarter Feeding Decisions for <span class="text-accent">Healthier Pets</span></h1>
-						<p class="hero-subtitle">
+			<!-- Intro -->
+			<section class="intro">
+				<div class="container intro-grid">
+					<div class="intro-content">
+						<h1>Smarter Feeding Decisions for <span class="text-accent">Healthier&nbsp;Pets</span></h1>
+						<p class="intro-subtitle">
 							Honest product reviews and practical guides to help you choose the best food, bowls, and feeding routines for your furry family.
 						</p>
-						<div class="hero-cta">
+						<div class="intro-cta">
 							<a href="/blog/" class="btn btn-primary btn-lg">Explore Guides</a>
 							<a href="/about/" class="btn btn-secondary btn-lg">How We Research</a>
 						</div>
-						<div class="hero-newsletter">
+						<div class="intro-newsletter">
 							<NewsletterForm
 								title=""
 								description="Join thousands of thoughtful pet owners. Get our free Dog Feeding Safety Checklist."
@@ -76,132 +63,45 @@ const trustItems = [
 							/>
 						</div>
 					</div>
-					<div class="hero-image">
-						<img src="/images/hero.jpg" alt="Golden retriever eating from a bowl in a sunny kitchen" />
+					<div class="intro-image">
+						<img src="/images/hero.jpg" alt="Golden retriever eating from a bowl in a sunny kitchen" fetchpriority="high" />
 					</div>
 				</div>
 			</section>
 
-			<!-- Trust Bar -->
-			<section class="trust-bar section-sm bg-surface">
+			<!-- Latest -->
+			<section class="latest section">
 				<div class="container">
-					<div class="trust-grid">
-						{trustItems.map((item) => (
-							<div class="trust-item">
-								<div class={`trust-icon trust-icon-${item.icon}`} aria-hidden="true">
-									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-										{item.icon === 'chart' && (
-											<>
-												<path d="M3 3v18h18" />
-												<path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
-											</>
-										)}
-										{item.icon === 'shield' && (
-											<>
-												<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-												<path d="M9 12l2 2 4-4" />
-											</>
-										)}
-										{item.icon === 'paw' && (
-											<>
-												<circle cx="12" cy="9" r="3" />
-												<circle cx="6" cy="15" r="2" />
-												<circle cx="18" cy="15" r="2" />
-												<path d="M12 12c-3 0-5 2-5 5h10c0-3-2-5-5-5z" />
-											</>
-										)}
-										{item.icon === 'scale' && (
-											<>
-												<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
-												<path d="M12 6v6l4 2" />
-											</>
-										)}
-									</svg>
-								</div>
-								<h3>{item.title}</h3>
-								<p>{item.description}</p>
+					<div class="rail-header">
+						<h2>Latest</h2>
+						<a href="/blog/" class="rail-more">View all articles →</a>
+					</div>
+
+					<article class="featured">
+						<a href={`/blog/${featuredPost.id}/`} class="featured-link">
+							<div class="featured-image">
+								<img src={featuredPost.data.heroImage} alt={featuredPost.data.title} />
 							</div>
-						))}
-					</div>
-				</div>
-			</section>
+							<div class="featured-content">
+								{featuredPost.data.categories?.[0] && (
+									<span class="badge badge-secondary">
+										{featuredPost.data.categories[0].replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+									</span>
+								)}
+								<h3>{featuredPost.data.title}</h3>
+								<p class="text-muted">{featuredPost.data.description}</p>
+								<span class="rail-more">Read it →</span>
+							</div>
+						</a>
+					</article>
 
-			<!-- Categories -->
-			<section class="categories section">
-				<div class="container">
-					<div class="section-header text-center">
-						<span class="section-eyebrow">Browse by Topic</span>
-						<h2>Explore Our Guides</h2>
-						<p class="text-muted section-lead">Everything you need to make informed feeding decisions.</p>
-					</div>
-					<div class="category-grid">
-						{categories.map((cat) => (
-							<a href={`/categories/${cat.slug}/`} class="category-card">
-								<div class={`category-icon category-icon-${cat.icon}`} aria-hidden="true">
-									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-										{cat.icon === 'bowl' && (
-											<>
-												<path d="M4 10c0-4 3.6-6 8-6s8 2 8 6" />
-												<path d="M4 10v2a8 8 0 0 0 16 0v-2" />
-												<path d="M12 18v3" />
-											</>
-										)}
-										{cat.icon === 'book' && (
-											<>
-												<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-												<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-											</>
-										)}
-										{cat.icon === 'puzzle' && (
-											<>
-												<path d="M19 11h-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6z" />
-												<path d="M13 5h-2a2 2 0 0 0-2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h6" />
-												<path d="M19 13v6a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2a2 2 0 0 0-2-2H5" />
-											</>
-										)}
-										{cat.icon === 'heart' && (
-											<>
-												<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-											</>
-										)}
-									</svg>
-								</div>
-								<h3>{cat.title}</h3>
-								<p class="text-muted">{cat.description}</p>
-								<span class="category-link">Browse guides →</span>
-							</a>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<!-- Latest Articles -->
-			<section class="latest-articles section bg-surface">
-				<div class="container">
-					<div class="section-header">
-						<div>
-							<span class="section-eyebrow">Fresh from the blog</span>
-							<h2>Latest Articles</h2>
-						</div>
-						<a href="/blog/" class="view-all">View all articles →</a>
-					</div>
-					<div class="article-grid">
-						{latestPosts.map((post) => (
-							<article class="article-card">
-								<a href={`/blog/${post.id}/`} class="article-card-link">
-									<div class="article-image">
-										<img src={post.data.heroImage} alt={post.data.title} loading="lazy" />
-									</div>
-									<div class="article-card-content">
-										{post.data.categories && post.data.categories[0] && (
-											<span class="badge badge-secondary article-category">
-												{post.data.categories[0].replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
-											</span>
-										)}
-										<h3>{post.data.title}</h3>
-										<p class="text-muted">{post.data.description}</p>
-										<span class="read-more">Read More →</span>
-									</div>
+					<div class="rail-grid">
+						{railPosts.map((post) => (
+							<article class="rail-item">
+								<a href={`/blog/${post.id}/`} class="rail-item-link">
+									<h3>{post.data.title}</h3>
+									<p class="text-muted">{post.data.description}</p>
+									<span class="rail-more">Read it →</span>
 								</a>
 							</article>
 						))}
@@ -209,61 +109,58 @@ const trustItems = [
 				</div>
 			</section>
 
-			<!-- Free Tools -->
-			<section class="tools-section section bg-surface">
+			<!-- Tools -->
+			<section class="tools section-sm bg-surface">
 				<div class="container">
-					<div class="section-header text-center">
-						<span class="section-eyebrow">Free Tools</span>
-						<h2>Quick Answers for Pet Owners</h2>
-						<p class="text-muted section-lead">Research-backed tools for everyday pet questions.</p>
+					<div class="rail-header">
+						<h2>Free tools</h2>
 					</div>
-					<div class="tools-grid">
-						<a href="/tools/dog-age-calculator/" class="tool-card">
-							<div class="tool-icon" aria-hidden="true">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<circle cx="12" cy="12" r="10"/>
-									<polyline points="12 6 12 12 16 14"/>
-								</svg>
-							</div>
-							<h3>Dog Age Calculator</h3>
-							<p class="text-muted">Convert your dog's age to human years based on size — more accurate than the old 7-year rule.</p>
-							<span class="tool-link">Try it →</span>
-						</a>
-						<a href="/tools/cat-age-calculator/" class="tool-card">
-							<div class="tool-icon" aria-hidden="true">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<circle cx="12" cy="12" r="10"/>
-									<polyline points="12 6 12 12 16 14"/>
-								</svg>
-							</div>
-							<h3>Cat Age Calculator</h3>
-							<p class="text-muted">Convert your cat's age to human years using the AVMA/AAFP-aligned 15-24-4 model.</p>
-							<span class="tool-link">Try it →</span>
-						</a>
-						<a href="/tools/pet-toxin-lookup/" class="tool-card">
-							<div class="tool-icon" aria-hidden="true">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z" />
-									<path d="M12 8v6" />
-									<path d="M9 11h6" />
-								</svg>
-							</div>
-							<h3>Pet Toxin Lookup</h3>
-							<p class="text-muted">Search foods, plants, and household items to check toxicity for dogs and cats.</p>
-							<span class="tool-link">Try it →</span>
-						</a>
+					<div class="tool-grid">
+						{tools.map((tool) => (
+							<a href={tool.href} class="tool-card">
+								<div class="tool-head">
+									<span class="tool-icon" aria-hidden="true">
+										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											{tool.icon === 'clock' && (
+												<>
+													<circle cx="12" cy="12" r="10"/>
+													<polyline points="12 6 12 12 16 14"/>
+												</>
+											)}
+											{tool.icon === 'paw' && (
+												<>
+													<circle cx="12" cy="13" r="3" />
+													<circle cx="6.5" cy="9.5" r="1.8" />
+													<circle cx="17.5" cy="9.5" r="1.8" />
+													<path d="M12 16c-2.6 0-4.5 1.8-4.5 4h9c0-2.2-1.9-4-4.5-4z" />
+												</>
+											)}
+											{tool.icon === 'shield' && (
+												<>
+													<path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z" />
+													<path d="M12 8v6" />
+													<path d="M9 11h6" />
+												</>
+											)}
+										</svg>
+									</span>
+									<h3>{tool.title}</h3>
+								</div>
+								<p class="text-muted">{tool.description}</p>
+								<span class="card-link">Try it →</span>
+							</a>
+						))}
 					</div>
 				</div>
 			</section>
 
-			<!-- Research Process -->
-			<section class="research-process section">
+			<!-- Research process -->
+			<section class="research section">
 				<div class="container research-grid">
 					<div class="research-image">
-						<img src="/images/about.jpg" alt="Beagle waiting patiently by a feeding bowl" />
+						<img src="/images/about.jpg" alt="Beagle waiting patiently by a feeding bowl" loading="lazy" />
 					</div>
 					<div class="research-content">
-						<span class="section-eyebrow">Our Process</span>
 						<h2>How We Choose What to Recommend</h2>
 						<p class="text-muted research-intro">
 							Every guide starts with real data and ends with advice we would follow for our own pets.
@@ -279,364 +176,245 @@ const trustItems = [
 					</div>
 				</div>
 			</section>
-
-			<!-- Newsletter CTA -->
-			<section class="newsletter-cta section bg-primary-soft">
-				<div class="container-narrow text-center">
-					<span class="section-eyebrow">Stay informed</span>
-					<h2>Get weekly pet feeding tips in your inbox</h2>
-					<p class="text-muted">No spam. Just practical advice, honest reviews, and money-saving finds.</p>
-					<NewsletterForm buttonText="Subscribe" />
-				</div>
-			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
 
 <style>
-	/* Hero */
-	.hero {
-		padding: var(--spacing-4xl) 0;
-		background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--primary) / 0.05) 100%);
+	/* Intro — asymmetric 7/5, plain paper */
+	.intro {
+		padding: var(--spacing-2xl) 0 var(--spacing-xl);
 	}
 
-	.hero-grid {
+	.intro-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 7fr 5fr;
 		gap: var(--spacing-3xl);
 		align-items: center;
 	}
 
-	.hero-eyebrow {
-		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: hsl(var(--primary));
-		margin-bottom: var(--spacing-sm);
-	}
-
-	.hero-content h1 {
+	.intro-content h1 {
 		margin-bottom: var(--spacing-md);
-		max-width: 14ch;
+		max-width: 18ch;
+		font-size: clamp(2.1rem, 3.6vw, 3.25rem);
+		font-weight: 600;
+		line-height: 1.12;
 	}
 
 	.text-accent {
-		color: #ce6b4a;
+		color: hsl(var(--primary));
 	}
 
-	.hero-subtitle {
+	.intro-subtitle {
 		font-size: 1.15rem;
 		color: hsl(var(--muted-foreground));
-		margin-bottom: var(--spacing-xl);
+		margin-bottom: var(--spacing-lg);
 		max-width: 50ch;
 		line-height: 1.7;
 	}
 
-	.hero-cta {
+	.intro-cta {
 		display: flex;
 		gap: var(--spacing-md);
 		flex-wrap: wrap;
-		margin-bottom: var(--spacing-xl);
+		margin-bottom: var(--spacing-lg);
 	}
 
-	.hero-newsletter {
-		padding-top: var(--spacing-lg);
-		border-top: 1px solid hsl(var(--border));
+	.intro-newsletter {
+		padding-top: var(--spacing-md);
 		max-width: 480px;
 	}
 
-	.hero-image img {
+	.intro-image img {
 		width: 100%;
-		max-height: 520px;
+		max-height: 480px;
 		object-fit: cover;
 		border-radius: var(--radius-xl);
 		box-shadow: var(--shadow-lg);
 	}
 
-	/* Trust Bar */
-	.trust-grid {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: var(--spacing-xl);
-		padding: var(--spacing-xl) 0;
+	/* Section dividers — ONE divider vocabulary: a container-width hairline at each
+	   major section boundary, but only where no other separation exists (Free tools
+	   uses its surface band, so Research after it gets no line). No rules inside
+	   lists, bands, or cards. */
+	.latest .container {
+		border-top: 1px solid hsl(var(--border));
+		padding-top: var(--spacing-2xl);
 	}
 
-	.trust-item {
-		text-align: center;
-	}
-
-	.trust-icon {
-		width: 3.5rem;
-		height: 3.5rem;
-		margin: 0 auto var(--spacing-md);
-		color: hsl(var(--primary));
-		background-color: hsl(var(--primary) / 0.08);
-		border-radius: var(--radius-lg);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.trust-icon svg {
-		width: 1.5rem;
-		height: 1.5rem;
-	}
-
-	.trust-item h3 {
-		font-family: var(--font-body);
-		font-size: 1.05rem;
-		font-weight: 600;
-		margin-bottom: var(--spacing-xs);
-	}
-
-	.trust-item p {
-		margin: 0;
-		font-size: 0.9rem;
-		color: hsl(var(--muted-foreground));
-	}
-
-	/* Section Header */
-	.section-header {
+	/* Rail headers — whitespace rhythm, no rules */
+	.rail-header {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-end;
-		margin-bottom: var(--spacing-xl);
-		flex-wrap: wrap;
-		gap: var(--spacing-md);
+		align-items: baseline;
+		margin-bottom: var(--spacing-lg);
 	}
 
-	.section-header h2 {
+	.rail-header h2 {
 		margin: 0;
 	}
 
-	.section-lead {
-		font-size: 1.05rem;
-		max-width: 50ch;
-		margin: var(--spacing-sm) auto 0;
-	}
-
-	.view-all {
+	.rail-more {
 		font-weight: 600;
-		font-size: 0.95rem;
+		font-size: 0.9rem;
+		color: hsl(var(--primary));
 		white-space: nowrap;
 	}
 
-	/* Categories */
-	.category-grid {
+	/* Latest — featured + 2-up rail (asymmetric) */
+	.latest {
+		padding-top: var(--spacing-2xl);
+		padding-bottom: var(--spacing-xl);
+	}
+
+	.featured {
+		margin-bottom: var(--spacing-xl);
+	}
+
+	.featured-link {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: var(--spacing-lg);
+		grid-template-columns: 3fr 2fr;
+		gap: var(--spacing-xl);
+		align-items: center;
+		color: hsl(var(--foreground));
 	}
 
-	.category-card {
-		background-color: hsl(var(--card));
-		border: 1px solid hsl(var(--border));
-		border-radius: var(--radius-card);
-		padding: var(--spacing-xl);
-		text-align: center;
-		transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-	}
-
-	.category-card:hover {
-		transform: translateY(-4px);
-		box-shadow: var(--shadow-card-hover);
-		border-color: hsl(var(--primary) / 0.25);
+	.featured-link:hover {
 		text-decoration: none;
 	}
 
-	.category-icon {
-		width: 3.5rem;
-		height: 3.5rem;
-		margin: 0 auto var(--spacing-md);
-		color: hsl(var(--primary));
-		background-color: hsl(var(--primary) / 0.08);
-		border-radius: var(--radius-lg);
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	.featured-image {
+		overflow: hidden;
+		border-radius: var(--radius-card);
 	}
 
-	.category-icon svg {
-		width: 1.5rem;
-		height: 1.5rem;
+	.featured-image img {
+		width: 100%;
+		height: 320px;
+		object-fit: cover;
+		border-radius: 0;
+		transition: transform var(--dur-med) var(--ease-out);
 	}
 
-	.category-card h3 {
-		font-family: var(--font-body);
-		font-size: 1.15rem;
-		font-weight: 600;
-		margin-bottom: var(--spacing-sm);
+	.featured-link:hover .featured-image img {
+		transform: scale(1.02);
 	}
 
-	.category-card p {
-		margin: 0 0 var(--spacing-md);
-		font-size: 0.95rem;
+	.featured-content h3 {
+		font-size: 1.6rem;
+		line-height: 1.25;
+		margin: var(--spacing-sm) 0;
 	}
 
-	.category-link {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: hsl(var(--primary));
+	.featured-content p {
+		margin-bottom: var(--spacing-md);
 	}
 
-	/* Article Grid */
-	.article-grid {
+	.rail-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: 1fr 1fr;
 		gap: var(--spacing-xl);
 	}
 
-	.article-card {
-		background-color: hsl(var(--card));
-		border-radius: var(--radius-card);
-		overflow: hidden;
-		box-shadow: var(--shadow-card);
-		transition: transform 0.25s ease, box-shadow 0.25s ease;
-		border: 1px solid hsl(var(--border));
+	.rail-item {
+		padding-top: 0;
 	}
 
-	.article-card:hover {
-		transform: translateY(-4px);
-		box-shadow: var(--shadow-card-hover);
-	}
-
-	.article-card-link {
+	.rail-item-link {
 		color: hsl(var(--foreground));
 		display: block;
 	}
 
-	.article-card-link:hover {
+	.rail-item-link:hover {
 		text-decoration: none;
 	}
 
-	.article-image {
-		overflow: hidden;
+	.rail-item-link:hover h3 {
+		color: hsl(var(--primary));
 	}
 
-	.article-card img {
-		width: 100%;
-		height: 220px;
-		object-fit: cover;
-		border-radius: 0;
-		transition: transform 0.4s ease;
-	}
-
-	.article-card:hover img {
-		transform: scale(1.03);
-	}
-
-	.article-card-content {
-		padding: var(--spacing-lg);
-	}
-
-	.article-category {
+	.rail-item h3 {
+		font-size: 1.2rem;
+		line-height: 1.35;
 		margin-bottom: var(--spacing-sm);
+		transition: color var(--dur-short) var(--ease-out);
 	}
 
-	.article-card h3 {
-		font-family: var(--font-body);
-		font-size: 1.15rem;
-		font-weight: 600;
-		line-height: 1.4;
-		margin-bottom: var(--spacing-sm);
-	}
-
-	.article-card p {
+	.rail-item p {
 		font-size: 0.95rem;
-		margin-bottom: var(--spacing-md);
+		margin-bottom: var(--spacing-sm);
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 	}
 
-	.read-more {
-		color: hsl(var(--primary));
-		font-weight: 600;
+	.card-link {
 		font-size: 0.9rem;
+		font-weight: 600;
+		color: hsl(var(--primary));
 	}
 
-	/* Free Tools */
-	.tools-grid {
+	/* Tools — compact cards, icon inline with title */
+	.tool-grid {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(3, 1fr);
 		gap: var(--spacing-lg);
 	}
 
-	@media (min-width: 640px) {
-		.tools-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 900px) {
-		.tools-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
 	.tool-card {
-		display: block;
 		background-color: hsl(var(--card));
 		border: 1px solid hsl(var(--border));
 		border-radius: var(--radius-card);
-		padding: var(--spacing-xl);
-		box-shadow: var(--shadow-card);
-		transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
-		text-decoration: none;
+		padding: var(--spacing-lg);
+		color: hsl(var(--foreground));
+		transition: border-color var(--dur-short) var(--ease-out);
 	}
 
 	.tool-card:hover {
-		transform: translateY(-4px);
-		box-shadow: var(--shadow-card-hover);
-		border-color: hsl(var(--primary) / 0.4);
 		text-decoration: none;
+		border-color: hsl(var(--primary) / 0.4);
 	}
 
-	.tool-card:hover h3 {
-		color: hsl(var(--primary));
+	.tool-head {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.tool-head h3 {
+		font-size: 1.15rem;
+		margin: 0;
 	}
 
 	.tool-icon {
-		width: 3rem;
-		height: 3rem;
+		width: 2.25rem;
+		height: 2.25rem;
+		flex-shrink: 0;
 		background-color: hsl(var(--primary) / 0.1);
 		color: hsl(var(--primary));
 		border-radius: var(--radius-md);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin-bottom: var(--spacing-md);
 	}
 
 	.tool-icon svg {
-		width: 1.5rem;
-		height: 1.5rem;
-	}
-
-	.tool-card h3 {
-		margin-bottom: var(--spacing-xs);
-		font-size: 1.35rem;
-		transition: color 0.2s ease;
+		width: 1.15rem;
+		height: 1.15rem;
 	}
 
 	.tool-card p {
-		margin-bottom: var(--spacing-md);
-		font-size: 0.95rem;
+		font-size: 0.9rem;
+		margin: 0 0 var(--spacing-md);
 	}
 
-	.tool-link {
-		font-weight: 600;
-		color: hsl(var(--primary));
-	}
-
-	/* Research Process */
+	/* Research process */
 	.research-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 5fr 7fr;
 		gap: var(--spacing-3xl);
 		align-items: center;
 	}
@@ -665,62 +443,48 @@ const trustItems = [
 		padding-left: var(--spacing-sm);
 	}
 
-	/* Newsletter CTA */
-	.newsletter-cta h2 {
-		margin-bottom: var(--spacing-sm);
-	}
-
-	.newsletter-cta p {
-		margin-bottom: var(--spacing-xl);
-		font-size: 1.05rem;
-	}
-
 	/* Responsive */
-	@media (max-width: 1024px) {
-		.category-grid,
-		.article-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
 	@media (max-width: 992px) {
-		.hero-grid,
+		.intro-grid,
 		.research-grid {
 			grid-template-columns: 1fr;
 			gap: var(--spacing-2xl);
 		}
 
-		.hero-image {
+		.intro-image {
 			order: -1;
 		}
 
-		.trust-grid {
-			grid-template-columns: repeat(2, 1fr);
+		.featured-link {
+			grid-template-columns: 1fr;
+		}
+
+		.featured-image img {
+			height: 240px;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.tool-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 
 	@media (max-width: 640px) {
-		.hero-content h1 {
+		.intro-content h1 {
 			max-width: none;
 		}
 
-		.hero-cta {
+		.intro-cta {
 			flex-direction: column;
 		}
 
-		.hero-cta .btn {
+		.intro-cta .btn {
 			width: 100%;
 		}
 
-		.category-grid,
-		.article-grid,
-		.trust-grid {
+		.rail-grid {
 			grid-template-columns: 1fr;
-		}
-
-		.section-header {
-			flex-direction: column;
-			align-items: flex-start;
 		}
 	}
 </style>

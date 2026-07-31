@@ -12,9 +12,11 @@ interface Props {
 	breadcrumbs?: Array<{ label: string; href: string }>;
 	showNewsletter?: boolean;
 	wide?: boolean;
+	/** Workbench pages (tools): smaller header so the function stays above the fold. */
+	compactHeader?: boolean;
 }
 
-const { title, description, image = '/images/hero.jpg', breadcrumbs, showNewsletter = true, wide = false } = Astro.props;
+const { title, description, image = '/images/hero.jpg', breadcrumbs, showNewsletter = true, wide = false, compactHeader = false } = Astro.props;
 const containerClass = wide ? 'container' : 'container-narrow';
 const pageTitle = title;
 ---
@@ -31,7 +33,7 @@ const pageTitle = title;
 				<div class={containerClass}>
 					{breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
 
-					<div class="page-header">
+					<div class={`page-header ${compactHeader ? 'page-header--compact' : ''}`}>
 						<h1>{title}</h1>
 						{description && <p class="text-muted">{description}</p>}
 					</div>
@@ -66,6 +68,16 @@ const pageTitle = title;
 
 	.page-header h1 {
 		margin-bottom: var(--spacing-sm);
+	}
+
+	/* Workbench family (design.md): compact header, function above the fold */
+	.page-header--compact {
+		margin: var(--spacing-sm) 0 var(--spacing-lg);
+	}
+
+	.page-header--compact h1 {
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+		font-weight: 600;
 	}
 
 	.page-body {

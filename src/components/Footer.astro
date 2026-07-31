@@ -1,203 +1,127 @@
 ---
 import { SITE_TITLE } from '../consts';
+import NewsletterForm from './NewsletterForm.astro';
 const today = new Date();
 ---
 
+<!-- Ft7 Newsletter-first (design.md § Nav & footer) -->
 <footer class="site-footer">
-	<div class="container">
-		<div class="footer-grid">
-			<div class="footer-brand">
-				<a href="/" class="footer-logo">
-					<img class="footer-logo-icon" src="/images/bowl-logo.png" alt="" width="32" height="32" loading="lazy" />
-					<span class="footer-logo-text">{SITE_TITLE}</span>
-				</a>
-				<p class="footer-tagline">
-					Research-backed guides and honest reviews for thoughtful pet owners.
-				</p>
-				<img src="/images/footer-mascot.jpg" alt="" class="footer-mascot" loading="lazy" />
-			</div>
-
-			<div class="footer-column">
-				<h4>Explore</h4>
-				<ul>
-					<li><a href="/categories/best-picks/">Best Picks</a></li>
-					<li><a href="/categories/pet-knowledge/">Pet Knowledge</a></li>
-					<li><a href="/categories/problem-solving/">Problem Solving</a></li>
-					<li><a href="/categories/care-guides/">Care Guides</a></li>
-					<li><a href="/search/">Search</a></li>
-				</ul>
-			</div>
-
-			<div class="footer-column">
-				<h4>Company</h4>
-				<ul>
-					<li><a href="/about/">About</a></li>
-					<li><a href="/contact/">Contact</a></li>
-					<li><a href="/affiliate-disclosure/">Affiliate Disclosure</a></li>
-					<li><a href="/privacy-policy/">Privacy Policy</a></li>
-				</ul>
-			</div>
-
-			<div class="footer-column">
-				<h4>Connect</h4>
-				<ul>
-					<li><a href="https://pinterest.com/thecaringpet" target="_blank" rel="noopener">Pinterest</a></li>
-					<li><a href="https://twitter.com/thecaringpet" target="_blank" rel="noopener">Twitter/X</a></li>
-					<li><a href="https://instagram.com/thecaringpet" target="_blank" rel="noopener">Instagram</a></li>
-					<li><a href="/rss.xml">RSS Feed</a></li>
-				</ul>
+	<div class="container footer-inner">
+		<div class="footer-news">
+			<img src="/images/footer-mascot.png" alt="" class="footer-mascot" loading="lazy" />
+			<div class="footer-news-body">
+				<h2 class="footer-news-title">Get the free checklist</h2>
+				<NewsletterForm
+					title=""
+					description="Join thoughtful pet owners getting research-backed feeding tips. The Dog Feeding Safety Checklist PDF lands instantly."
+					buttonText="Get Free Checklist"
+					compact={true}
+				/>
 			</div>
 		</div>
 
-		<div class="footer-bottom">
-			<p>&copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.</p>
-			<p class="footer-disclaimer">
-				The Caring Pet is reader-supported. <a href="/affiliate-disclosure/">Learn more</a>.
-			</p>
-		</div>
+		<nav class="footer-links" aria-label="Footer navigation">
+			<a href="/categories/best-picks/">Best Picks</a>
+			<a href="/categories/pet-knowledge/">Pet Knowledge</a>
+			<a href="/categories/problem-solving/">Problem Solving</a>
+			<a href="/categories/care-guides/">Care Guides</a>
+			<a href="/tools/">Tools</a>
+			<a href="/blog/">Articles</a>
+			<a href="/about/">About</a>
+			<a href="/contact/">Contact</a>
+			<a href="https://pinterest.com/thecaringpet" target="_blank" rel="noopener">Pinterest</a>
+			<a href="/rss.xml">RSS</a>
+		</nav>
+
+		<p class="footer-meta">
+			&copy; {today.getFullYear()} {SITE_TITLE} · Reader-supported — we may earn a commission at no cost to you · <a href="/affiliate-disclosure/">Affiliate Disclosure</a> · <a href="/privacy-policy/">Privacy Policy</a>
+		</p>
 	</div>
 </footer>
 
 <style>
 	.site-footer {
-		background-color: hsl(var(--card));
 		border-top: 1px solid hsl(var(--border));
 		padding: var(--spacing-3xl) 0 var(--spacing-xl);
 		margin-top: auto;
 	}
 
-	.footer-grid {
+	.footer-inner {
 		display: grid;
-		grid-template-columns: 2fr 1fr 1fr 1fr;
-		gap: var(--spacing-3xl);
-		margin-bottom: var(--spacing-3xl);
+		gap: var(--spacing-2xl);
 	}
 
-	.footer-brand {
-		max-width: 300px;
-	}
-
-	.footer-logo {
-		display: inline-flex;
+	.footer-news {
+		display: flex;
 		align-items: center;
-		gap: 0.4rem;
-		margin-bottom: var(--spacing-md);
-		transition: opacity 0.2s ease;
-		text-decoration: none;
-	}
-
-	.footer-logo:hover {
-		text-decoration: none;
-		opacity: 0.85;
-	}
-
-	.footer-logo-icon {
-		width: 1.25rem;
-		height: 1.25rem;
-		object-fit: contain;
-		flex-shrink: 0;
-	}
-
-	.footer-logo-text {
-		font-family: var(--font-heading);
-		font-size: 1.2rem;
-		font-weight: 700;
-		color: hsl(var(--foreground));
-		white-space: nowrap;
-		line-height: 1;
-		letter-spacing: -0.01em;
-	}
-
-	.footer-tagline {
-		color: hsl(var(--muted-foreground));
-		font-size: 0.9rem;
-		line-height: 1.7;
-		margin: 0 0 var(--spacing-md);
+		gap: var(--spacing-2xl);
+		max-width: 640px;
 	}
 
 	.footer-mascot {
-		width: 100%;
-		max-width: 160px;
+		width: 150px;
 		height: auto;
-		display: block;
-		margin-top: var(--spacing-md);
+		flex-shrink: 0;
 	}
 
-	.footer-column h4 {
-		font-family: var(--font-body);
-		font-size: 0.85rem;
-		font-weight: 600;
-		margin-bottom: var(--spacing-md);
-		color: hsl(var(--foreground));
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
+	.footer-news-body {
+		flex: 1;
+		min-width: 0;
 	}
 
-	.footer-column ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
+	.footer-news-title {
+		font-size: 1.75rem;
+		margin-bottom: var(--spacing-sm);
 	}
 
-	.footer-column li {
-		margin-bottom: 0.625rem;
+	.footer-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.25rem;
+		padding-top: var(--spacing-xl);
+		border-top: 1px solid hsl(var(--border));
 	}
 
-	.footer-column a {
+	.footer-links a {
 		color: hsl(var(--muted-foreground));
 		font-size: 0.9rem;
-		transition: color 0.2s ease;
+		white-space: nowrap;
+		transition: color var(--dur-short) var(--ease-out);
 	}
 
-	.footer-column a:hover {
+	.footer-links a:hover {
 		color: hsl(var(--primary));
+		text-decoration: none;
 	}
 
-	.footer-bottom {
-		border-top: 1px solid hsl(var(--border));
-		padding-top: var(--spacing-xl);
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: var(--spacing-md);
-	}
-
-	.footer-bottom p {
-		margin: 0;
+	.footer-meta {
+		font-size: 0.8rem;
 		color: hsl(var(--muted-foreground));
-		font-size: 0.85rem;
+		margin: 0;
 	}
 
-	.footer-disclaimer a {
+	.footer-meta a {
 		color: hsl(var(--muted-foreground));
 		text-decoration: underline;
 	}
 
-	.footer-disclaimer a:hover {
+	.footer-meta a:hover {
 		color: hsl(var(--primary));
 	}
 
-	@media (max-width: 768px) {
-		.footer-grid {
-			grid-template-columns: 1fr 1fr;
-			gap: var(--spacing-xl);
-		}
-
-		.footer-brand {
-			grid-column: 1 / -1;
-			max-width: 100%;
-		}
-
-		.footer-bottom {
+	@media (max-width: 640px) {
+		.footer-news {
 			flex-direction: column;
-			text-align: center;
+			align-items: flex-start;
+			gap: var(--spacing-lg);
 		}
-	}
 
-	@media (max-width: 480px) {
-		.footer-grid {
-			grid-template-columns: 1fr;
+		.footer-mascot {
+			width: 96px;
+		}
+
+		.footer-links {
+			gap: 0.5rem 1rem;
 		}
 	}
 </style>

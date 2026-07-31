@@ -32,7 +32,7 @@ const tools = [
 ];
 ---
 
-<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} wide={true}>
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} wide={true} compactHeader={true}>
 	<section class="tools-intro">
 		<p class="lead">
 			Each tool is built from veterinary guidelines and designed to give you a quick, trustworthy answer you can discuss with your vet.
@@ -113,7 +113,6 @@ const tools = [
 	}
 
 	.tool-card:hover {
-		transform: translateY(-2px);
 		box-shadow: var(--shadow-lg);
 		border-color: hsl(var(--primary) / 0.3);
 	}

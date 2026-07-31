@@ -76,16 +76,9 @@ const itemListSchema = {
 };
 ---
 
-<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} wide={true}>
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} wide={true} compactHeader={true}>
 	<script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} slot="head" />
 	<script type="application/ld+json" is:inline set:html={JSON.stringify(itemListSchema)} slot="head" />
-
-	<section class="tox-search-intro">
-		<p class="lead text-muted">
-			Type a food, plant, medication, or household item to see how toxic it is for dogs and cats,
-			plus symptoms and what to do next. <strong>In an emergency, call a poison hotline right away.</strong>
-		</p>
-	</section>
 
 	<section class="tox-search" aria-label="Toxin search">
 		<div class="tox-search-box">
@@ -112,11 +105,11 @@ const itemListSchema = {
 				</label>
 				<label class="tox-pill">
 					<input type="radio" name="species" value="cat" />
-					<span>🐱 Cats</span>
+					<span>Cats</span>
 				</label>
 				<label class="tox-pill">
 					<input type="radio" name="species" value="dog" />
-					<span>🐕 Dogs</span>
+					<span>Dogs</span>
 				</label>
 			</div>
 
@@ -154,8 +147,8 @@ const itemListSchema = {
 				</div>
 				<p class="tox-result-desc text-muted text-small">{t.description}</p>
 				<div class="tox-result-badges">
-					<span class={`tox-badge tox-badge--${t.species.cat.level}`} data-species-badge="cat">🐱 Cat: {levelLabel[t.species.cat.level]}</span>
-					<span class={`tox-badge tox-badge--${t.species.dog.level}`} data-species-badge="dog">🐕 Dog: {levelLabel[t.species.dog.level]}</span>
+					<span class={`tox-badge tox-badge--${t.species.cat.level}`} data-species-badge="cat">Cat: {levelLabel[t.species.cat.level]}</span>
+					<span class={`tox-badge tox-badge--${t.species.dog.level}`} data-species-badge="dog">Dog: {levelLabel[t.species.dog.level]}</span>
 				</div>
 				<span class="tox-result-link">View details →</span>
 			</a>
@@ -291,16 +284,6 @@ const itemListSchema = {
 </Page>
 
 <style>
-	.tox-search-intro {
-		margin-bottom: var(--spacing-lg);
-	}
-
-	.tox-search-intro .lead {
-		font-size: 1.1rem;
-		line-height: 1.7;
-		margin: 0;
-	}
-
 	.tox-search-box {
 		position: relative;
 		margin-bottom: var(--spacing-lg);
@@ -325,7 +308,7 @@ const itemListSchema = {
 		border-radius: var(--radius-md);
 		background-color: hsl(var(--card));
 		color: hsl(var(--foreground));
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
 	}
 
 	.tox-search-input:focus {
@@ -368,7 +351,7 @@ const itemListSchema = {
 		cursor: pointer;
 		background-color: hsl(var(--card));
 		color: hsl(var(--foreground));
-		transition: all 0.2s ease;
+		transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
 	}
 
 	.tox-pill:hover {
@@ -424,11 +407,10 @@ const itemListSchema = {
 		background-color: hsl(var(--card));
 		box-shadow: var(--shadow-card);
 		text-decoration: none;
-		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+		transition: box-shadow var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out);
 	}
 
 	.tox-result-card:hover {
-		transform: translateY(-3px);
 		box-shadow: var(--shadow-card-hover);
 		border-color: hsl(var(--primary) / 0.3);
 	}
@@ -484,7 +466,7 @@ const itemListSchema = {
 	.tox-result-link {
 		font-weight: 600;
 		color: hsl(var(--primary));
-		transition: color 0.2s ease;
+		transition: color var(--dur-short) var(--ease-out);
 	}
 
 	.tox-empty {

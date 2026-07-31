@@ -1,3 +1,5 @@
+/* Hallmark · genre: editorial · macrostructure: Ecosystem Index · nav: N6 · footer: Ft7 · design-system: design.md · designed-as-app */
+
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
@@ -80,6 +82,16 @@
 	--shadow-lg: 0 10px 24px rgb(45 45 45 / 0.1);
 	--shadow-card: 0 4px 12px rgb(0 0 0 / 0.05);
 	--shadow-card-hover: 0 8px 24px rgb(0 0 0 / 0.1);
+
+	/* Motion (design.md: named easings only, never browser-default `ease`) */
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+	--dur-short: 220ms;
+	--dur-med: 300ms;
+
+	/* Focus */
+	--color-focus: hsl(var(--ring));
 }
 
 * {
@@ -139,10 +151,23 @@ p {
 a {
 	color: hsl(var(--primary));
 	text-decoration: none;
-	transition: color 0.2s ease;
+	transition: color var(--dur-short) var(--ease-out);
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	word-break: break-word;
+}
+
+/* Focus rings: instant, never animated (design.md § Microinteractions) */
+a:focus-visible,
+.btn:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+	outline: 2px solid var(--color-focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-xs);
 }
 
 a:hover {
@@ -167,7 +192,7 @@ img {
 	font-weight: 600;
 	font-size: 0.95rem;
 	cursor: pointer;
-	transition: all 0.2s ease;
+	transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out);
 	border: 1px solid transparent;
 	text-decoration: none;
 	line-height: 1.5;
@@ -237,7 +262,7 @@ textarea {
 	font-size: 0.95rem;
 	background-color: hsl(var(--card));
 	color: hsl(var(--foreground));
-	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
 }
 
 input:focus,
@@ -420,13 +445,13 @@ blockquote p:last-child {
 	border-radius: var(--radius-card);
 	padding: var(--spacing-xl);
 	box-shadow: var(--shadow-card);
-	transition: transform 0.25s ease, box-shadow 0.25s ease;
+	transition: box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out);
 	border: 1px solid hsl(var(--border));
 }
 
 .card:hover {
-	transform: translateY(-4px);
 	box-shadow: var(--shadow-card-hover);
+	border-color: hsl(var(--primary) / 0.25);
 }
 
 /* Badges */
@@ -588,11 +613,10 @@ blockquote p:last-child {
 	border-radius: var(--radius-md);
 	background-color: hsl(var(--card));
 	text-decoration: none;
-	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	transition: box-shadow var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out);
 }
 
 .poison-hotline-card:hover {
-	transform: translateY(-2px);
 	box-shadow: var(--shadow-card-hover);
 	border-color: hsl(var(--tox-severe) / 0.4);
 }
@@ -656,7 +680,7 @@ blockquote p:last-child {
 }
 
 .faq-item summary .faq-icon {
-	transition: transform 0.2s ease;
+	transition: transform var(--dur-short) var(--ease-out);
 	flex-shrink: 0;
 }
 
@@ -699,6 +723,22 @@ blockquote p:last-child {
 
 ::-webkit-scrollbar-thumb:hover {
 	background: hsl(var(--primary));
+}
+
+/* Reduced motion: collapse to ≤150ms opacity, disable smooth scroll (design.md § Motion) */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		transition-duration: 150ms !important;
+		transition-property: opacity !important;
+		animation-duration: 150ms !important;
+		animation-iteration-count: 1 !important;
+	}
 }
 
 /* Responsive */
