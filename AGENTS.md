@@ -55,6 +55,7 @@ Posts are queried with `getCollection('blog')` and sorted by `updatedDate || pub
 - `src/pages/about.astro`, `src/pages/contact.astro`, `src/pages/newsletter.astro`, `src/pages/privacy-policy.astro`, `src/pages/affiliate-disclosure.astro` — static pages.
 - `src/pages/tools/cat-age-calculator/` and `src/pages/tools/dog-age-calculator/` — interactive age calculators (with share functionality).
 - `src/pages/tools/pet-toxin-lookup/` — static directory of toxin pages (`index.astro` + `[slug].astro`), each generated from the toxin data collections in `src/data/toxins/` (food, household, insecticides, medications, plants) typed by `src/types/toxin.ts`. Renders ASPCA/Pet Poison Helpline numbers from `consts.ts`.
+- `src/pages/tools/pet-recall-checker/` — pet food recall checker (`index.astro` + `[slug].astro`), generated from `src/data/recalls.ts` typed by `src/types/recall.ts`. Client-side search matches brand/product/aliases/company/hazard plus lot codes (case-insensitive prefix match, ≥3 chars). Status semantics: `active` (company recall in effect), `fda-advisory` (FDA-issued warning, no full company recall), `terminated` (FDA closed; home stock still needs checking). Every entry must cite the FDA notice URL and carry `lastVerified`.
 - `src/pages/search.astro` — client-side search powered by Pagefind.
 - `src/pages/rss.xml.js` — RSS feed using `@astrojs/rss`.
 
@@ -77,8 +78,8 @@ Posts are queried with `getCollection('blog')` and sorted by `updatedDate || pub
 - `src/components/AffiliateDisclosure.astro` — disclosure banner linking to `/affiliate-disclosure/`.
 - `src/components/FormattedDate.astro` — date formatter.
 - `src/components/CatAgeCalculatorEmbed.astro` — a self-contained, embeddable cat-age calculator for use inside blog posts (scoped class/data prefixes so it can coexist on any page). Uses the 16-5-4 model; the full version lives at `/tools/cat-age-calculator/`.
-- `src/components/PoisonHotlines.astro` — renders the ASPCA / Pet Poison Helpline blocks from `consts.ts`; used across the toxin-lookup tool pages.
-- `src/components/ToxinDisclaimer.astro` — emergency disclaimer banner used on toxin-lookup pages.
+- `src/components/PoisonHotlines.astro` — renders the ASPCA / Pet Poison Helpline blocks from `consts.ts`; used across the toxin-lookup tool pages and the recall checker (empty state + detail pages).
+- `src/components/ToxinDisclaimer.astro` — emergency disclaimer banner used on toxin-lookup pages and the recall checker.
 
 ### Styling
 
@@ -167,6 +168,8 @@ This is a content-heavy affiliate site. When writing or rewriting blog posts, ai
 ### Trending radar pipeline
 
 Weekly topic-scan (cron: Wednesdays 09:07 via `.claude/scheduled_tasks.json`). Three scripts write one report, `content-ideas/radar-YYYY-MM-DD.md` (the whole `content-ideas/` dir is gitignored; raw last30days JSON archives land in `content-ideas/raw/`). **Run order matters**: `trending-radar.mjs` full-overwrites the day's file; the browser/social scripts merge their block before the `## 下一步行动建议` marker, keyed on their own `<!-- BROWSER-RADAR-BEGIN/END -->` / `<!-- SOCIAL-RADAR-BEGIN/END -->` comments, so same-day re-runs replace rather than duplicate (shared helper: `scripts/lib/radar-merge.mjs`).
+
+**Recall coverage check (automated since 2026-08-03):** `trending-radar.mjs` reads brand/alias tokens from `src/data/recalls.ts` and flags any Petful recall item not yet covered in the dataset as "疑似未收录" in the action section — those entries must be verified against the FDA notice and added to `recalls.ts` (the Pet Recall Checker's data source), with `lastVerified` set to that day. This keeps `/tools/pet-recall-checker/` current without a separate maintenance task.
 
 | Script | npm run | Needs | Sources |
 |---|---|---|---|

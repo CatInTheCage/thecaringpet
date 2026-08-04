@@ -1,0 +1,291 @@
+---
+import Page from '../../../layouts/Page.astro';
+import PoisonHotlines from '../../../components/PoisonHotlines.astro';
+import ToxinDisclaimer from '../../../components/ToxinDisclaimer.astro';
+import { recalls } from '../../../data/recalls';
+import { SITE_URL } from '../../../consts';
+import type { Recall, RecallStatus, RecallCategory } from '../../../types/recall';
+
+export async function getStaticPaths() {
+	return recalls.map((recall) => ({
+		params: { slug: recall.slug },
+		props: { recall },
+	}));
+}
+
+interface Props {
+	recall: Recall;
+}
+const { recall } = Astro.props;
+
+const title = `${recall.brand} Recall ${new Date(recall.recallDate).getFullYear()}: Lot Codes & What To Do`;
+const description = `${recall.brand} recall (${recall.recallDate}): ${recall.hazard}. Affected: ${recall.product}${recall.lotCodes.length ? ` — lots ${recall.lotCodes.join(', ')}` : ''}. Check your package and learn what to do.`;
+const image = '/images/hero.jpg';
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Tools', href: '/tools/' },
+	{ label: 'Recall Checker', href: '/tools/pet-recall-checker/' },
+	{ label: recall.brand, href: `/tools/pet-recall-checker/${recall.slug}/` },
+];
+
+const statusLabel: Record<RecallStatus, string> = {
+	active: 'Active Recall',
+	'fda-advisory': 'FDA Advisory',
+	terminated: 'Recall Terminated',
+};
+
+const categoryLabel: Record<RecallCategory, string> = {
+	'dog-food': 'Dog Food',
+	'cat-food': 'Cat Food',
+	'pet-food': 'Dog & Cat Food',
+	'dog-treat': 'Dog Treat',
+	supplement: 'Supplement',
+	other: 'Other',
+};
+
+const otherRecalls = recalls
+	.filter((r) => r.slug !== recall.slug)
+	.sort((a, b) => (b.updatedDate || b.recallDate).localeCompare(a.updatedDate || a.recallDate))
+	.slice(0, 4);
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: title,
+	description,
+	datePublished: recall.recallDate,
+	dateModified: recall.lastVerified,
+	mainEntityOfPage: `${SITE_URL}/tools/pet-recall-checker/${recall.slug}/`,
+};
+---
+
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} compactHeader={true} showNewsletter={false}>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} slot="head" />
+
+	<div class="recall-detail">
+		<div class="recall-detail-head">
+			<span class={`recall-status recall-status--${recall.status}`}>{statusLabel[recall.status]}</span>
+			<span class="recall-meta-line">
+				{categoryLabel[recall.category]} · announced {recall.recallDate}{recall.updatedDate ? ` · updated ${recall.updatedDate}` : ''} · verified {recall.lastVerified}
+			</span>
+		</div>
+
+		<section class="recall-facts" aria-label="Recall facts">
+			<h2>The Recall at a Glance</h2>
+			<dl class="facts-grid">
+				<div class="fact">
+					<dt>Product</dt>
+					<dd>{recall.product}</dd>
+				</div>
+				<div class="fact">
+					<dt>Company</dt>
+					<dd>{recall.company}</dd>
+				</div>
+				{recall.sizes && (
+					<div class="fact">
+						<dt>Size</dt>
+						<dd>{recall.sizes}</dd>
+					</div>
+				)}
+				<div class="fact">
+					<dt>Affected lots</dt>
+					<dd>
+						{recall.lotCodes.length > 0
+							? recall.lotCodes.map((lot) => <code class="lot-code">{lot}</code>)
+							: 'All lots of the named product (see notice)'}
+					</dd>
+				</div>
+				{recall.bestByDates && recall.bestByDates.length > 0 && (
+					<div class="fact">
+						<dt>Best-by dates</dt>
+						<dd>{recall.bestByDates.join(', ')}</dd>
+					</div>
+				)}
+				<div class="fact fact-full">
+					<dt>Hazard</dt>
+					<dd><strong>{recall.hazard}.</strong> {recall.hazardDetail}</dd>
+				</div>
+			</dl>
+		</section>
+
+		<section class="recall-actions" aria-label="What to do">
+			<h2>What To Do If You Have This Product</h2>
+			<ol class="action-list">
+				{recall.whatToDo.map((step) => <li>{step}</li>)}
+			</ol>
+		</section>
+
+		<section class="recall-sources" aria-label="Official sources">
+			<h2>Official Source</h2>
+			<p class="text-muted">
+				Always confirm the details against the official notice — it is the authoritative version.
+			</p>
+			<ul class="source-list">
+				<li><a href={recall.source.url} target="_blank" rel="noopener">{recall.source.name} ↗</a></li>
+				{recall.secondarySources?.map((s) => (
+					<li><a href={s.url} target="_blank" rel="noopener">{s.name} ↗</a></li>
+				))}
+			</ul>
+			{recall.relatedArticle && (
+				<p class="related-article">
+					Read our full guide: <a href={`/blog/${recall.relatedArticle}/`}>{recall.brand} recall — what dog owners should do →</a>
+				</p>
+			)}
+		</section>
+
+		<ToxinDisclaimer lead="This page indexes an official recall notice — it is not itself an official notice." />
+		<PoisonHotlines compact={true} />
+
+		<section class="other-recalls" aria-label="More recalls">
+			<h2>More Recalls to Check</h2>
+			<ul class="other-list">
+				{otherRecalls.map((r) => (
+					<li>
+						<a href={`/tools/pet-recall-checker/${r.slug}/`}>
+							<strong>{r.brand}</strong> — {r.hazard} ({r.recallDate})
+						</a>
+					</li>
+				))}
+			</ul>
+			<p><a href="/tools/pet-recall-checker/" class="back-link">← Check another product</a></p>
+		</section>
+	</div>
+</Page>
+
+<style>
+	.recall-detail-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--spacing-md);
+		margin-bottom: var(--spacing-xl);
+	}
+
+	.recall-status {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		padding: 0.3rem 0.75rem;
+		border-radius: 9999px;
+		white-space: nowrap;
+	}
+
+	.recall-status--active {
+		background-color: hsl(var(--tox-severe) / 0.12);
+		color: hsl(var(--tox-severe));
+	}
+
+	.recall-status--fda-advisory {
+		background-color: hsl(var(--tox-moderate) / 0.14);
+		color: hsl(var(--tox-moderate));
+	}
+
+	.recall-status--terminated {
+		background-color: hsl(var(--muted));
+		color: hsl(var(--muted-foreground));
+	}
+
+	.recall-meta-line {
+		font-size: 0.85rem;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.recall-facts h2,
+	.recall-actions h2,
+	.recall-sources h2,
+	.other-recalls h2 {
+		font-size: 1.35rem;
+	}
+
+	.facts-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-md) var(--spacing-xl);
+		margin: 0;
+		padding: var(--spacing-lg);
+		background-color: hsl(var(--card));
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+	}
+
+	.fact-full {
+		grid-column: 1 / -1;
+	}
+
+	.fact dt {
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: hsl(var(--muted-foreground));
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.fact dd {
+		margin: 0;
+		font-size: 0.95rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-xs);
+	}
+
+	.lot-code {
+		font-family: ui-monospace, monospace;
+		font-size: 0.9rem;
+		background-color: hsl(var(--tox-severe) / 0.08);
+		border: 1px solid hsl(var(--tox-severe) / 0.2);
+		border-radius: var(--radius-sm);
+		padding: 0.15rem 0.5rem;
+	}
+
+	.action-list {
+		padding-left: var(--spacing-lg);
+	}
+
+	.action-list li {
+		margin-bottom: var(--spacing-md);
+		padding-left: var(--spacing-sm);
+		line-height: 1.6;
+	}
+
+	.source-list {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 var(--spacing-md);
+	}
+
+	.source-list li {
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.related-article {
+		padding-top: var(--spacing-md);
+		border-top: 1px solid hsl(var(--border));
+	}
+
+	.other-list {
+		list-style: none;
+		padding: 0;
+	}
+
+	.other-list li {
+		padding: var(--spacing-sm) 0;
+		border-bottom: 1px solid hsl(var(--border));
+	}
+
+	.other-list li:last-child {
+		border-bottom: none;
+	}
+
+	.back-link {
+		font-weight: 600;
+	}
+
+	@media (max-width: 640px) {
+		.facts-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

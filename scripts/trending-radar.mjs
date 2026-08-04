@@ -3,11 +3,38 @@
 // 用法: node scripts/trending-radar.mjs
 // 输出: content-ideas/radar-YYYY-MM-DD.md
 
-import { mkdir, writeFile, access } from 'node:fs/promises';
+import { mkdir, writeFile, access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const ROOT = process.cwd();
 const OUT_DIR = path.join(ROOT, 'content-ideas');
+
+// === 召回库覆盖检查（自动） ===
+// 读 src/data/recalls.ts 的 brand + aliases，用于检查 Petful 召回条目是否已收录进召回检查器数据集。
+// 只是提示层（输出"疑似未收录"供人工核实），不是权威判定。
+const RECALL_STOPWORDS = new Set(['real', 'food', 'foods', 'family', 'farms', 'natural', 'choice', 'edge', 'supply', 'recipe', 'formula', 'canine', 'feline']);
+async function loadKnownRecallTokens() {
+  try {
+    const ts = await readFile(path.join(ROOT, 'src/data/recalls.ts'), 'utf8');
+    const tokens = new Set();
+    const grab = (s) => {
+      for (const w of s.toLowerCase().split(/[^a-z0-9]+/)) {
+        if (w.length >= 4 && !RECALL_STOPWORDS.has(w)) tokens.add(w);
+      }
+    };
+    for (const m of ts.matchAll(/brand:\s*'([^']+)'/g)) grab(m[1]);
+    for (const m of ts.matchAll(/aliases:\s*\[([^\]]*)\]/g)) {
+      for (const q of m[1].matchAll(/'([^']+)'/g)) grab(q[1]);
+    }
+    return [...tokens];
+  } catch {
+    return [];
+  }
+}
+function recallCovered(title, tokens) {
+  const t = title.toLowerCase();
+  return tokens.some((tok) => t.includes(tok));
+}
 
 // === 信号源 ===
 // 召回源几经改版：FDA/AVMA 的 RSS 已失效或上 WAF 反爬（2026-07-17 实测）。
@@ -211,6 +238,7 @@ async function main() {
   lines.push('');
 
   let anyRecall = false;
+  const recallItemsShown = [];
   for (const r of results) {
     lines.push(`### [${r.src.group}] ${r.src.name}`);
     lines.push(`- 主页: ${r.src.url}`);
@@ -229,6 +257,7 @@ async function main() {
     if (isRecallMd && shown.length) {
       // 有召回条目就标记，提示人工核对是否要写时效文 / 加 toxin
       anyRecall = true;
+      recallItemsShown.push(...shown);
     }
     lines.push('');
     for (const it of shown) {
@@ -245,9 +274,25 @@ async function main() {
   lines.push('');
   if (anyRecall) {
     lines.push('⚠️ **有召回信号 / 召回源抓取异常** — 人工核对最新召回：');
-    lines.push('  1. 确认是否需要在 `src/data/toxins/` 加 toxin 数据');
-    lines.push('  2. 是否写一篇"召回解析 + 主人该怎么做"时效文（内链到对应 toxin 页）');
-    lines.push('  3. 召回文时效权重高，发得快能截流量');
+    lines.push('');
+
+    // 召回库覆盖检查（自动）：对比 Petful 条目与 src/data/recalls.ts 已收录品牌
+    const tokens = await loadKnownRecallTokens();
+    if (recallItemsShown.length && tokens.length) {
+      const uncovered = recallItemsShown.filter((it) => !recallCovered(it.title, tokens));
+      const covered = recallItemsShown.length - uncovered.length;
+      lines.push(`### 召回库覆盖检查（自动 · 提示层）`);
+      lines.push(`Petful 当前 ${recallItemsShown.length} 条：已收录进 \`src/data/recalls.ts\` ${covered} 条，疑似未收录 ${uncovered.length} 条`);
+      for (const it of uncovered) {
+        lines.push(`- ⚠️ 疑似未收录: **${it.title}** → 核实 FDA 公告原文后按 Recall 类型补进 \`src/data/recalls.ts\`（lastVerified 填当天）`);
+      }
+      lines.push('');
+    }
+
+    lines.push('  1. **新召回 → 加进 `src/data/recalls.ts`**（召回检查器工具的数据源；核实 FDA 公告原文后按 Recall 类型补一条，lastVerified 填当天）');
+    lines.push('  2. 确认是否需要在 `src/data/toxins/` 加 toxin 数据');
+    lines.push('  3. 是否写一篇"召回解析 + 主人该怎么做"时效文（内链到召回详情页 + toxin 页）');
+    lines.push('  4. 召回文时效权重高，发得快能截流量');
     lines.push('');
   }
   lines.push('**选题四路信号补充（脚本未覆盖，需人工或 Claude 跑）**:');

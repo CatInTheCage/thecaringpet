@@ -1,0 +1,480 @@
+---
+import Page from '../../../layouts/Page.astro';
+import PoisonHotlines from '../../../components/PoisonHotlines.astro';
+import ToxinDisclaimer from '../../../components/ToxinDisclaimer.astro';
+import { recalls } from '../../../data/recalls';
+import { SITE_URL } from '../../../consts';
+import type { RecallStatus, RecallCategory } from '../../../types/recall';
+
+const title = 'Pet Food Recall Checker';
+const description = 'Enter a brand, product, or lot code to check your pet food against every verified FDA recall and advisory since 2025. Free, no sign-up.';
+const image = '/images/hero.jpg';
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Tools', href: '/tools/' },
+	{ label: 'Pet Food Recall Checker', href: '/tools/pet-recall-checker/' },
+];
+
+const statusFilters: { slug: RecallStatus | 'all'; label: string }[] = [
+	{ slug: 'all', label: 'All' },
+	{ slug: 'active', label: 'Active' },
+	{ slug: 'fda-advisory', label: 'FDA Advisories' },
+	{ slug: 'terminated', label: 'Terminated' },
+];
+
+const categoryFilters: { slug: RecallCategory | 'all'; label: string }[] = [
+	{ slug: 'all', label: 'All' },
+	{ slug: 'dog-food', label: 'Dog Food' },
+	{ slug: 'cat-food', label: 'Cat Food' },
+	{ slug: 'pet-food', label: 'Dog & Cat Food' },
+	{ slug: 'dog-treat', label: 'Treats' },
+	{ slug: 'supplement', label: 'Supplements' },
+	{ slug: 'other', label: 'Other' },
+];
+
+const statusLabel: Record<RecallStatus, string> = {
+	active: 'Active',
+	'fda-advisory': 'FDA Advisory',
+	terminated: 'Terminated',
+};
+
+const categoryLabel: Record<RecallCategory, string> = {
+	'dog-food': 'Dog Food',
+	'cat-food': 'Cat Food',
+	'pet-food': 'Dog & Cat Food',
+	'dog-treat': 'Dog Treat',
+	supplement: 'Supplement',
+	other: 'Other',
+};
+
+// Newest first.
+const sortedRecalls = [...recalls].sort((a, b) => (b.updatedDate || b.recallDate).localeCompare(a.updatedDate || a.recallDate));
+const lastUpdated = sortedRecalls[0] ? (sortedRecalls[0].updatedDate || sortedRecalls[0].recallDate) : '';
+
+const itemListSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: 'Pet Food Recall Database',
+	numberOfItems: recalls.length,
+	itemListElement: sortedRecalls.map((r, i) => ({
+		'@type': 'ListItem',
+		position: i + 1,
+		name: `${r.brand} — ${r.product}`,
+		url: `${SITE_URL}/tools/pet-recall-checker/${r.slug}/`,
+	})),
+};
+---
+
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} wide={true} compactHeader={true} showNewsletter={false}>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(itemListSchema)} slot="head" />
+
+	<section class="recall-search" aria-label="Recall search">
+		<div class="recall-search-box">
+			<svg class="recall-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<circle cx="11" cy="11" r="8" />
+				<line x1="21" y1="21" x2="16.65" y2="16.65" />
+			</svg>
+			<input
+				type="search"
+				id="recall-search-input"
+				class="recall-search-input"
+				placeholder="Type a brand, product, or lot code… (e.g. Pedigree, Quest, 613C3KKCFC)"
+				autocomplete="off"
+				aria-label="Search recalls by brand, product, or lot code"
+			/>
+		</div>
+
+		<div class="recall-filters">
+			<div class="recall-filter-group" aria-label="Filter by status">
+				<span class="recall-filter-label">Status:</span>
+				{statusFilters.map((f) => (
+					<label class="recall-pill">
+						<input type="radio" name="status" value={f.slug} checked={f.slug === 'all'} />
+						<span>{f.label}</span>
+					</label>
+				))}
+			</div>
+			<div class="recall-filter-group" aria-label="Filter by product type">
+				<span class="recall-filter-label">Type:</span>
+				{categoryFilters.map((f) => (
+					<label class="recall-pill">
+						<input type="radio" name="category" value={f.slug} checked={f.slug === 'all'} />
+						<span>{f.label}</span>
+					</label>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<p class="recall-meta">
+		<span id="recall-result-count" aria-live="polite" role="status"></span>
+		<span class="recall-updated">Database covers verified 2025–2026 actions · latest entry: {lastUpdated} · always confirm against the linked FDA notice.</span>
+	</p>
+
+	<section id="recall-results" class="recall-results" aria-label="Recall results">
+		{sortedRecalls.map((r) => (
+			<a
+				class="recall-card"
+				href={`/tools/pet-recall-checker/${r.slug}/`}
+				data-slug={r.slug}
+				data-search={`${r.brand} ${r.product} ${r.aliases.join(' ')} ${r.company} ${r.hazard} ${r.hazardDetail}`.toLowerCase()}
+				data-lots={r.lotCodes.join(' ').toLowerCase()}
+				data-status={r.status}
+				data-category={r.category}
+			>
+				<div class="recall-card-head">
+					<span class={`recall-status recall-status--${r.status}`}>{statusLabel[r.status]}</span>
+					<span class="recall-cat">{categoryLabel[r.category]}</span>
+				</div>
+				<h2 class="recall-brand">{r.brand}</h2>
+				<p class="recall-product text-muted">{r.product}</p>
+				<p class="recall-hazard">
+					<span class="recall-hazard-label">{r.hazard}</span>
+					<span class="recall-date"> · announced {r.recallDate}{r.updatedDate ? `, updated ${r.updatedDate}` : ''}</span>
+				</p>
+				{r.lotCodes.length > 0 && (
+					<p class="recall-lots">Lots: {r.lotCodes.join(', ')}</p>
+				)}
+				<span class="recall-link">Check details & what to do →</span>
+			</a>
+		))}
+
+		<div id="recall-empty" class="recall-empty" hidden>
+			<h2 id="recall-empty-title">No recall found</h2>
+			<p id="recall-empty-body">
+				Good news — no verified recall matches that search. This database covers verified FDA actions
+				from 2025 onward; it is updated weekly. Always double-check the
+				<a href="https://www.fda.gov/animal-veterinary/safety-health/recalls-withdrawals" target="_blank" rel="noopener">FDA recalls page</a> for the very latest.
+			</p>
+			<div class="recall-empty-hotlines">
+				<p class="text-muted">If your pet already ate something you're worried about — recalled or not — call a professional:</p>
+				<PoisonHotlines compact={true} />
+			</div>
+		</div>
+	</section>
+
+	<ToxinDisclaimer lead="This tool indexes official recall notices — it is not itself an official notice." />
+
+	<script is:inline>
+		(function () {
+			const cards = Array.from(document.querySelectorAll('.recall-card'));
+			const input = document.getElementById('recall-search-input');
+			const empty = document.getElementById('recall-empty');
+			const emptyTitle = document.getElementById('recall-empty-title');
+			const countEl = document.getElementById('recall-result-count');
+
+			function currentFilter(name) {
+				const checked = document.querySelector('input[name="' + name + '"]:checked');
+				return checked ? checked.value : 'all';
+			}
+
+			// Lot-code matching: exact or prefix match in either direction,
+			// so "613C3" finds "613C3KKCFC" and a full code finds itself.
+			function lotMatches(cardLots, query) {
+				if (!cardLots) return false;
+				const q = query.replace(/\s+/g, '');
+				if (q.length < 3) return false; // 1-2 chars are too vague to be a lot fragment
+				return cardLots.split(' ').some((lot) => {
+					const l = lot.replace(/\s+/g, '');
+					return l === q || l.startsWith(q) || q.startsWith(l);
+				});
+			}
+
+			function applyFilters() {
+				const query = (input.value || '').trim().toLowerCase();
+				const status = currentFilter('status');
+				const category = currentFilter('category');
+
+				let visible = 0;
+				cards.forEach((card) => {
+					const text = card.dataset.search || '';
+					const matchesQuery =
+						query === '' ||
+						text.includes(query) ||
+						lotMatches(card.dataset.lots || '', query);
+					const matchesStatus = status === 'all' || card.dataset.status === status;
+					const matchesCategory = category === 'all' || card.dataset.category === category;
+
+					const show = matchesQuery && matchesStatus && matchesCategory;
+					card.hidden = !show;
+					if (show) visible++;
+				});
+
+				empty.hidden = visible !== 0;
+				countEl.textContent =
+					visible === 0
+						? ''
+						: `Showing ${visible} recall${visible === 1 ? '' : 's'}.`;
+				if (visible === 0 && query) {
+					emptyTitle.textContent = `No recall found for "${query}"`;
+				} else if (visible === 0) {
+					emptyTitle.textContent = 'No recalls match these filters';
+				}
+			}
+
+			let debounceTimer;
+			input?.addEventListener('input', () => {
+				clearTimeout(debounceTimer);
+				debounceTimer = setTimeout(applyFilters, 120);
+			});
+			document.querySelectorAll('input[name="status"], input[name="category"]').forEach((el) => {
+				el.addEventListener('change', applyFilters);
+			});
+
+			// Pre-fill from ?q= for shareable links.
+			const params = new URLSearchParams(window.location.search);
+			const initialQuery = params.get('q');
+			if (initialQuery) input.value = initialQuery;
+			applyFilters();
+		})();
+	</script>
+</Page>
+
+<style>
+	.recall-search-box {
+		position: relative;
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.recall-search-icon {
+		position: absolute;
+		left: var(--spacing-md);
+		top: 50%;
+		transform: translateY(-50%);
+		width: 1.25rem;
+		height: 1.25rem;
+		color: hsl(var(--muted-foreground));
+		pointer-events: none;
+	}
+
+	.recall-search-input {
+		width: 100%;
+		padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
+		font-size: 1.1rem;
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		background-color: hsl(var(--card));
+		color: hsl(var(--foreground));
+		transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+	}
+
+	.recall-search-input:focus {
+		outline: none;
+		border-color: hsl(var(--primary));
+		box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15);
+	}
+
+	.recall-filters {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.recall-filter-group {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--spacing-xs);
+	}
+
+	.recall-filter-label {
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: hsl(var(--muted-foreground));
+		margin-right: var(--spacing-xs);
+	}
+
+	.recall-pill {
+		display: inline-flex;
+		align-items: center;
+		border: 1px solid hsl(var(--border));
+		border-radius: 9999px;
+		padding: 0.35rem 0.85rem;
+		font-size: 0.9rem;
+		font-weight: 500;
+		cursor: pointer;
+		background-color: hsl(var(--card));
+		color: hsl(var(--foreground));
+		transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out);
+	}
+
+	.recall-pill:hover {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.05);
+	}
+
+	.recall-pill input[type="radio"] {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.recall-pill:has(input:checked) {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary));
+		color: hsl(var(--primary-foreground));
+	}
+
+	.recall-meta {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: var(--spacing-xs);
+		font-size: 0.9rem;
+		color: hsl(var(--muted-foreground));
+		margin-bottom: var(--spacing-md);
+	}
+
+	.recall-updated {
+		font-size: 0.8rem;
+	}
+
+	.recall-results {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-md);
+	}
+
+	@media (min-width: 560px) {
+		.recall-results {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.recall-results {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.recall-card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xs);
+		padding: var(--spacing-lg);
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+		background-color: hsl(var(--card));
+		text-decoration: none;
+		color: hsl(var(--foreground));
+		transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+	}
+
+	.recall-card:hover {
+		border-color: hsl(var(--primary) / 0.3);
+		box-shadow: var(--shadow-card-hover);
+		text-decoration: none;
+	}
+
+	.recall-card-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--spacing-sm);
+	}
+
+	.recall-status {
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		padding: 0.2rem 0.6rem;
+		border-radius: 9999px;
+		white-space: nowrap;
+	}
+
+	.recall-status--active {
+		background-color: hsl(var(--tox-severe) / 0.12);
+		color: hsl(var(--tox-severe));
+	}
+
+	.recall-status--fda-advisory {
+		background-color: hsl(var(--tox-moderate) / 0.14);
+		color: hsl(var(--tox-moderate));
+	}
+
+	.recall-status--terminated {
+		background-color: hsl(var(--muted));
+		color: hsl(var(--muted-foreground));
+	}
+
+	.recall-cat {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: hsl(var(--muted-foreground));
+		white-space: nowrap;
+	}
+
+	.recall-brand {
+		font-size: 1.3rem;
+		margin: 0;
+	}
+
+	.recall-product {
+		font-size: 0.9rem;
+		margin: 0;
+		flex: 1;
+	}
+
+	.recall-hazard {
+		margin: 0;
+		font-size: 0.9rem;
+	}
+
+	.recall-hazard-label {
+		font-weight: 600;
+		color: hsl(var(--tox-severe));
+	}
+
+	.recall-status--terminated ~ .recall-hazard .recall-hazard-label,
+	.recall-date {
+		color: hsl(var(--muted-foreground));
+	}
+
+	.recall-lots {
+		font-size: 0.85rem;
+		font-family: ui-monospace, monospace;
+		margin: 0;
+		color: hsl(var(--foreground));
+		background-color: hsl(var(--muted));
+		padding: 0.3rem 0.6rem;
+		border-radius: var(--radius-sm);
+		align-self: flex-start;
+	}
+
+	.recall-link {
+		font-weight: 600;
+		font-size: 0.9rem;
+		color: hsl(var(--primary));
+		margin-top: var(--spacing-xs);
+	}
+
+	.recall-empty {
+		grid-column: 1 / -1;
+		padding: var(--spacing-2xl) var(--spacing-lg);
+		border: 1px dashed hsl(var(--border));
+		border-radius: var(--radius-card);
+		background-color: hsl(var(--card));
+		max-width: 640px;
+		margin: 0 auto;
+	}
+
+	.recall-empty h2 {
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.recall-empty-hotlines {
+		margin-top: var(--spacing-lg);
+	}
+
+	.recall-card[hidden] {
+		display: none;
+	}
+</style>

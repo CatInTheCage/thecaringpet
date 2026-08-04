@@ -32,6 +32,12 @@ const tools = [
 		description: 'Check foods, plants, and household items for toxicity.',
 		icon: 'shield',
 	},
+	{
+		href: '/tools/pet-recall-checker/',
+		title: 'Pet Food Recall Checker',
+		description: 'Check your pet food by brand, product, or lot code.',
+		icon: 'alert',
+	},
 ];
 ---
 
@@ -140,6 +146,13 @@ const tools = [
 													<path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z" />
 													<path d="M12 8v6" />
 													<path d="M9 11h6" />
+												</>
+											)}
+											{tool.icon === 'alert' && (
+												<>
+													<path d="M12 9v4" />
+													<path d="M12 17h.01" />
+													<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
 												</>
 											)}
 										</svg>
