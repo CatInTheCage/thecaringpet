@@ -70,7 +70,7 @@ const tools = [
 						</div>
 					</div>
 					<div class="intro-image">
-						<img src="/images/hero.jpg" alt="Golden retriever eating from a bowl in a sunny kitchen" fetchpriority="high" />
+						<img src="/images/hero.jpg" alt="Pomeranian looking up beside a full bowl of kibble" fetchpriority="high" />
 					</div>
 				</div>
 			</section>
@@ -204,7 +204,19 @@ const tools = [
 		display: grid;
 		grid-template-columns: 7fr 5fr;
 		gap: var(--spacing-3xl);
-		align-items: center;
+		align-items: stretch;
+	}
+
+	.intro-image {
+		display: flex;
+	}
+
+	.intro-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: var(--radius-xl);
+		box-shadow: var(--shadow-lg);
 	}
 
 	.intro-content h1 {
@@ -237,14 +249,6 @@ const tools = [
 	.intro-newsletter {
 		padding-top: var(--spacing-md);
 		max-width: 480px;
-	}
-
-	.intro-image img {
-		width: 100%;
-		max-height: 480px;
-		object-fit: cover;
-		border-radius: var(--radius-xl);
-		box-shadow: var(--shadow-lg);
 	}
 
 	/* Section dividers — ONE divider vocabulary: a container-width hairline at each
