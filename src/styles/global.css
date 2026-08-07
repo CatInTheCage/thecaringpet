@@ -1,7 +1,6 @@
 /* Hallmark · genre: editorial · macrostructure: Ecosystem Index · nav: N6 · footer: Ft7 · design-system: design.md · designed-as-app */
 
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+/* Fonts load via <link> in BaseHead.astro (preconnect + parallel), not @import. */
 
 :root {
 	/* HSL Design Tokens */
