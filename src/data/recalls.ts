@@ -70,7 +70,7 @@ export const recalls: Recall[] = [
 			url: 'https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts',
 		},
 		relatedArticle: 'answers-pet-food-fda-warning-salmonella-listeria',
-		lastVerified: '2026-08-03',
+		lastVerified: '2026-08-26',
 	},
 	{
 		slug: 'raaw-energy-advisory-2026',
@@ -94,7 +94,7 @@ export const recalls: Recall[] = [
 			'Wash hands, bowls, and surfaces thoroughly after handling.',
 		],
 		source: FDA_RECALLS_PAGE,
-		lastVerified: '2026-08-03',
+		lastVerified: '2026-08-26',
 	},
 	{
 		slug: 'quest-cat-food-thiamine-2026',
