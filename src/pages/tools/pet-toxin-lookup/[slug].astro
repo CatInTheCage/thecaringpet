@@ -149,6 +149,7 @@ const schemaJson = {
 			</ol>
 			<p class="text-muted text-small">
 				Steps apply to both cats and dogs. When in doubt, call a vet or poison hotline before acting.
+				Have a cat? <a href={`/tools/pet-poison-triage/?q=${encodeURIComponent(toxin.name)}`}>Run the Pet Poison Triage Wizard</a> for cat-specific steps.
 			</p>
 		</section>
 
@@ -205,6 +206,7 @@ const schemaJson = {
 		)}
 
 		<section class="tox-back-link">
+			<a href={`/tools/pet-poison-triage/?q=${encodeURIComponent(toxin.name)}`} class="btn btn-primary">What to do right now →</a>
 			<a href="/tools/pet-toxin-lookup/" class="btn btn-secondary">← Back to Pet Toxin Lookup</a>
 		</section>
 	</section>

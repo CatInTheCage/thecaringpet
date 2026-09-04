@@ -1,0 +1,1672 @@
+---
+import Page from '../../../layouts/Page.astro';
+import FAQ from '../../../components/FAQ.astro';
+import ToxinDisclaimer from '../../../components/ToxinDisclaimer.astro';
+import PoisonHotlines from '../../../components/PoisonHotlines.astro';
+import { toxins } from '../../../data/toxins';
+import { SITE_URL, ASPCA_POISON_HOTLINE, PPH_POISON_HOTLINE } from '../../../consts';
+import type { Toxin } from '../../../types/toxin';
+
+const title = 'Pet Poison Triage — What to Do If Your Dog or Cat Ate Something';
+const description =
+	'Answer 3 quick questions — or check red-flag symptoms — to get severity, first-aid steps, and when to call the vet after your dog or cat ate something toxic or is suddenly sick. 24/7 hotlines included.';
+const image = '/images/hero.jpg';
+
+const breadcrumbs = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Tools', href: '/tools/' },
+	{ label: 'Pet Poison Triage', href: '/tools/pet-poison-triage/' },
+];
+
+// Slim index for the client-side wizard: per-species severity + first aid +
+// escalation triggers. Symptoms / FAQs / sources stay on the detail pages —
+// the wizard's job is triage, not the full reference.
+const triageIndex = toxins.map((t) => ({
+	slug: t.slug,
+	name: t.name,
+	aliases: t.aliases,
+	category: t.category,
+	lastReviewed: t.lastReviewed,
+	cat: {
+		level: t.species.cat.level,
+		toxic: t.species.cat.toxic,
+		firstAid: t.species.cat.firstAid,
+		callVetIf: t.species.cat.callVetIf,
+	},
+	dog: {
+		level: t.species.dog.level,
+		toxic: t.species.dog.toxic,
+		firstAid: t.species.dog.firstAid,
+		callVetIf: t.species.dog.callVetIf,
+	},
+}));
+
+// The six most common emergencies, offered as one-tap chips before the user
+// types anything. Slugs verified against src/data/toxins/.
+const commonSlugs = ['chocolate', 'grapes-raisins', 'xylitol', 'lily', 'ibuprofen', 'acetaminophen'];
+const commonEmergencies = commonSlugs
+	.map((slug) => toxins.find((t) => t.slug === slug))
+	.filter((t): t is Toxin => Boolean(t));
+
+// Red-flag signs for the symptom path — the owner who doesn't know WHAT was
+// eaten (or nothing was eaten) and needs the "ER now vs monitor tonight" call.
+// Any single checked flag is an emergency (escalate-only, same as the wizard).
+// Sources: ASPCA Animal Poison Control and AVMA emergency-sign guidelines.
+const redFlags = [
+	{ id: 'breathing', label: 'Trouble breathing, choking, or nonstop coughing' },
+	{ id: 'seizure', label: 'Seizures, tremors, or constant muscle twitching' },
+	{ id: 'collapse', label: 'Collapse, can’t stand up, or unresponsive' },
+	{ id: 'gums', label: 'Pale, white, blue, or cherry-red gums' },
+	{ id: 'bloat', label: 'Swollen, tight abdomen — especially with unproductive retching' },
+	{ id: 'urine', label: 'Straining to urinate or producing no urine' },
+	{ id: 'vomiting', label: 'Vomited 3+ times in a few hours, or vomit with blood' },
+	{ id: 'blood', label: 'Bloody diarrhea, or black and tarry stool' },
+	{ id: 'toxin', label: 'I know they ate a severe toxin (lily, xylitol, antifreeze, human medicine)' },
+	{ id: 'trauma', label: 'Bleeding that won’t stop, or a fall / car accident' },
+	{ id: 'temperature', label: 'Heatstroke signs, or uncontrolled shivering' },
+];
+
+const faqItems = [
+	{
+		question: 'My dog ate something — what should I do first?',
+		answer:
+			'Remove the remaining substance so your pet can’t eat more, collect the packaging or label, and note the time and roughly how much was eaten. Do not induce vomiting or give home remedies. Then call your veterinarian or a poison control hotline — do not wait for symptoms to appear.'
+	},
+	{
+		question: 'Should I make my dog or cat throw up after eating something toxic?',
+		answer:
+			'No. Inducing vomiting at home (for example with hydrogen peroxide) can cause throat burns, aspiration pneumonia, or worse — and some toxins cause more damage coming back up. Let a veterinarian or poison control professional decide.'
+	},
+	{
+		question: 'How quickly do poisoning symptoms show up in dogs and cats?',
+		answer:
+			'It varies widely — from minutes for some foods and medications to 24–72 hours for delayed injuries like grape or raisin kidney damage in dogs and lily kidney failure in cats. The absence of symptoms is not reassurance, which is why this wizard always points you to a call.'
+	},
+	{
+		question: 'Can I wait and watch my pet instead of calling?',
+		answer:
+			'We don’t recommend it. Several common toxins cause damage silently before symptoms appear. This wizard never tells you it’s safe to wait — when in doubt, call a hotline or your vet.'
+	},
+	{
+		question: 'What information should I have ready before calling a poison hotline?',
+		answer:
+			'Your pet’s species, breed, and approximate weight; what was eaten (have the packaging handy); how much and when; and any symptoms you’ve noticed so far. A case number from a previous call is useful if you call back.'
+	},
+	{
+		question: 'How much does it cost to call the ASPCA or Pet Poison Helpline?',
+		answer:
+			'Both hotlines operate 24/7 and charge a consultation fee (typically under $100 — check their websites for current pricing). Your regular veterinarian or an emergency clinic can also guide you and may already know your pet’s history.'
+	},
+	{
+		question: 'My pet’s substance isn’t in your list — does that mean it’s safe?',
+		answer:
+			'No. The database covers common substances only. Not finding something is never a safety signal — call a poison control hotline to confirm before you decide to wait.'
+	},
+	{
+		question: 'My pet is vomiting at night but I don’t know what they ate — should I go to the emergency vet?',
+		answer:
+			'Use the red-flag checklist in the wizard above. Go to an emergency vet now for repeated vomiting (three or more times in a few hours), blood in the vomit, collapse or severe lethargy, breathing trouble, seizures, pale gums, or a swollen abdomen. A single vomit with otherwise normal behavior can usually wait until your vet opens in the morning — withhold food, monitor closely, and call a 24/7 hotline if anything changes or you’re unsure.'
+	},
+];
+
+const schemaJson = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: 'Pet Poison Triage',
+	applicationCategory: 'HealthApplication',
+	operatingSystem: 'Any',
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'USD'
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'The Caring Pet',
+		url: SITE_URL
+	},
+	description: description
+};
+---
+
+<Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} compactHeader={true}>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(schemaJson)} slot="head" />
+
+	<p class="triage-intro text-muted">
+		Your dog or cat just ate something they shouldn’t have — or is suddenly sick and you don’t know why.
+		Answer three quick questions about what was eaten, or check red-flag symptoms to decide
+		<strong>emergency vet vs. monitor at home</strong>. <strong>In an emergency, skip the wizard and call now:</strong>
+		{ASPCA_POISON_HOTLINE.phone} (ASPCA) or {PPH_POISON_HOTLINE.phone} (Pet Poison Helpline).
+	</p>
+
+	<ToxinDisclaimer lead="In an emergency, do not wait." />
+
+	<div class="card triage-card">
+		<ol class="triage-stepper" aria-label="Triage steps">
+			{/* Buttons are server-rendered (not JS-created) so Astro's scoped
+			    styles apply — dynamically created nodes would miss the scoping
+			    attribute and fall back to default button styling. */}
+			<li class="triage-step is-current" data-step="species">
+				<button type="button" class="triage-step-btn" data-step-target="species">
+					<span class="triage-step-dot" aria-hidden="true">1</span><span class="triage-step-label">Your pet</span>
+				</button>
+			</li>
+			<li class="triage-step" data-step="substance">
+				<button type="button" class="triage-step-btn" data-step-target="substance" disabled>
+					<span class="triage-step-dot" aria-hidden="true">2</span><span class="triage-step-label">Substance</span>
+				</button>
+			</li>
+			<li class="triage-step" data-step="amount">
+				<button type="button" class="triage-step-btn" data-step-target="amount" disabled>
+					<span class="triage-step-dot" aria-hidden="true">3</span><span class="triage-step-label">Amount</span>
+				</button>
+			</li>
+		</ol>
+
+		<p id="triage-status" class="triage-status" role="status" aria-live="polite"></p>
+
+		<div id="triage-emergency-rail" class="triage-emergency-rail" hidden>
+			<p class="triage-emergency-rail-title">⚠️ Severe toxin — call a poison hotline now</p>
+			<PoisonHotlines compact={true} />
+		</div>
+
+		{/* Step 1 — species */}
+		<section id="triage-step-1" class="triage-panel" aria-labelledby="triage-step-1-heading">
+			<h2 id="triage-step-1-heading" class="triage-question" tabindex="-1">Is this about a dog or a cat?</h2>
+			<div class="triage-species-grid" role="radiogroup" aria-label="Choose your pet's species">
+				<label class="triage-choice">
+					<input type="radio" name="triage-species" value="dog" />
+					<span class="triage-choice-emoji" aria-hidden="true">🐕</span>
+					<span class="triage-choice-text"><strong>Dog</strong><small>Toxicity differs from cats</small></span>
+				</label>
+				<label class="triage-choice">
+					<input type="radio" name="triage-species" value="cat" />
+					<span class="triage-choice-emoji" aria-hidden="true">🐈</span>
+					<span class="triage-choice-text"><strong>Cat</strong><small>Toxicity differs from dogs</small></span>
+				</label>
+			</div>
+			<p class="triage-alt-path">
+				Don’t know what they ate — just sudden symptoms like vomiting or lethargy?
+				<button type="button" class="triage-alt-link" data-symptoms-entry>Check red-flag signs →</button>
+			</p>
+		</section>
+
+		{/* Step 2 — substance */}
+		<section id="triage-step-2" class="triage-panel" aria-labelledby="triage-step-2-heading" hidden>
+			<h2 id="triage-step-2-heading" class="triage-question" tabindex="-1">What did they eat?</h2>
+			<div class="triage-search-box">
+				<svg class="triage-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<circle cx="11" cy="11" r="8" />
+					<line x1="21" y1="21" x2="16.65" y2="16.65" />
+				</svg>
+				<input
+					type="search"
+					id="triage-search"
+					class="triage-search-input"
+					placeholder="Search a food, plant, or medicine… (e.g. chocolate, advil, lily)"
+					autocomplete="off"
+					role="combobox"
+					aria-expanded="false"
+					aria-controls="triage-suggestions"
+					aria-autocomplete="list"
+					aria-label="Search for the substance your pet ate"
+				/>
+			</div>
+
+			<div id="triage-chips" class="triage-chips">
+				<p class="triage-chips-label text-muted text-small">Most common emergencies:</p>
+				<div class="triage-chip-row">
+					{commonEmergencies.map((t) => (
+						<button type="button" class="triage-chip" data-slug={t.slug}>{t.name}</button>
+					))}
+				</div>
+			</div>
+
+			<ul id="triage-suggestions" class="triage-suggestions" role="listbox" aria-label="Matching substances" hidden></ul>
+
+			<div class="triage-step-actions">
+				<button type="button" id="triage-back-2" class="btn btn-secondary btn-sm">← Back</button>
+				<button type="button" id="triage-unknown" class="btn btn-ghost">Can’t find it? Continue with an unknown substance →</button>
+			</div>
+		</section>
+
+		{/* Step 3 — amount */}
+		<section id="triage-step-3" class="triage-panel" aria-labelledby="triage-step-3-heading" hidden>
+			<h2 id="triage-step-3-heading" class="triage-question" tabindex="-1">How much did they eat?</h2>
+			<div class="triage-amount-grid" role="radiogroup" aria-label="Estimate the amount eaten">
+				<label class="triage-amount">
+					<input type="radio" name="triage-amount" value="lick" />
+					<span><strong>A tiny lick or a single small bite</strong><small>Just a taste</small></span>
+				</label>
+				<label class="triage-amount">
+					<input type="radio" name="triage-amount" value="some" />
+					<span><strong>Some — a few bites or a portion</strong><small>Part of what was available</small></span>
+				</label>
+				<label class="triage-amount">
+					<input type="radio" name="triage-amount" value="large" />
+					<span><strong>A large amount — most or all of it</strong><small>Don’t guess, call if unsure</small></span>
+				</label>
+				<label class="triage-amount">
+					<input type="radio" name="triage-amount" value="unsure" />
+					<span><strong>I’m not sure</strong><small>We’ll treat it seriously</small></span>
+				</label>
+			</div>
+			<div class="triage-step-actions">
+				<button type="button" id="triage-back-3" class="btn btn-secondary btn-sm">← Back</button>
+			</div>
+		</section>
+
+		{/* Symptoms — red-flag path for the owner who doesn't know what was eaten */}
+		<section id="triage-symptoms" class="triage-panel" aria-labelledby="triage-symptoms-heading" hidden>
+			<h2 id="triage-symptoms-heading" class="triage-question" tabindex="-1">What are you seeing right now?</h2>
+			<p class="triage-sub-note">
+				Tap the first sign you see — any single one is an emergency, and more signs wouldn’t
+				change the answer. Nothing on this list? Tap “None of these” for tonight’s watch list.
+			</p>
+			<div class="triage-flag-grid">
+				{redFlags.map((f) => (
+					<button type="button" class="triage-flag" data-flag={f.id}>{f.label}</button>
+				))}
+				<button type="button" class="triage-flag triage-flag--none" data-flag="none">
+					<strong>None of these</strong> — no red-flag signs, just want to know what to watch
+				</button>
+			</div>
+			<div class="triage-step-actions">
+				<button type="button" id="triage-symptoms-back" class="btn btn-secondary btn-sm">← Back</button>
+			</div>
+		</section>
+
+		{/* Symptom result — emergency if any flag is checked, monitor guidance otherwise */}
+		<section id="triage-symresult" class="triage-panel triage-symresult" aria-labelledby="triage-symresult-heading" hidden>
+			<h2 id="triage-symresult-heading" class="triage-question" tabindex="-1">Red-flag check result</h2>
+
+			<div id="triage-sym-banner" class="triage-banner triage-banner--emergency">
+				<p id="triage-sym-headline" class="triage-headline">—</p>
+				<p id="triage-sym-note" class="triage-amount-note text-small">—</p>
+			</div>
+
+			<PoisonHotlines title="Call a Poison Control Hotline Now" />
+
+			<h3 id="triage-sym-list-heading" class="triage-sub-heading">Do this now</h3>
+			<ol id="triage-sym-steps" class="triage-steps"></ol>
+
+			<div class="triage-step-actions triage-result-actions">
+				<button type="button" id="triage-sym-recheck" class="btn btn-primary btn-sm">Change my answers</button>
+				<button type="button" id="triage-sym-restart" class="btn btn-secondary btn-sm">Start over</button>
+			</div>
+		</section>
+
+		{/* Result */}
+		<section id="triage-result" class="triage-panel triage-result" aria-labelledby="triage-result-heading" hidden>
+			<h2 id="triage-result-heading" class="triage-question" tabindex="-1">Your triage result</h2>
+
+			<div id="triage-banner" class="triage-banner triage-banner--urgent">
+				<div class="triage-banner-head">
+					<span id="triage-badge" class="tox-badge tox-badge--moderate">—</span>
+					<strong id="triage-substance">—</strong>
+				</div>
+				<p id="triage-headline" class="triage-headline">—</p>
+				<p id="triage-amount-note" class="triage-amount-note text-small">—</p>
+			</div>
+
+			<PoisonHotlines title="Call a Poison Control Hotline Now" />
+
+			<h3 class="triage-sub-heading">Do this now</h3>
+			<ol id="triage-firstaid" class="triage-steps"></ol>
+
+			<h3 class="triage-sub-heading">Call the vet immediately if</h3>
+			<ul id="triage-callvet" class="triage-steps triage-steps--bullets"></ul>
+
+			<p class="triage-detail">
+				<a id="triage-detail-link" href="/tools/pet-toxin-lookup/">—</a>
+				<span id="triage-reviewed" class="text-muted text-small"></span>
+			</p>
+
+			<div class="triage-step-actions triage-result-actions">
+				<button type="button" id="triage-new-substance" class="btn btn-primary btn-sm">Check a different substance</button>
+				<button type="button" id="triage-switch-species" class="btn btn-secondary btn-sm">Switch species</button>
+				<a href="/tools/pet-toxin-lookup/" class="btn btn-ghost btn-sm">Browse all toxins →</a>
+			</div>
+		</section>
+
+		{/* No match */}
+		<section id="triage-nomatch" class="triage-panel triage-nomatch" aria-labelledby="triage-nomatch-heading" hidden>
+			<h2 id="triage-nomatch-heading" class="triage-question" tabindex="-1">No entry found</h2>
+			<div class="triage-banner triage-banner--urgent">
+				<p class="triage-headline">Call for guidance — don’t wait for symptoms</p>
+				<p class="triage-amount-note text-small">
+					<strong>Not finding it doesn’t mean it’s safe.</strong> This database covers common
+					substances only. A hotline can tell you in minutes whether the specific product matters.
+				</p>
+			</div>
+
+			<PoisonHotlines title="Call a Poison Control Hotline Now" />
+
+			<h3 class="triage-sub-heading">What to do right now</h3>
+			<ol class="triage-steps">
+				<li>Move the substance out of your pet’s reach so they can’t eat more.</li>
+				<li>Collect the packaging, label, or plant cutting — have it beside you when you call.</li>
+				<li>Do <strong>not</strong> induce vomiting or give any home remedies unless a professional tells you to.</li>
+				<li>Note the time and roughly how much was eaten.</li>
+				<li>Call a poison control hotline or your veterinarian, even if your pet seems fine.</li>
+			</ol>
+
+			<p class="triage-alt-path">
+				Only seeing symptoms — no idea what was eaten?
+				<button type="button" class="triage-alt-link" data-symptoms-entry>Run the red-flag check →</button>
+			</p>
+
+			<div class="triage-step-actions triage-result-actions">
+				<button type="button" id="triage-nomatch-retry" class="btn btn-primary btn-sm">Try another spelling</button>
+				<a href="/tools/pet-toxin-lookup/" class="btn btn-secondary btn-sm">Browse all toxins by category</a>
+			</div>
+		</section>
+
+		<noscript>
+			<div class="triage-noscript">
+				<p><strong>This wizard needs JavaScript.</strong> Until it’s available: call the ASPCA Animal Poison
+				Control Center at {ASPCA_POISON_HOTLINE.phone} or Pet Poison Helpline at {PPH_POISON_HOTLINE.phone} — both are 24/7.</p>
+				<p>You can also <a href="/tools/pet-toxin-lookup/">browse the full toxin database</a>, which works without JavaScript.</p>
+			</div>
+		</noscript>
+	</div>
+
+	<section class="triage-content-section">
+		<h2>What to Do Right Now — Any Substance</h2>
+		<p>
+			Whatever your pet ate, the first five minutes matter more than any web search. Follow these steps while
+			you decide whether to call:
+		</p>
+		<ol class="triage-static-steps">
+			<li><strong>Remove the rest.</strong> Take the substance away so your pet can’t eat more — including crumbs, wrappers, and pieces a second pet might find.</li>
+			<li><strong>Save the evidence.</strong> Keep the packaging, label, or a piece of the plant. Active-ingredient lists help a hotline judge the risk in minutes.</li>
+			<li><strong>Don’t induce vomiting.</strong> Home remedies like hydrogen peroxide or salt can cause more harm than the toxin itself. Let a professional decide.</li>
+			<li><strong>Write down the details.</strong> Time of ingestion, approximate amount, and your pet’s weight and age.</li>
+			<li><strong>Call before symptoms appear.</strong> Many toxins — grapes and raisins, lilies, xylitol — do their worst damage silently before your pet looks sick.</li>
+		</ol>
+	</section>
+
+	<section class="triage-content-section">
+		<h2>Common Poisoning Symptoms in Dogs and Cats</h2>
+		<p class="text-muted">
+			Symptoms depend on the substance, the amount, and your pet’s size. These are the most common
+			warning signs — any of them justifies a call:
+		</p>
+		<div class="triage-symptoms-grid">
+			<div>
+				<h3>🐕 In dogs</h3>
+				<ul>
+					<li>Vomiting or repeated retching</li>
+					<li>Diarrhea, sometimes bloody</li>
+					<li>Drooling or licking lips constantly</li>
+					<li>Loss of appetite or sudden lethargy</li>
+					<li>Wobbliness, tremors, or seizures</li>
+					<li>Pale or yellowed gums</li>
+					<li>Excessive thirst or urination</li>
+				</ul>
+			</div>
+			<div>
+				<h3>🐈 In cats</h3>
+				<ul>
+					<li>Vomiting (cats hide illness — take it seriously)</li>
+					<li>Hiding or unusual quietness</li>
+					<li>Drooling or pawing at the mouth</li>
+					<li>Loss of appetite for even one meal</li>
+					<li>Wobbliness or tremors</li>
+					<li>Changes in breathing rate or effort</li>
+					<li>Lily exposure: any vomiting counts as an emergency</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="triage-content-section">
+		<h2>Why This Wizard Doesn’t Calculate a Toxic Dose</h2>
+		<p>
+			Real toxicity depends on milligrams per kilogram of body weight — a 200&nbsp;mg ibuprofen tablet is a
+			different event for a 6&nbsp;lb kitten than for a 90&nbsp;lb Labrador. Publishing dose math for 75
+			substances would invite exactly the kind of false reassurance an emergency tool must never give.
+		</p>
+		<p>
+			So the wizard does what a triage should: it tells you how urgent the situation looks, what to do right
+			now, and which signs mean call immediately — then hands the decision to a professional who can weigh
+			your pet’s actual size, health history, and the exact product. When in doubt, the answer is always
+			the same: call.
+		</p>
+	</section>
+
+	<section class="triage-content-section">
+		<h2>Related Tools</h2>
+		<ul>
+			<li><a href="/tools/pet-toxin-lookup/">Pet Toxin Lookup</a> — browse the full database of {toxins.length} substances with symptoms, first aid, and veterinary sources.</li>
+			<li><a href="/tools/pet-recall-checker/">Pet Food Recall Checker</a> — check your pet food against verified FDA recalls by brand, product, or lot code.</li>
+		</ul>
+	</section>
+
+	<FAQ items={faqItems} />
+
+	<script type="application/json" id="triage-data" is:inline set:html={JSON.stringify(triageIndex)} />
+
+	<script is:inline>
+		(function () {
+			var DATA = JSON.parse(document.getElementById('triage-data').textContent);
+
+			var stepperItems = Array.from(document.querySelectorAll('.triage-step'));
+			var stepperEl = document.querySelector('.triage-stepper');
+			var statusEl = document.getElementById('triage-status');
+			var rail = document.getElementById('triage-emergency-rail');
+			var step1 = document.getElementById('triage-step-1');
+			var step2 = document.getElementById('triage-step-2');
+			var step3 = document.getElementById('triage-step-3');
+			var resultPanel = document.getElementById('triage-result');
+			var nomatchPanel = document.getElementById('triage-nomatch');
+			var symptomsPanel = document.getElementById('triage-symptoms');
+			var symresultPanel = document.getElementById('triage-symresult');
+
+			var searchInput = document.getElementById('triage-search');
+			var chipsWrap = document.getElementById('triage-chips');
+			var suggestionsEl = document.getElementById('triage-suggestions');
+			var unknownBtn = document.getElementById('triage-unknown');
+
+			var bannerEl = document.getElementById('triage-banner');
+			var badgeEl = document.getElementById('triage-badge');
+			var substanceEl = document.getElementById('triage-substance');
+			var headlineEl = document.getElementById('triage-headline');
+			var amountNoteEl = document.getElementById('triage-amount-note');
+			var firstAidEl = document.getElementById('triage-firstaid');
+			var callVetEl = document.getElementById('triage-callvet');
+			var detailLinkEl = document.getElementById('triage-detail-link');
+			var reviewedEl = document.getElementById('triage-reviewed');
+
+			var stepHeadings = {
+				species: document.getElementById('triage-step-1-heading'),
+				substance: document.getElementById('triage-step-2-heading'),
+				amount: document.getElementById('triage-step-3-heading'),
+				result: document.getElementById('triage-result-heading'),
+				nomatch: document.getElementById('triage-nomatch-heading'),
+				symptoms: document.getElementById('triage-symptoms-heading'),
+				symresult: document.getElementById('triage-symresult-heading'),
+			};
+
+			var state = { species: null, slug: null, amount: null, query: '', symFlags: [] };
+			var view = 'species';
+			var currentOptions = [];
+			var activeIndex = -1;
+
+			var LEVEL_LABEL = { severe: 'Severe', moderate: 'Moderate', mild: 'Mild', safe: 'Generally Safe' };
+			var SPECIES_LABEL = { dog: 'dog', cat: 'cat' };
+			var HEADLINE = {
+				emergency: 'Call a poison hotline or your vet now',
+				urgent: 'Call for guidance — don’t wait for symptoms',
+				monitor: 'Monitor closely — call if anything seems off',
+			};
+
+			function findEntry(slug) {
+				for (var i = 0; i < DATA.length; i++) if (DATA[i].slug === slug) return DATA[i];
+				return null;
+			}
+			function currentInfo() {
+				var e = state.slug ? findEntry(state.slug) : null;
+				return e ? e[state.species] : null;
+			}
+
+			// Escalate-only urgency: the amount answer can never lower the tier.
+			function urgencyFor(level, amount) {
+				if (level === 'severe') return 'emergency';
+				if (level === 'moderate') return amount === 'large' ? 'emergency' : 'urgent';
+				// mild / safe
+				return amount === 'large' || amount === 'unsure' ? 'urgent' : 'monitor';
+			}
+
+			function amountNote(level, amount, name, species) {
+				var unsureAdd = amount === 'unsure' ? ' Since you’re not sure how much was eaten, treat it seriously.' : '';
+				if (level === 'severe') {
+					if (amount === 'lick') return 'Even a tiny amount of ' + name + ' can be life-threatening for a ' + species + '. Call now — do not wait for symptoms.';
+					if (amount === 'large') return 'A large amount of ' + name + ' can be life-threatening for a ' + species + '. Call now — do not wait.';
+					return 'Any real amount of ' + name + ' can be life-threatening for a ' + species + '. Call now — do not wait for symptoms.' + unsureAdd;
+				}
+				if (level === 'moderate') {
+					if (amount === 'lick') return 'A small taste is often less dangerous, but call a hotline to confirm — especially for small, young, senior, or unwell pets.';
+					if (amount === 'large') return 'A large amount of a moderately toxic substance can be life-threatening. Call now.' + unsureAdd;
+					return 'Call a hotline for guidance — don’t wait for symptoms to appear.' + unsureAdd;
+				}
+				// mild / safe
+				if (level === 'mild') {
+					if (amount === 'large' || amount === 'unsure') return 'Large amounts can still cause real harm — call a hotline for guidance.' + unsureAdd;
+					return 'Watch your pet closely over the next 24 hours and call if anything seems off.' + unsureAdd;
+				}
+				// safe
+				if (amount === 'large' || amount === 'unsure') return 'Even generally safe foods can cause stomach upset or blockages in large amounts — call if you’re worried.' + unsureAdd;
+				return 'Generally low risk in small amounts — still monitor your pet for stomach upset.' + unsureAdd;
+			}
+
+			function matches(query) {
+				var q = query.trim().toLowerCase();
+				if (!q) return [];
+				var out = [];
+				for (var i = 0; i < DATA.length && out.length < 8; i++) {
+					var e = DATA[i];
+					var nameHit = e.name.toLowerCase().indexOf(q) !== -1;
+					var aliasHit = e.aliases.some(function (a) { return a.toLowerCase().indexOf(q) !== -1; });
+					if (nameHit || aliasHit) out.push(e);
+				}
+				return out;
+			}
+
+			function status(text) { statusEl.textContent = text; }
+
+			function setView(next, focusTarget) {
+				view = next;
+				render();
+				if (focusTarget) {
+					focusTarget.focus({ preventScroll: true });
+					var behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+					focusTarget.scrollIntoView({ block: 'start', behavior: behavior });
+				}
+			}
+
+			function render() {
+				step1.hidden = view !== 'species';
+				step2.hidden = view !== 'substance';
+				step3.hidden = view !== 'amount';
+				resultPanel.hidden = view !== 'result';
+				nomatchPanel.hidden = view !== 'nomatch';
+				symptomsPanel.hidden = view !== 'symptoms';
+				symresultPanel.hidden = view !== 'symresult';
+
+				// The 1-2-3 stepper describes the ingestion path only — the
+				// red-flag symptom path is a branch, so hide it there.
+				var symView = view === 'symptoms' || view === 'symresult';
+				stepperEl.hidden = symView;
+
+				// Stepper: 1-2-3, all done once a result (or no-match) is showing.
+				var stepIdx = view === 'species' ? 0 : view === 'substance' ? 1 : 2;
+				var allDone = view === 'result' || view === 'nomatch';
+				stepperItems.forEach(function (li, i) {
+					var done = allDone || i < stepIdx;
+					var current = !allDone && i === stepIdx;
+					li.classList.toggle('is-done', done);
+					li.classList.toggle('is-current', current);
+					if (current) li.setAttribute('aria-current', 'step');
+					else li.removeAttribute('aria-current');
+					var btn = li.querySelector('button');
+					if (btn) btn.disabled = !done;
+				});
+
+				// Emergency rail: a severe substance for the chosen species shows the
+				// hotlines immediately — before the amount step is even answered.
+				var info = currentInfo();
+				var severe = info && info.level === 'severe' && (view === 'amount' || view === 'result');
+				rail.hidden = !severe;
+			}
+
+			function writeUrl() {
+				var url = new URL(window.location.href);
+				url.searchParams.delete('species');
+				url.searchParams.delete('q');
+				url.searchParams.delete('amount');
+				url.searchParams.delete('path');
+				url.searchParams.delete('flags');
+				if (state.species) url.searchParams.set('species', state.species);
+				if (view === 'symptoms' || view === 'symresult') {
+					url.searchParams.set('path', 'symptoms');
+					if (view === 'symresult') url.searchParams.set('flags', state.symFlags.join(','));
+				} else {
+					var q = state.slug ? findEntry(state.slug).name : view === 'nomatch' ? state.query : '';
+					if (q) url.searchParams.set('q', q);
+					if (state.amount) url.searchParams.set('amount', state.amount);
+				}
+				window.history.replaceState({}, '', url);
+			}
+
+			/* ---------- step 1: species ---------- */
+			Array.prototype.forEach.call(document.querySelectorAll('input[name="triage-species"]'), function (radio) {
+				radio.addEventListener('change', function () {
+					state.species = radio.value;
+					state.slug = null;
+					state.amount = null;
+					setView('substance', stepHeadings.substance);
+					status('Step 2 of 3 — what did your pet eat?');
+					writeUrl();
+				});
+			});
+
+			/* ---------- step 2: substance ---------- */
+			function renderSuggestions() {
+				state.query = searchInput.value.trim();
+				var q = searchInput.value.trim().toLowerCase();
+				if (!q) {
+					chipsWrap.hidden = false;
+					suggestionsEl.hidden = true;
+					clearEmphasis();
+					suggestionsEl.innerHTML = '';
+					currentOptions = [];
+					activeIndex = -1;
+					searchInput.setAttribute('aria-expanded', 'false');
+					return;
+				}
+				chipsWrap.hidden = true;
+				currentOptions = matches(q);
+				activeIndex = -1;
+				suggestionsEl.innerHTML = '';
+				currentOptions.forEach(function (e) {
+					var li = document.createElement('li');
+					li.setAttribute('role', 'option');
+					li.setAttribute('id', 'triage-opt-' + e.slug);
+					li.setAttribute('aria-selected', 'false');
+					li.dataset.slug = e.slug;
+					var name = document.createElement('strong');
+					name.textContent = e.name;
+					var cat = document.createElement('span');
+					cat.className = 'triage-suggestion-cat';
+					cat.textContent = e.category;
+					li.appendChild(name);
+					li.appendChild(cat);
+					li.addEventListener('click', function () { selectEntry(e.slug); });
+					suggestionsEl.appendChild(li);
+				});
+				if (currentOptions.length === 0) {
+					var none = document.createElement('li');
+					none.className = 'triage-suggestion-none';
+					none.textContent = 'No matches — continue with an unknown substance below, or call now.';
+					suggestionsEl.appendChild(none);
+				}
+				suggestionsEl.hidden = false;
+				searchInput.setAttribute('aria-expanded', 'true');
+				unknownBtn.classList.toggle('triage-unknown--emphasis', currentOptions.length === 0 && q.length >= 3);
+				status(currentOptions.length === 1 ? '1 match' : currentOptions.length + ' matches');
+			}
+
+			function clearEmphasis() {
+				unknownBtn.classList.remove('triage-unknown--emphasis');
+			}
+
+			function selectEntry(slug) {
+				var e = findEntry(slug);
+				if (!e) return;
+				state.slug = slug;
+				state.query = e.name;
+				searchInput.value = e.name;
+				suggestionsEl.hidden = true;
+				suggestionsEl.innerHTML = '';
+				currentOptions = [];
+				searchInput.setAttribute('aria-expanded', 'false');
+				setView('amount', stepHeadings.amount);
+				status('Step 3 of 3 — how much did they eat?');
+				writeUrl();
+			}
+
+			var debounceTimer;
+			searchInput.addEventListener('input', function () {
+				clearTimeout(debounceTimer);
+				debounceTimer = setTimeout(renderSuggestions, 120);
+			});
+
+			searchInput.addEventListener('keydown', function (ev) {
+				if (ev.key === 'Escape') {
+					searchInput.value = '';
+					renderSuggestions();
+					return;
+				}
+				if (currentOptions.length === 0) return;
+				if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+					ev.preventDefault();
+					activeIndex = ev.key === 'ArrowDown'
+						? Math.min(activeIndex + 1, currentOptions.length - 1)
+						: Math.max(activeIndex - 1, 0);
+					Array.prototype.forEach.call(suggestionsEl.children, function (li, i) {
+						li.setAttribute('aria-selected', i === activeIndex ? 'true' : 'false');
+						li.classList.toggle('is-active', i === activeIndex);
+					});
+					searchInput.setAttribute('aria-activedescendant', 'triage-opt-' + currentOptions[activeIndex].slug);
+				} else if (ev.key === 'Enter') {
+					ev.preventDefault();
+					var pick = activeIndex >= 0 ? currentOptions[activeIndex] : currentOptions[0];
+					selectEntry(pick.slug);
+				}
+			});
+
+			Array.prototype.forEach.call(document.querySelectorAll('.triage-chip'), function (chip) {
+				chip.addEventListener('click', function () { selectEntry(chip.dataset.slug); });
+			});
+
+			unknownBtn.addEventListener('click', function () {
+				state.slug = null;
+				buildNomatch();
+				setView('nomatch', stepHeadings.nomatch);
+				status('No entry — generic emergency guidance');
+				writeUrl();
+			});
+
+			document.getElementById('triage-back-2').addEventListener('click', function () {
+				setView('species', stepHeadings.species);
+				status('Step 1 of 3 — your pet');
+			});
+
+			/* ---------- step 3: amount ---------- */
+			Array.prototype.forEach.call(document.querySelectorAll('input[name="triage-amount"]'), function (radio) {
+				radio.addEventListener('change', function () {
+					state.amount = radio.value;
+					buildResult();
+					setView('result', stepHeadings.result);
+					status('Result ready');
+					writeUrl();
+				});
+			});
+
+			document.getElementById('triage-back-3').addEventListener('click', function () {
+				setView('substance', searchInput);
+				status('Step 2 of 3 — what did your pet eat?');
+			});
+
+			/* ---------- result assembly ---------- */
+			function fillList(listEl, items) {
+				listEl.innerHTML = '';
+				items.forEach(function (text) {
+					var li = document.createElement('li');
+					li.textContent = text; // data comes from our dataset, but never trust HTML assembly
+					listEl.appendChild(li);
+				});
+			}
+
+			function buildResult() {
+				var e = findEntry(state.slug);
+				if (!e) return;
+				var info = e[state.species];
+				var urgency = urgencyFor(info.level, state.amount);
+				var species = SPECIES_LABEL[state.species] || 'pet';
+
+				bannerEl.className = 'triage-banner triage-banner--' + urgency;
+				badgeEl.className = 'tox-badge tox-badge--' + info.level;
+				badgeEl.textContent = LEVEL_LABEL[info.level] + ' for ' + (state.species === 'dog' ? 'dogs' : 'cats');
+				substanceEl.textContent = e.name;
+				headlineEl.textContent = HEADLINE[urgency];
+				amountNoteEl.textContent = amountNote(info.level, state.amount, e.name, species);
+
+				fillList(firstAidEl, info.firstAid);
+				fillList(callVetEl, info.callVetIf);
+
+				detailLinkEl.href = '/tools/pet-toxin-lookup/' + e.slug + '/';
+				detailLinkEl.textContent = 'Full symptom list, sources, and FAQs for ' + e.name + ' →';
+				reviewedEl.textContent = ' · Entry last reviewed ' + e.lastReviewed;
+			}
+
+			function buildNomatch() {
+				var q = (searchInput.value || state.query || '').trim();
+				stepHeadings.nomatch.textContent = q
+					? 'No entry for “' + q + '”'
+					: 'Unknown substance';
+			}
+
+			/* ---------- result / nomatch actions ---------- */
+			document.getElementById('triage-new-substance').addEventListener('click', function () {
+				state.slug = null;
+				state.amount = null;
+				searchInput.value = '';
+				Array.prototype.forEach.call(document.querySelectorAll('input[name="triage-amount"]'), function (r) { r.checked = false; });
+				renderSuggestions();
+				setView('substance', searchInput);
+				status('Step 2 of 3 — what did your pet eat?');
+				writeUrl();
+			});
+
+			document.getElementById('triage-switch-species').addEventListener('click', function () {
+				state.species = null;
+				state.slug = null;
+				state.amount = null;
+				searchInput.value = '';
+				Array.prototype.forEach.call(document.querySelectorAll('input[name="triage-species"]'), function (r) { r.checked = false; });
+				Array.prototype.forEach.call(document.querySelectorAll('input[name="triage-amount"]'), function (r) { r.checked = false; });
+				setView('species', stepHeadings.species);
+				status('Step 1 of 3 — your pet');
+				writeUrl();
+			});
+
+			document.getElementById('triage-nomatch-retry').addEventListener('click', function () {
+				state.slug = null;
+				setView('substance', searchInput);
+				status('Step 2 of 3 — try another spelling');
+				searchInput.select();
+			});
+
+			/* ---------- red-flag symptom path ---------- */
+			// Each red flag is a single-tap action, not a multi-select form: any
+			// single sign is already the emergency verdict, so tapping one IS the
+			// answer. "None of these" is the explicit zero-flag signal. No
+			// selection state survives returning to the list — every visit starts clean.
+			Array.prototype.forEach.call(document.querySelectorAll('[data-flag]'), function (btn) {
+				btn.addEventListener('click', function () {
+					state.symFlags = btn.dataset.flag === 'none' ? [] : [btn.dataset.flag];
+					submitSymptoms();
+				});
+			});
+
+			// Escalate-only: one checked red flag is an emergency; zero checked
+			// still ends in "monitor + call your vet in the morning", never
+			// "it's safe to wait".
+			function buildSymptomResult() {
+				var checked = state.symFlags;
+				var banner = document.getElementById('triage-sym-banner');
+				var headline = document.getElementById('triage-sym-headline');
+				var note = document.getElementById('triage-sym-note');
+				var listHeading = document.getElementById('triage-sym-list-heading');
+				var steps = document.getElementById('triage-sym-steps');
+
+				if (checked.length > 0) {
+					banner.className = 'triage-banner triage-banner--emergency';
+					headline.textContent = 'Go to an emergency vet now';
+					// One tapped sign is already the verdict; the copy says so
+					// explicitly instead of implying a multi-select count.
+					note.textContent =
+						checked.length === 1
+							? 'That’s a red-flag sign — your pet needs emergency care now. Seeing other signs on the list too? Same answer: don’t wait for morning.'
+							: 'You picked ' + checked.length + ' red-flag signs. Any single one already means your pet needs emergency care — don’t wait for morning.';
+					listHeading.textContent = 'Before you go';
+					fillList(steps, [
+						'Call the emergency clinic before you leave — they can prepare and tell you what to bring.',
+						'Bring the packaging, label, or plant if you suspect something was eaten — even a guess helps.',
+						'Keep your pet calm and warm. No food, and no water if they are vomiting.',
+						'Do not induce vomiting or give any home remedies unless a professional tells you to.',
+						'Note when each symptom started and how often it is happening.'
+					]);
+				} else {
+					banner.className = 'triage-banner triage-banner--monitor';
+					headline.textContent = 'No red flags selected — monitor tonight';
+					note.textContent =
+						'This checklist can’t rule out a problem. If anything changes tonight — or you’re worried at any point — call a hotline. They’re open 24/7.';
+					listHeading.textContent = 'Until your vet opens';
+					fillList(steps, [
+						'No food until your vet confirms — offer small sips of water only if your pet isn’t vomiting.',
+						'Keep your pet somewhere quiet where you can check on them through the night.',
+						'Write down the times of any vomiting, diarrhea, or unusual behavior.',
+						'Go to an emergency vet if any red-flag sign appears — trouble breathing, seizures, collapse, pale gums, repeated vomiting, or a swollen abdomen.',
+						'Call your vet when they open — even if the night passes quietly, tell them what happened.'
+					]);
+				}
+			}
+
+			function enterSymptoms() {
+				setView('symptoms', stepHeadings.symptoms);
+				status('Red-flag check — what are you seeing?');
+				writeUrl();
+			}
+
+			Array.prototype.forEach.call(document.querySelectorAll('[data-symptoms-entry]'), function (btn) {
+				btn.addEventListener('click', enterSymptoms);
+			});
+
+			document.getElementById('triage-symptoms-back').addEventListener('click', function () {
+				setView('species', stepHeadings.species);
+				status('Step 1 of 3 — your pet');
+				writeUrl();
+			});
+
+			function submitSymptoms() {
+				buildSymptomResult();
+				setView('symresult', stepHeadings.symresult);
+				status('Red-flag result ready');
+				writeUrl();
+			}
+
+			document.getElementById('triage-sym-recheck').addEventListener('click', enterSymptoms);
+
+			document.getElementById('triage-sym-restart').addEventListener('click', function () {
+				state.species = null;
+				state.slug = null;
+				state.amount = null;
+				state.symFlags = [];
+				searchInput.value = '';
+				Array.prototype.forEach.call(document.querySelectorAll('input[name="triage-species"]'), function (r) { r.checked = false; });
+				Array.prototype.forEach.call(document.querySelectorAll('input[name="triage-amount"]'), function (r) { r.checked = false; });
+				setView('species', stepHeadings.species);
+				status('Step 1 of 3 — your pet');
+				writeUrl();
+			});
+
+			/* ---------- stepper back-navigation ---------- */
+			stepperItems.forEach(function (li, i) {
+				var btn = li.querySelector('.triage-step-btn');
+				btn.addEventListener('click', function () {
+					var target = ['species', 'substance', 'amount'][i];
+					setView(target, stepHeadings[target]);
+					status('Step ' + (i + 1) + ' of 3');
+				});
+			});
+
+			/* ---------- deep-link (?path=symptoms&flags= / ?species=&q=&amount=) ---------- */
+			(function init() {
+				var params = new URLSearchParams(window.location.search);
+				var sp = params.get('species');
+				if (sp === 'dog' || sp === 'cat') {
+					state.species = sp;
+					var radio = document.querySelector('input[name="triage-species"][value="' + sp + '"]');
+					if (radio) radio.checked = true;
+				}
+
+				if (params.get('path') === 'symptoms') {
+					var fl = params.get('flags');
+					if (fl !== null) {
+						state.symFlags = fl ? fl.split(',') : [];
+						buildSymptomResult();
+						setView('symresult', stepHeadings.symresult);
+						status('Red-flag result ready');
+					} else {
+						setView('symptoms', stepHeadings.symptoms);
+						status('Red-flag check — what are you seeing?');
+					}
+					return;
+				}
+
+				var q = params.get('q');
+				if (q) {
+					searchInput.value = q;
+					state.query = q;
+					var found = matches(q)[0];
+					if (found) { state.slug = found.slug; searchInput.value = found.name; }
+				}
+				var am = params.get('amount');
+				var validAmount = ['lick', 'some', 'large', 'unsure'].indexOf(am) !== -1;
+
+				if (state.species && state.slug && validAmount) {
+					state.amount = am;
+					var r = document.querySelector('input[name="triage-amount"][value="' + am + '"]');
+					if (r) r.checked = true;
+					buildResult();
+					setView('result', stepHeadings.result);
+					status('Result ready');
+				} else if (state.species && state.slug) {
+					setView('amount', stepHeadings.amount);
+					status('Step 3 of 3 — how much did they eat?');
+				} else if (state.species) {
+					renderSuggestions();
+					setView('substance', searchInput);
+					status('Step 2 of 3 — what did your pet eat?');
+				} else {
+					render();
+				}
+			})();
+		})();
+	</script>
+</Page>
+
+<style>
+	.triage-intro {
+		font-size: 1.05rem;
+		line-height: 1.7;
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.triage-card {
+		padding: var(--spacing-xl);
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	/* Stepper — dots on a progress line that fills as you advance */
+	.triage-stepper {
+		display: flex;
+		list-style: none;
+		padding: 0;
+		margin: 0 0 var(--spacing-lg);
+	}
+
+	/* The stepper is display:flex, which beats the UA's [hidden] rule. */
+	.triage-stepper[hidden] {
+		display: none;
+	}
+
+	.triage-step {
+		flex: 1;
+		display: flex;
+		min-width: 0;
+	}
+
+	.triage-step-btn {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.25rem 0.25rem 0;
+		background: none;
+		border: none;
+		cursor: pointer;
+		font: inherit;
+		position: relative;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.triage-step-btn:disabled {
+		cursor: default;
+	}
+
+	.triage-step-btn:focus-visible {
+		outline: 2px solid hsl(var(--primary));
+		outline-offset: 4px;
+		border-radius: var(--radius-md);
+	}
+
+	/* Connector halves between the dots; fill up to (and into) the current step */
+	.triage-step-btn::before,
+	.triage-step-btn::after {
+		content: '';
+		position: absolute;
+		top: calc(0.25rem + 1.0625rem - 1px); /* vertical center of the dot */
+		height: 2px;
+		width: calc(50% - 1.6rem);
+		background-color: hsl(var(--border));
+		transition: background-color var(--dur-med) var(--ease-out);
+	}
+
+	.triage-step-btn::before {
+		left: 0;
+	}
+
+	.triage-step-btn::after {
+		right: 0;
+	}
+
+	.triage-step:first-child .triage-step-btn::before {
+		display: none;
+	}
+
+	.triage-step:last-child .triage-step-btn::after {
+		display: none;
+	}
+
+	.triage-step.is-done .triage-step-btn::before,
+	.triage-step.is-done .triage-step-btn::after,
+	.triage-step.is-current .triage-step-btn::before {
+		background-color: hsl(var(--primary) / 0.55);
+	}
+
+	.triage-step-dot {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.125rem;
+		height: 2.125rem;
+		flex-shrink: 0;
+		border-radius: 9999px;
+		background-color: hsl(var(--card));
+		border: 2px solid hsl(var(--border));
+		font-size: 0.8rem;
+		font-weight: 700;
+		line-height: 1;
+		color: hsl(var(--muted-foreground));
+		position: relative;
+		z-index: 1;
+		transition: background-color var(--dur-med) var(--ease-out), color var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), transform var(--dur-short) var(--ease-out);
+	}
+
+	.triage-step-btn:not(:disabled):hover .triage-step-dot {
+		border-color: hsl(var(--primary) / 0.6);
+		transform: scale(1.08);
+	}
+
+	.triage-step.is-current .triage-step-dot {
+		background-color: hsl(var(--primary));
+		border-color: hsl(var(--primary));
+		color: hsl(var(--primary-foreground));
+		box-shadow: 0 0 0 5px hsl(var(--primary) / 0.15);
+		animation: triage-step-pop 0.3s var(--ease-out);
+	}
+
+	.triage-step.is-current .triage-step-btn:hover .triage-step-dot {
+		transform: none;
+	}
+
+	.triage-step.is-done .triage-step-dot {
+		background-color: hsl(var(--secondary) / 0.16);
+		border-color: hsl(var(--secondary) / 0.45);
+		font-size: 0; /* hide the number — a check mark takes its place */
+	}
+
+	.triage-step.is-done .triage-step-dot::before {
+		content: '✓';
+		font-size: 0.95rem;
+		font-weight: 700;
+		line-height: 1;
+		color: hsl(var(--secondary-dark));
+	}
+
+	.triage-step-label {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: hsl(var(--muted-foreground));
+		white-space: nowrap;
+		transition: color var(--dur-short) var(--ease-out);
+	}
+
+	.triage-step.is-current .triage-step-label {
+		color: hsl(var(--primary-dark));
+	}
+
+	.triage-step.is-done .triage-step-label {
+		color: hsl(var(--secondary-dark));
+	}
+
+	.triage-step-btn:not(:disabled):hover .triage-step-label {
+		color: hsl(var(--primary));
+	}
+
+	@keyframes triage-step-pop {
+		from {
+			transform: scale(0.7);
+		}
+		to {
+			transform: scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.triage-step.is-current .triage-step-dot {
+			animation: none;
+		}
+	}
+
+	/* Red-flag symptom path */
+	.triage-alt-path {
+		margin: var(--spacing-lg) 0 0;
+		text-align: center;
+		font-size: 0.9rem;
+		line-height: 1.6;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.triage-alt-link {
+		background: none;
+		border: none;
+		padding: 0;
+		font: inherit;
+		font-weight: 600;
+		color: hsl(var(--primary));
+		cursor: pointer;
+	}
+
+	.triage-alt-link:hover {
+		color: hsl(var(--primary-dark));
+		text-decoration: underline;
+	}
+
+	.triage-sub-note {
+		margin: 0 0 var(--spacing-md);
+		color: hsl(var(--muted-foreground));
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.triage-flag-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-sm);
+		margin-bottom: var(--spacing-lg);
+	}
+
+	@media (min-width: 560px) {
+		.triage-flag-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	/* Red-flag signs are single-tap actions, not form options — no checkbox,
+	   no selected state, tapping navigates to the verdict immediately. */
+	.triage-flag {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-sm);
+		padding: var(--spacing-sm) var(--spacing-md);
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		background-color: hsl(var(--card));
+		color: hsl(var(--foreground));
+		cursor: pointer;
+		font: inherit;
+		font-size: 0.92rem;
+		line-height: 1.45;
+		text-align: left;
+		transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+	}
+
+	.triage-flag::after {
+		content: '→';
+		flex-shrink: 0;
+		color: hsl(var(--primary));
+		font-weight: 600;
+		opacity: 0;
+		transition: opacity var(--dur-short) var(--ease-out);
+	}
+
+	.triage-flag:hover,
+	.triage-flag:focus-visible {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.05);
+		box-shadow: var(--shadow-card);
+	}
+
+	.triage-flag:hover::after,
+	.triage-flag:focus-visible::after {
+		opacity: 1;
+	}
+
+	/* The "None of these" action reads as a different kind of answer —
+	   full-width row, dashed border and muted tint, sage accent on hover. */
+	.triage-flag--none {
+		grid-column: 1 / -1;
+		border-style: dashed;
+		background-color: hsl(var(--muted));
+		color: hsl(var(--muted-foreground));
+	}
+
+	.triage-flag--none strong {
+		white-space: nowrap;
+	}
+
+	.triage-flag--none::after {
+		color: hsl(var(--secondary-dark));
+	}
+
+	.triage-flag--none:hover,
+	.triage-flag--none:focus-visible {
+		border-color: hsl(var(--secondary));
+		border-style: solid;
+		background-color: hsl(var(--secondary) / 0.08);
+		color: hsl(var(--foreground));
+		box-shadow: none;
+	}
+
+	.triage-status {
+		min-height: 1.25rem;
+		margin: 0 0 var(--spacing-md);
+		font-size: 0.85rem;
+		color: hsl(var(--muted-foreground));
+	}
+
+	/* Panels */
+	.triage-panel[hidden] {
+		display: none;
+	}
+
+	.triage-question {
+		font-size: 1.35rem;
+		margin-bottom: var(--spacing-lg);
+		scroll-margin-top: 6rem;
+	}
+
+	/* Step 1 — species choice cards */
+	.triage-species-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-md);
+	}
+
+	.triage-choice {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-md);
+		padding: var(--spacing-lg);
+		border: 2px solid hsl(var(--border));
+		border-radius: var(--radius-card);
+		background-color: hsl(var(--card));
+		cursor: pointer;
+		transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+	}
+
+	.triage-choice:hover {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.04);
+	}
+
+	.triage-choice input[type="radio"] {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.triage-choice:has(input:checked) {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.07);
+	}
+
+	.triage-choice:has(input:focus-visible) {
+		outline: 2px solid hsl(var(--primary));
+		outline-offset: 2px;
+	}
+
+	.triage-choice-emoji {
+		font-size: 2rem;
+		line-height: 1;
+	}
+
+	.triage-choice-text {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+
+	.triage-choice-text small {
+		color: hsl(var(--muted-foreground));
+	}
+
+	/* Step 2 — search */
+	.triage-search-box {
+		position: relative;
+		margin-bottom: var(--spacing-md);
+	}
+
+	.triage-search-icon {
+		position: absolute;
+		left: var(--spacing-md);
+		top: 50%;
+		transform: translateY(-50%);
+		width: 1.25rem;
+		height: 1.25rem;
+		color: hsl(var(--muted-foreground));
+		pointer-events: none;
+	}
+
+	.triage-search-input {
+		width: 100%;
+		padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
+		font-size: 1.05rem;
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		background-color: hsl(var(--card));
+		color: hsl(var(--foreground));
+	}
+
+	.triage-search-input:focus {
+		outline: none;
+		border-color: hsl(var(--primary));
+		box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15);
+	}
+
+	.triage-chips-label {
+		margin-bottom: var(--spacing-xs);
+	}
+
+	.triage-chip-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-xs);
+		margin-bottom: var(--spacing-md);
+	}
+
+	.triage-chip {
+		padding: 0.4rem 0.9rem;
+		border: 1px solid hsl(var(--border));
+		border-radius: 9999px;
+		background-color: hsl(var(--card));
+		color: hsl(var(--foreground));
+		font-size: 0.9rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+	}
+
+	.triage-chip:hover {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.05);
+	}
+
+	.triage-suggestions {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 var(--spacing-md);
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		background-color: hsl(var(--card));
+		max-height: 18rem;
+		overflow-y: auto;
+	}
+
+	.triage-suggestions li {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--spacing-sm);
+		padding: var(--spacing-sm) var(--spacing-md);
+		cursor: pointer;
+		border-bottom: 1px solid hsl(var(--border));
+	}
+
+	.triage-suggestions li:last-child {
+		border-bottom: none;
+	}
+
+	.triage-suggestions li:hover,
+	.triage-suggestions li.is-active {
+		background-color: hsl(var(--primary) / 0.06);
+	}
+
+	.triage-suggestions li[aria-selected='true'] {
+		background-color: hsl(var(--primary) / 0.1);
+	}
+
+	.triage-suggestion-cat {
+		font-size: 0.65rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: hsl(var(--muted-foreground));
+		background-color: hsl(var(--muted));
+		padding: 0.2rem 0.5rem;
+		border-radius: 9999px;
+		white-space: nowrap;
+	}
+
+	.triage-suggestion-none {
+		cursor: default !important;
+		color: hsl(var(--muted-foreground));
+		font-size: 0.9rem;
+	}
+
+	.triage-suggestion-none:hover {
+		background: none !important;
+	}
+
+	.triage-unknown--emphasis {
+		color: hsl(var(--primary-dark));
+		font-weight: 600;
+	}
+
+	/* Step 3 — amount pills */
+	.triage-amount-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-sm);
+		margin-bottom: var(--spacing-md);
+	}
+
+	@media (min-width: 560px) {
+		.triage-amount-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.triage-amount {
+		display: block;
+		padding: var(--spacing-md) var(--spacing-lg);
+		border: 2px solid hsl(var(--border));
+		border-radius: var(--radius-md);
+		background-color: hsl(var(--card));
+		cursor: pointer;
+		transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+	}
+
+	.triage-amount:hover {
+		border-color: hsl(var(--primary));
+	}
+
+	.triage-amount input[type="radio"] {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.triage-amount:has(input:checked) {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.07);
+	}
+
+	.triage-amount:has(input:focus-visible) {
+		outline: 2px solid hsl(var(--primary));
+		outline-offset: 2px;
+	}
+
+	.triage-amount span {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+
+	.triage-amount small {
+		color: hsl(var(--muted-foreground));
+	}
+
+	.triage-step-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--spacing-sm);
+		margin-top: var(--spacing-md);
+	}
+
+	/* Emergency rail */
+	.triage-emergency-rail {
+		padding: var(--spacing-md) var(--spacing-lg);
+		margin-bottom: var(--spacing-lg);
+		border: 2px solid hsl(var(--tox-severe) / 0.5);
+		border-radius: var(--radius-card);
+		background-color: hsl(var(--tox-severe) / 0.06);
+	}
+
+	.triage-emergency-rail-title {
+		font-weight: 700;
+		color: hsl(var(--tox-severe));
+		margin: 0 0 var(--spacing-sm);
+	}
+
+	/* Result */
+	.triage-banner {
+		padding: var(--spacing-lg);
+		border-radius: var(--radius-card);
+		border: 2px solid transparent;
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.triage-banner--emergency {
+		border-color: hsl(var(--tox-severe) / 0.5);
+		background-color: hsl(var(--tox-severe) / 0.07);
+	}
+
+	.triage-banner--urgent {
+		border-color: hsl(var(--tox-moderate) / 0.5);
+		background-color: hsl(var(--tox-moderate) / 0.08);
+	}
+
+	.triage-banner--monitor {
+		border-color: hsl(var(--tox-mild) / 0.6);
+		background-color: hsl(var(--tox-mild) / 0.1);
+	}
+
+	.triage-banner-head {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: var(--spacing-sm);
+		margin-bottom: var(--spacing-xs);
+		font-size: 1.15rem;
+	}
+
+	.triage-headline {
+		margin: 0 0 var(--spacing-xs);
+		font-size: 1.05rem;
+		font-weight: 600;
+	}
+
+	.triage-amount-note {
+		margin: 0;
+		line-height: 1.6;
+	}
+
+	.triage-sub-heading {
+		font-size: 1.1rem;
+		margin: var(--spacing-lg) 0 var(--spacing-sm);
+	}
+
+	.triage-steps {
+		padding-left: var(--spacing-lg);
+	}
+
+	.triage-steps li {
+		margin-bottom: var(--spacing-sm);
+		line-height: 1.6;
+	}
+
+	.triage-steps--bullets {
+		list-style-type: disc;
+	}
+
+	.triage-detail {
+		margin-top: var(--spacing-lg);
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.triage-detail a {
+		font-weight: 600;
+		color: hsl(var(--primary));
+	}
+
+	.triage-result-actions {
+		padding-top: var(--spacing-sm);
+		border-top: 1px solid hsl(var(--border));
+	}
+
+	/* Noscript */
+	.triage-noscript {
+		padding: var(--spacing-lg);
+		border: 2px dashed hsl(var(--border));
+		border-radius: var(--radius-card);
+		margin-top: var(--spacing-lg);
+	}
+
+	/* Static content sections */
+	.triage-content-section {
+		margin-bottom: var(--spacing-2xl);
+	}
+
+	.triage-static-steps li {
+		margin-bottom: var(--spacing-sm);
+		line-height: 1.7;
+	}
+
+	.triage-symptoms-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--spacing-lg);
+	}
+
+	@media (min-width: 560px) {
+		.triage-symptoms-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.triage-symptoms-grid h3 {
+		font-size: 1.1rem;
+	}
+
+	.triage-symptoms-grid ul {
+		padding-left: var(--spacing-lg);
+	}
+
+	.triage-symptoms-grid li {
+		margin-bottom: var(--spacing-xs);
+		line-height: 1.6;
+	}
+</style>

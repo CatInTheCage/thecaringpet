@@ -125,6 +125,14 @@ const itemListSchema = {
 		</div>
 	</section>
 
+	<a class="tox-triage-callout" href="/tools/pet-poison-triage/">
+		<span class="tox-triage-callout-text">
+			<strong>Pet already ate something?</strong> Run the Pet Poison Triage Wizard — 3 quick questions
+			to get severity, first-aid steps, and when to call.
+		</span>
+		<span class="tox-triage-callout-link">Start triage →</span>
+	</a>
+
 	<p id="tox-result-count" class="tox-result-count" aria-live="polite" role="status"></p>
 
 	<section id="tox-results" class="tox-results" aria-label="Toxin results">
@@ -165,6 +173,9 @@ const itemListSchema = {
 					don't rely on a missing search result.
 				</p>
 				<PoisonHotlines compact={true} />
+				<p class="tox-empty-triage">
+					Or <a href="/tools/pet-poison-triage/">try the Pet Poison Triage Wizard →</a>
+				</p>
 			</div>
 		</div>
 	</section>
@@ -284,6 +295,42 @@ const itemListSchema = {
 </Page>
 
 <style>
+	.tox-triage-callout {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-md);
+		padding: var(--spacing-md) var(--spacing-lg);
+		margin-bottom: var(--spacing-lg);
+		border: 1px solid hsl(var(--primary) / 0.35);
+		border-left: 4px solid hsl(var(--primary));
+		border-radius: var(--radius-md);
+		background-color: hsl(var(--primary) / 0.05);
+		text-decoration: none;
+	}
+
+	.tox-triage-callout-text {
+		color: hsl(var(--foreground));
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.tox-triage-callout-link {
+		flex-shrink: 0;
+		font-weight: 600;
+		color: hsl(var(--primary));
+		white-space: nowrap;
+	}
+
+	.tox-triage-callout:hover .tox-triage-callout-link {
+		color: hsl(var(--primary-dark));
+	}
+
+	.tox-empty-triage a {
+		font-weight: 600;
+		color: hsl(var(--primary));
+	}
+
 	.tox-search-box {
 		position: relative;
 		margin-bottom: var(--spacing-lg);
