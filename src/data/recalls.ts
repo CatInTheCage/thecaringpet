@@ -11,6 +11,36 @@ const FDA_RECALLS_PAGE = {
 
 export const recalls: Recall[] = [
 	{
+		slug: 'northwest-naturals-chicken-recipe-2026',
+		brand: 'Northwest Naturals',
+		product: 'Frozen Chicken Recipe (cat food / dog topper) & Frozen Raw Diet for Dogs Chicken Recipe',
+		aliases: ['nw naturals', 'northwest naturals raw', 'northwest naturals frozen'],
+		category: 'pet-food',
+		company: 'Northwest Naturals (Portland, OR)',
+		lotCodes: ['B-5', 'B-19'],
+		sizes: '2 lb bags (cat food, 12 per case) and 6 lb bags (dog raw diet, 6 per case), ~1,956 lbs total',
+		bestByDates: ['2028-01-26', '2028-01-25'],
+		hazard: 'Salmonella and Listeria monocytogenes',
+		hazardDetail:
+			'FDA sample testing found Salmonella in the 2 lb Frozen Chicken Recipe and both Salmonella and Listeria monocytogenes in the 6 lb Frozen Raw Diet for Dogs Chicken Recipe. Both bacteria can sicken pets and the people handling the food. No illnesses had been reported as of the announcement.',
+		recallDate: '2026-08-28',
+		status: 'active',
+		species: ['cat', 'dog'],
+		whatToDo: [
+			'Check your freezer for the two affected lots: 2 lb Chicken Recipe — Lot B-5, Best By 01/26/2028, UPC 087316384956; 6 lb Raw Diet for Dogs — Lot B-19, Best By 01/25/2028, UPC 087316380392.',
+			'Stop feeding the affected food immediately and return the unused portion to the place of purchase for a full refund.',
+			'Handle it carefully: double-bag anything you discard, wash your hands, and sanitize bowls, utensils, surfaces, and freezer space the food touched.',
+			'If your pet already ate an affected lot, call your veterinarian — watch for vomiting, diarrhea (possibly bloody), fever, lethargy, or loss of appetite.',
+			'Questions? Call Northwest Naturals at 1-866-637-1872 (Mon–Thu 8am–4pm PT) or email recallinfo@nw-naturals.net.',
+		],
+		source: {
+			name: 'FDA Recall Notice — Northwest Naturals (August 28, 2026)',
+			url: 'https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/northwest-naturals-voluntarily-recalls-two-raw-pet-food-products-because-possible-salmonella',
+		},
+		relatedArticle: 'why-so-many-pet-food-recalls-2026',
+		lastVerified: '2026-09-04',
+	},
+	{
 		slug: 'pedigree-chicken-duck-canned-2026',
 		brand: 'Pedigree',
 		product: 'PEDIGREE® Can High Protein Chopped Chicken & Duck Flavor Wet Dog Food',
