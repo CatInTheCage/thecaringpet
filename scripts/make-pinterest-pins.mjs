@@ -28,6 +28,14 @@ const PINS = [
   { img: 'new-puppy-essentials-checklist-hero.jpg', title: 'New Puppy|Essentials|Checklist', file: 'pin-new-puppy-checklist.png' },
   { img: 'slow-feeder-size-guide-hero.jpg', title: 'Slow Feeder|Bowl Size|Guide', file: 'pin-slow-feeder-size.png' },
   { img: 'why-dog-eats-fast-hero.jpg', title: 'Why Does My Dog|Eat So Fast?', file: 'pin-why-dog-eats-fast.png' },
+  // 2026-10-12 批次:发布时目标链接见 pin-destinations 注释
+  { img: 'halloween-candy-toxic-to-dogs-cats-hero.jpg', title: 'Halloween Candy|That Can Kill|Dogs & Cats', file: 'pin-halloween-candy-toxicity.png' },
+  { img: 'cat-years-to-human-years-hero.jpg', title: 'Cat Years to|Human Years|Conversion Chart', file: 'pin-cat-age-chart.png' },
+  { img: 'why-dog-eats-fast-hero.jpg', title: 'How Old Is Your Dog|in Human|Years?', file: 'pin-dog-age-chart.png' },
+  { img: 'pet-food-recall-crisis-hero.jpg', title: 'Is Your Pet Food|on the|Recall List?', file: 'pin-recall-checker.png' },
+  { img: 'best-microchip-cat-feeders-2026.jpg', title: 'Best Microchip|Cat Feeders|for Multi-Cat Homes', file: 'pin-microchip-feeders.png' },
+  { img: 'cat-straining-to-pee-hero.jpg', title: 'Cat Straining|to Pee Is an|Emergency', file: 'pin-cat-urinary-blockage.png' },
+  { img: 'cat-eating.jpg', title: 'Best Slow|Feeders|for Cats', file: 'pin-cat-slow-feeder.png' },
 ];
 
 // 把标题文字按 | 分行，生成 SVG 蒙层 + 文字
