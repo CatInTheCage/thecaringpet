@@ -82,6 +82,27 @@ const fullTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 				gtag('js', new Date());
 				gtag('config', GA_TRACKING_ID);
 			</script>
+			<script define:vars={{ GA_TRACKING_ID }}>
+				// Outbound Amazon click tracking (affiliate funnel) — delegated so it
+				// covers every current and future amazon.com / amzn.to link on the page.
+				document.addEventListener(
+					'click',
+					function (e) {
+						var target = e.target;
+						var link = target && target.closest ? target.closest('a[href]') : null;
+						if (!link) return;
+						var href = link.getAttribute('href') || '';
+						if (!/amazon\.com|amzn\.to/.test(href)) return;
+						if (typeof window.gtag !== 'function') return;
+						window.gtag('event', 'amazon_click', {
+							product_id: link.dataset.productId || '',
+							link_url: href,
+							page_path: window.location.pathname
+						});
+					},
+					true
+				);
+			</script>
 		</>
 	)
 }
