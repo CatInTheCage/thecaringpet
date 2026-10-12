@@ -1,6 +1,7 @@
 ---
 import Page from '../../../layouts/Page.astro';
 import FAQ from '../../../components/FAQ.astro';
+import ProductCard from '../../../components/ProductCard.astro';
 
 const title = 'Dog Age Calculator — Convert Dog Years to Human Years';
 const description = 'Convert your dog\'s age to human years based on size. More accurate than the outdated 7-year rule, with vet-aligned health milestones.';
@@ -257,6 +258,62 @@ const schemaJson = {
 				</ul>
 			</div>
 		</div>
+	</section>
+
+	<section class="section-content">
+		<h2>Feeding Essentials for Every Life Stage</h2>
+		<p class="text-muted">Age-appropriate picks that match the milestones above. As an Amazon Associate, we earn from qualifying purchases made through these links.</p>
+
+		<ProductCard
+			product={{
+				name: "Outward Hound Fun Feeder Slo Bowl",
+				rating: "4.6",
+				reviews: "38,000+",
+				image: "/images/products/outward-hound-slo-bowl.jpg",
+				bestFor: "Puppies and fast eaters — slows gulping from day one",
+				material: "BPA-free plastic",
+				capacity: "Up to 4 cups in large size",
+				price: "$8–$18",
+				pros: ["Maze pattern slows eating", "Non-slip base", "Top-rack dishwasher safe", "Multiple sizes and colors"],
+				cons: ["Small sizes can be flipped by determined dogs", "Not ideal for flat-faced breeds", "Can scratch and harbor bacteria"],
+				amazonId: "B00FPKNRG4"
+			}}
+			badge="Puppy"
+		/>
+
+		<ProductCard
+			product={{
+				name: "LE TAUCI Ceramic Slow Feeder Dog Bowl",
+				rating: "4.6",
+				reviews: "2,500+",
+				image: "/images/products/le-tauci-ceramic.jpg",
+				bestFor: "Adult dogs — heavy ceramic option, no plastic contact",
+				material: "Lead-free ceramic",
+				capacity: "1.5 cups",
+				price: "$18–$24",
+				pros: ["Heavy and stable", "No plastic contact with food", "Microwave and dishwasher safe", "Smooth glaze resists scratches"],
+				cons: ["Can chip or crack if dropped", "Limited to small and medium dogs", "Higher price than plastic"],
+				amazonId: "B0965DBB9Q"
+			}}
+			badge="Adult"
+		/>
+
+		<ProductCard
+			product={{
+				name: "Nina Ottosson by Outward Hound Dog Smart",
+				rating: "4.5",
+				reviews: "18,000+",
+				image: "/images/products/nina-ottosson-dog-smart.jpg",
+				bestFor: "Senior dogs — mental enrichment for slowing joints",
+				material: "BPA-free plastic / composite",
+				capacity: "9 hidden treat compartments",
+				price: "$12–$17",
+				pros: ["Level 1 beginner difficulty", "Lift-out bones are intuitive", "Non-slip base", "Easy to clean"],
+				cons: ["Plastic pieces can be chewed if unsupervised", "Not challenging enough for experienced dogs", "Small compartments limit meal size"],
+				amazonId: "B0711Y9Y8W"
+			}}
+			badge="Senior"
+		/>
 	</section>
 
 	<section class="section-content">

@@ -1,6 +1,7 @@
 ---
 import Page from '../../../layouts/Page.astro';
 import FAQ from '../../../components/FAQ.astro';
+import ProductCard from '../../../components/ProductCard.astro';
 
 const title = 'Cat Age Calculator — Convert Cat Years to Human Years';
 const description = 'Convert your cat\'s age to human years using the Cornell-vetted 16-5-4 model. Find your cat\'s life stage and vet-backed health milestones.';
@@ -233,6 +234,79 @@ const schemaJson = {
 				</ul>
 			</div>
 		</div>
+	</section>
+
+	<section class="section-content">
+		<h2>Feeding Essentials for Every Life Stage</h2>
+		<p class="text-muted">Age-appropriate picks that match the milestones above. As an Amazon Associate, we earn from qualifying purchases made through these links.</p>
+
+		<ProductCard
+			product={{
+				name: "LE TAUCI Cat Food Bowl Ceramic",
+				rating: "4.8",
+				reviews: "560+",
+				image: "/images/products/le-tauci-cat-bowl.jpg",
+				bestFor: "Kittens and small cats — whisker-friendly shallow dish",
+				material: "Food-grade ceramic",
+				capacity: "8 oz",
+				price: "$18–$19",
+				pros: ["Wide and shallow to reduce whisker fatigue", "Heavy enough to resist tipping", "Microwave and dishwasher safe", "Lead-free glaze"],
+				cons: ["Smaller capacity than deep bowls", "Ceramic can chip if dropped"],
+				amazonId: "B0B9ZLHLLP"
+			}}
+			badge="Kitten"
+		/>
+
+		<ProductCard
+			product={{
+				name: "PETLIBRO Granary Camera Feeder (Dual Tray)",
+				rating: "4.4",
+				reviews: "3,800+",
+				image: "/images/products/petlibro-granary-camera-dual-tray.jpg",
+				bestFor: "Adult cats — portion control and weight management",
+				material: "ABS plastic with stainless steel bowls",
+				capacity: "5 L / 169 oz hopper",
+				price: "$140–$170",
+				pros: ["1080p camera with night vision", "Dual food trays for two cats", "5 GHz and 2.4 GHz WiFi", "Motion and sound alerts"],
+				cons: ["Dry food only", "Cloud storage is paid after trial", "Dual trays split portions evenly", "App and camera add failure points"],
+				amazonId: "B0B5ZJS7XC"
+			}}
+			badge="Adult"
+		/>
+
+		<ProductCard
+			product={{
+				name: "Y YHY Raised Cat Bowl",
+				rating: "4.5",
+				reviews: "3,300+",
+				image: "/images/products/yyhy-raised-cat-bowl.jpg",
+				bestFor: "Senior cats — raised, tilted bowl eases neck and joint strain",
+				material: "Ceramic",
+				capacity: "~1.25 cups",
+				price: "$12–$18",
+				pros: ["Very affordable for elevated", "15° tilt keeps food centered", "Huge review base", "Dishwasher safe"],
+				cons: ["Quality can vary by batch", "Tilted design may spill if overfilled", "Base is lighter than premium brands"],
+				amazonId: "B0861N79XY"
+			}}
+			badge="Senior"
+		/>
+
+		<ProductCard
+			product={{
+				name: "Nutramax Cosequin for Cats Joint Health Supplement",
+				rating: "4.7",
+				reviews: "17,000+",
+				image: "/images/products/cosequin-for-cats.jpg",
+				bestFor: "Senior cats slowing down on jumps and play",
+				material: "Sprinkle capsules (glucosamine + chondroitin)",
+				capacity: "80 capsules × 2 packs",
+				price: "$26.99",
+				pros: ["Sprinkle format mixes into wet food", "Glucosamine and chondroitin support joints", "Omega-3s for skin and coat", "Long-established supplement brand"],
+				cons: ["Effects can take 4–6 weeks to appear", "Powder can dust the bowl", "Check with your vet alongside other medication"],
+				amazonId: "B0GQV3DRHQ"
+			}}
+			badge="Senior Joints"
+		/>
 	</section>
 
 	<section class="section-content">
