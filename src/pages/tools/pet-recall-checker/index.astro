@@ -2,9 +2,10 @@
 import Page from '../../../layouts/Page.astro';
 import PoisonHotlines from '../../../components/PoisonHotlines.astro';
 import ToxinDisclaimer from '../../../components/ToxinDisclaimer.astro';
+import NewsletterForm from '../../../components/NewsletterForm.astro';
 import { recalls } from '../../../data/recalls';
 import { SITE_URL } from '../../../consts';
-import type { RecallStatus, RecallCategory } from '../../../types/recall';
+import type { RecallStatus } from '../../../types/recall';
 
 const title = 'Pet Food Recall Checker';
 const description = 'Enter a brand, product, or lot code to check your pet food against every verified FDA recall and advisory since 2025. Free, no sign-up.';
@@ -23,14 +24,10 @@ const statusFilters: { slug: RecallStatus | 'all'; label: string }[] = [
 	{ slug: 'terminated', label: 'Terminated' },
 ];
 
-const categoryFilters: { slug: RecallCategory | 'all'; label: string }[] = [
-	{ slug: 'all', label: 'All' },
-	{ slug: 'dog-food', label: 'Dog Food' },
-	{ slug: 'cat-food', label: 'Cat Food' },
-	{ slug: 'pet-food', label: 'Dog & Cat Food' },
-	{ slug: 'dog-treat', label: 'Treats' },
-	{ slug: 'supplement', label: 'Supplements' },
-	{ slug: 'other', label: 'Other' },
+const speciesFilters: { slug: 'all' | 'dog' | 'cat'; label: string }[] = [
+	{ slug: 'all', label: 'All pets' },
+	{ slug: 'dog', label: 'Dogs' },
+	{ slug: 'cat', label: 'Cats' },
 ];
 
 const statusLabel: Record<RecallStatus, string> = {
@@ -39,18 +36,57 @@ const statusLabel: Record<RecallStatus, string> = {
 	terminated: 'Terminated',
 };
 
-const categoryLabel: Record<RecallCategory, string> = {
-	'dog-food': 'Dog Food',
-	'cat-food': 'Cat Food',
-	'pet-food': 'Dog & Cat Food',
-	'dog-treat': 'Dog Treat',
+const categoryLabel: Record<string, string> = {
+	'dog-food': 'Dog food',
+	'cat-food': 'Cat food',
+	'pet-food': 'Dog & cat food',
+	'dog-treat': 'Dog treat',
 	supplement: 'Supplement',
 	other: 'Other',
 };
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtDate = (iso: string) => {
+	const [y, m, d] = iso.split('-').map(Number);
+	return `${MONTHS[m - 1]} ${d}, ${y}`;
+};
+
+// Bucket free-text hazard strings into a small, scannable filter list.
+function hazardBucket(hazard: string): string {
+	const s = hazard.toLowerCase();
+	if (/salmonella/.test(s) && /listeria/.test(s)) return 'Salmonella & Listeria';
+	if (/salmonella/.test(s)) return 'Salmonella';
+	if (/listeria/.test(s)) return 'Listeria';
+	if (/h5n1|avian|bird flu/.test(s)) return 'H5N1 (Bird flu)';
+	if (/thiamine|vitamin b1/.test(s)) return 'Low thiamine (Vitamin B1)';
+	if (/vitamin d/.test(s)) return 'Vitamin D imbalance';
+	if (/foreign|metal|plastic|choking/.test(s)) return 'Foreign material';
+	if (/bacteri|e\.?\s?coli|campylobacter|leptospira/.test(s)) return 'Harmful bacteria';
+	if (/nutrient|deficien|potassium|copper|folic|choline|vitamin b6/.test(s)) return 'Nutrient deficiency';
+	if (/aflatoxin|mycotoxin|mold/.test(s)) return 'Mycotoxin / mold';
+	return 'Other';
+}
+
+const hazardOptions = [...new Set(recalls.map((r) => hazardBucket(r.hazard)))].sort();
+const brandCount = new Set(recalls.map((r) => r.brand)).size;
+
 // Newest first.
 const sortedRecalls = [...recalls].sort((a, b) => (b.updatedDate || b.recallDate).localeCompare(a.updatedDate || a.recallDate));
 const lastUpdated = sortedRecalls[0] ? (sortedRecalls[0].updatedDate || sortedRecalls[0].recallDate) : '';
+const latest = sortedRecalls[0];
+
+// Group by year (of the display date) for scannable list sections.
+const yearGroups: [string, { recall: (typeof sortedRecalls)[0]; index: number }[]][] = [];
+let rowIndex = 0;
+for (const recall of sortedRecalls) {
+	const year = (recall.updatedDate || recall.recallDate).slice(0, 4);
+	let group = yearGroups.find(([y]) => y === year);
+	if (!group) {
+		group = [year, []];
+		yearGroups.push(group);
+	}
+	group[1].push({ recall, index: rowIndex++ });
+}
 
 const itemListSchema = {
 	'@context': 'https://schema.org',
@@ -69,6 +105,14 @@ const itemListSchema = {
 <Page title={title} description={description} image={image} breadcrumbs={breadcrumbs} wide={true} compactHeader={true} showNewsletter={false}>
 	<script type="application/ld+json" is:inline set:html={JSON.stringify(itemListSchema)} slot="head" />
 
+	{latest && (
+		<a class="recall-latest" href={`/tools/pet-recall-checker/${latest.slug}/`}>
+			<span class="recall-latest-tag">Latest {statusLabel[latest.status].toLowerCase()}</span>
+			<span class="recall-latest-text"><strong>{latest.brand}</strong>: {latest.product}</span>
+			<span class="recall-latest-date">{fmtDate(latest.updatedDate || latest.recallDate)}</span>
+		</a>
+	)}
+
 	<section class="recall-search" aria-label="Recall search">
 		<div class="recall-search-box">
 			<svg class="recall-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -79,66 +123,95 @@ const itemListSchema = {
 				type="search"
 				id="recall-search-input"
 				class="recall-search-input"
-				placeholder="Type a brand, product, or lot code… (e.g. Pedigree, Quest, 613C3KKCFC)"
+				placeholder="Search by brand, product, or lot code — e.g. Pedigree, Quest, 613C3KKCFC"
 				autocomplete="off"
 				aria-label="Search recalls by brand, product, or lot code"
 			/>
 		</div>
-
-		<div class="recall-filters">
-			<div class="recall-filter-group" aria-label="Filter by status">
-				<span class="recall-filter-label">Status:</span>
-				{statusFilters.map((f) => (
-					<label class="recall-pill">
-						<input type="radio" name="status" value={f.slug} checked={f.slug === 'all'} />
-						<span>{f.label}</span>
-					</label>
-				))}
-			</div>
-			<div class="recall-filter-group" aria-label="Filter by product type">
-				<span class="recall-filter-label">Type:</span>
-				{categoryFilters.map((f) => (
-					<label class="recall-pill">
-						<input type="radio" name="category" value={f.slug} checked={f.slug === 'all'} />
-						<span>{f.label}</span>
-					</label>
-				))}
-			</div>
-		</div>
+		<p class="recall-stats">
+			<strong>{recalls.length}</strong> recall records · <strong>{brandCount}</strong> brands covered · Sourced from FDA notices · Updated weekly
+		</p>
 	</section>
+
+	<div class="recall-filters">
+		<div class="recall-filter-row">
+			<div class="recall-filter-group" aria-label="Filter by pet type">
+				{speciesFilters.map((f) => (
+					<label class="recall-pill">
+						<input type="radio" name="species" value={f.slug} checked={f.slug === 'all'} />
+						<span>{f.label}</span>
+					</label>
+				))}
+			</div>
+			<label class="recall-select-wrap">
+				<span class="recall-select-label">Hazard</span>
+				<select id="hazard-select" aria-label="Filter by hazard">
+					<option value="all">Every hazard</option>
+					{hazardOptions.map((h) => <option value={h}>{h}</option>)}
+				</select>
+			</label>
+		</div>
+		<div class="recall-filter-group" aria-label="Filter by status">
+			<span class="recall-filter-label">Status:</span>
+			{statusFilters.map((f) => (
+				<label class="recall-pill">
+					<input type="radio" name="status" value={f.slug} checked={f.slug === 'all'} />
+					<span>{f.label}</span>
+				</label>
+			))}
+		</div>
+	</div>
 
 	<p class="recall-meta">
 		<span id="recall-result-count" aria-live="polite" role="status"></span>
-		<span class="recall-updated">Database covers verified 2025–2026 actions · latest entry: {lastUpdated} · always confirm against the linked FDA notice.</span>
+		<span class="recall-updated">Latest entry: {lastUpdated} · always confirm against the linked FDA notice.</span>
 	</p>
 
 	<section id="recall-results" class="recall-results" aria-label="Recall results">
-		{sortedRecalls.map((r) => (
-			<a
-				class="recall-card"
-				href={`/tools/pet-recall-checker/${r.slug}/`}
-				data-slug={r.slug}
-				data-search={`${r.brand} ${r.product} ${r.aliases.join(' ')} ${r.company} ${r.hazard} ${r.hazardDetail}`.toLowerCase()}
-				data-lots={r.lotCodes.join(' ').toLowerCase()}
-				data-status={r.status}
-				data-category={r.category}
-			>
-				<div class="recall-card-head">
-					<span class={`recall-status recall-status--${r.status}`}>{statusLabel[r.status]}</span>
-					<span class="recall-cat">{categoryLabel[r.category]}</span>
-				</div>
-				<h2 class="recall-brand">{r.brand}</h2>
-				<p class="recall-product text-muted">{r.product}</p>
-				<p class="recall-hazard">
-					<span class="recall-hazard-label">{r.hazard}</span>
-					<span class="recall-date"> · announced {r.recallDate}{r.updatedDate ? `, updated ${r.updatedDate}` : ''}</span>
-				</p>
-				{r.lotCodes.length > 0 && (
-					<p class="recall-lots">Lots: {r.lotCodes.join(', ')}</p>
-				)}
-				<span class="recall-link">Check details & what to do →</span>
-			</a>
+		{yearGroups.map(([year, items]) => (
+			<div class="recall-year-group">
+				<div class="recall-year-head" data-year={year}>{year}</div>
+				{items.map(({ recall: r, index }) => {
+					const displayDate = r.updatedDate || r.recallDate;
+					const metaLots = r.lotCodes.length > 0 ? ` · Lots: ${r.lotCodes.slice(0, 2).join(', ')}${r.lotCodes.length > 2 ? '…' : ''}` : '';
+					return (
+						<a
+							class="recall-row"
+							href={`/tools/pet-recall-checker/${r.slug}/`}
+							data-index={index}
+							data-year={year}
+							data-slug={r.slug}
+							data-search={`${r.brand} ${r.product} ${r.aliases.join(' ')} ${r.company} ${r.hazard} ${r.hazardDetail}`.toLowerCase()}
+							data-lots={r.lotCodes.join(' ').toLowerCase()}
+							data-status={r.status}
+							data-hazard={hazardBucket(r.hazard)}
+							data-species={r.species.join(' ')}
+						>
+							<span class={`recall-tile tile--${r.category}`} aria-hidden="true">{r.brand.charAt(0)}</span>
+							<span class="recall-row-main">
+								<span class="recall-row-top">
+									<span class="recall-brand">{r.brand}</span>
+									<span class={`recall-status recall-status--${r.status}`}>{statusLabel[r.status]}</span>
+								</span>
+								<span class="recall-product">{r.product}</span>
+								<span class="recall-row-meta">
+									{r.hazard} · {categoryLabel[r.category]}{metaLots}
+									<span class="recall-date-mobile"> · {fmtDate(displayDate)}</span>
+								</span>
+							</span>
+							<span class="recall-row-date">
+								<span class="recall-date">{fmtDate(displayDate)}</span>
+								{r.updatedDate && <span class="recall-date-note">updated {fmtDate(r.updatedDate)}</span>}
+							</span>
+						</a>
+					);
+				})}
+			</div>
 		))}
+
+		<button id="recall-load-more" class="recall-load-more" type="button" hidden>
+			Show older notices
+		</button>
 
 		<div id="recall-empty" class="recall-empty" hidden>
 			<h2 id="recall-empty-title">No recall found</h2>
@@ -156,13 +229,24 @@ const itemListSchema = {
 
 	<ToxinDisclaimer lead="This tool indexes official recall notices — it is not itself an official notice." />
 
+	<NewsletterForm
+		title="Hear about a recall before your store does"
+		description="We check FDA notices weekly. Get new pet food recalls and advisories in your inbox."
+		buttonText="Send me recall alerts"
+	/>
+
 	<script is:inline>
 		(function () {
-			const cards = Array.from(document.querySelectorAll('.recall-card'));
+			const PAGE_SIZE = 30;
+			const rows = Array.from(document.querySelectorAll('.recall-row'));
+			const yearHeads = Array.from(document.querySelectorAll('.recall-year-head'));
 			const input = document.getElementById('recall-search-input');
+			const hazardSelect = document.getElementById('hazard-select');
 			const empty = document.getElementById('recall-empty');
 			const emptyTitle = document.getElementById('recall-empty-title');
 			const countEl = document.getElementById('recall-result-count');
+			const loadBtn = document.getElementById('recall-load-more');
+			let revealed = PAGE_SIZE;
 
 			function currentFilter(name) {
 				const checked = document.querySelector('input[name="' + name + '"]:checked');
@@ -171,11 +255,11 @@ const itemListSchema = {
 
 			// Lot-code matching: exact or prefix match in either direction,
 			// so "613C3" finds "613C3KKCFC" and a full code finds itself.
-			function lotMatches(cardLots, query) {
-				if (!cardLots) return false;
+			function lotMatches(rowLots, query) {
+				if (!rowLots) return false;
 				const q = query.replace(/\s+/g, '');
 				if (q.length < 3) return false; // 1-2 chars are too vague to be a lot fragment
-				return cardLots.split(' ').some((lot) => {
+				return rowLots.split(' ').some((lot) => {
 					const l = lot.replace(/\s+/g, '');
 					return l === q || l.startsWith(q) || q.startsWith(l);
 				});
@@ -183,34 +267,42 @@ const itemListSchema = {
 
 			function applyFilters() {
 				const query = (input.value || '').trim().toLowerCase();
+				const species = currentFilter('species');
 				const status = currentFilter('status');
-				const category = currentFilter('category');
+				const hazard = hazardSelect ? hazardSelect.value : 'all';
 
 				let visible = 0;
-				cards.forEach((card) => {
-					const text = card.dataset.search || '';
+				rows.forEach((row) => {
+					const text = row.dataset.search || '';
 					const matchesQuery =
 						query === '' ||
 						text.includes(query) ||
-						lotMatches(card.dataset.lots || '', query);
-					const matchesStatus = status === 'all' || card.dataset.status === status;
-					const matchesCategory = category === 'all' || card.dataset.category === category;
+						lotMatches(row.dataset.lots || '', query);
+					const matchesSpecies = species === 'all' || (row.dataset.species || '').split(' ').indexOf(species) !== -1;
+					const matchesStatus = status === 'all' || row.dataset.status === status;
+					const matchesHazard = hazard === 'all' || row.dataset.hazard === hazard;
+					const withinLimit = Number(row.dataset.index) < revealed;
 
-					const show = matchesQuery && matchesStatus && matchesCategory;
-					card.hidden = !show;
+					const show = matchesQuery && matchesSpecies && matchesStatus && matchesHazard && withinLimit;
+					row.hidden = !show;
 					if (show) visible++;
 				});
 
+				// Hide year headers whose group has no visible rows.
+				yearHeads.forEach((head) => {
+					const year = head.dataset.year;
+					const anyVisible = rows.some((row) => row.dataset.year === year && !row.hidden);
+					head.hidden = !anyVisible;
+				});
+
+				countEl.textContent = 'Showing ' + visible + ' of ' + rows.length + ' notices.';
 				empty.hidden = visible !== 0;
-				countEl.textContent =
-					visible === 0
-						? ''
-						: `Showing ${visible} recall${visible === 1 ? '' : 's'}.`;
 				if (visible === 0 && query) {
-					emptyTitle.textContent = `No recall found for "${query}"`;
+					emptyTitle.textContent = 'No recall found for "' + query + '"';
 				} else if (visible === 0) {
 					emptyTitle.textContent = 'No recalls match these filters';
 				}
+				if (loadBtn) loadBtn.hidden = revealed >= rows.length;
 			}
 
 			let debounceTimer;
@@ -218,8 +310,13 @@ const itemListSchema = {
 				clearTimeout(debounceTimer);
 				debounceTimer = setTimeout(applyFilters, 120);
 			});
-			document.querySelectorAll('input[name="status"], input[name="category"]').forEach((el) => {
+			document.querySelectorAll('input[name="status"], input[name="species"]').forEach((el) => {
 				el.addEventListener('change', applyFilters);
+			});
+			hazardSelect?.addEventListener('change', applyFilters);
+			loadBtn?.addEventListener('click', () => {
+				revealed += PAGE_SIZE;
+				applyFilters();
 			});
 
 			// Pre-fill from ?q= for shareable links.
@@ -232,9 +329,55 @@ const itemListSchema = {
 </Page>
 
 <style>
+	/* Latest-alert banner */
+	.recall-latest {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--spacing-sm);
+		padding: 0.8rem 1.25rem;
+		margin-bottom: var(--spacing-lg);
+		background-color: hsl(var(--secondary) / 0.08);
+		border: 1px solid hsl(var(--secondary) / 0.35);
+		border-radius: 16px;
+		text-decoration: none;
+		color: hsl(var(--foreground));
+		transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+	}
+
+	.recall-latest:hover {
+		border-color: hsl(var(--secondary) / 0.6);
+		background-color: hsl(var(--secondary) / 0.12);
+		text-decoration: none;
+	}
+
+	.recall-latest-tag {
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: hsl(var(--secondary-dark));
+		background-color: hsl(var(--secondary) / 0.16);
+		padding: 0.2rem 0.6rem;
+		border-radius: 9999px;
+		white-space: nowrap;
+	}
+
+	.recall-latest-text {
+		flex: 1;
+		min-width: 0;
+		font-size: 0.95rem;
+	}
+
+	.recall-latest-date {
+		font-size: 0.85rem;
+		color: hsl(var(--muted-foreground));
+		white-space: nowrap;
+	}
+
+	/* Search */
 	.recall-search-box {
 		position: relative;
-		margin-bottom: var(--spacing-lg);
 	}
 
 	.recall-search-icon {
@@ -242,34 +385,56 @@ const itemListSchema = {
 		left: var(--spacing-md);
 		top: 50%;
 		transform: translateY(-50%);
-		width: 1.25rem;
-		height: 1.25rem;
+		width: 1.4rem;
+		height: 1.4rem;
 		color: hsl(var(--muted-foreground));
 		pointer-events: none;
 	}
 
 	.recall-search-input {
 		width: 100%;
-		padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
-		font-size: 1.1rem;
+		height: 3.5rem;
+		padding: 0 var(--spacing-lg) 0 3.25rem;
+		font-size: 1.05rem;
 		border: 1px solid hsl(var(--border));
-		border-radius: var(--radius-md);
+		border-radius: 16px;
 		background-color: hsl(var(--card));
 		color: hsl(var(--foreground));
+		box-shadow: 0 10px 30px hsl(var(--foreground) / 0.06);
 		transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
 	}
 
 	.recall-search-input:focus {
 		outline: none;
 		border-color: hsl(var(--primary));
-		box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15);
+		box-shadow: 0 0 0 3px hsl(var(--primary) / 0.15), 0 10px 30px hsl(var(--foreground) / 0.06);
 	}
 
+	.recall-stats {
+		margin: var(--spacing-sm) 0 0;
+		font-size: 0.9rem;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.recall-stats strong {
+		color: hsl(var(--foreground));
+	}
+
+	/* Filters */
 	.recall-filters {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-md);
-		margin-bottom: var(--spacing-lg);
+		gap: var(--spacing-sm);
+		margin-top: var(--spacing-lg);
+		margin-bottom: var(--spacing-md);
+	}
+
+	.recall-filter-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-sm);
 	}
 
 	.recall-filter-group {
@@ -320,6 +485,32 @@ const itemListSchema = {
 		color: hsl(var(--primary-foreground));
 	}
 
+	.recall-select-wrap {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+	}
+
+	.recall-select-label {
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: hsl(var(--muted-foreground));
+	}
+
+	.recall-select-wrap select {
+		height: 2.4rem;
+		padding: 0 2rem 0 0.9rem;
+		font-size: 0.9rem;
+		color: hsl(var(--foreground));
+		background-color: hsl(var(--card));
+		border: 1px solid hsl(var(--border));
+		border-radius: 9999px;
+		cursor: pointer;
+	}
+
+	/* Result meta line */
 	.recall-meta {
 		display: flex;
 		flex-wrap: wrap;
@@ -334,56 +525,102 @@ const itemListSchema = {
 		font-size: 0.8rem;
 	}
 
+	/* Compact list rows */
 	.recall-results {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--spacing-md);
-	}
-
-	@media (min-width: 560px) {
-		.recall-results {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 900px) {
-		.recall-results {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	.recall-card {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-xs);
-		padding: var(--spacing-lg);
-		border: 1px solid hsl(var(--border));
-		border-radius: var(--radius-card);
-		background-color: hsl(var(--card));
+	}
+
+	.recall-year-head {
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: hsl(var(--muted-foreground));
+		padding: var(--spacing-md) var(--spacing-sm) var(--spacing-xs);
+		border-bottom: 1px solid hsl(var(--border));
+	}
+
+	.recall-year-head[hidden] {
+		display: none;
+	}
+
+	.recall-row {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-md);
+		padding: var(--spacing-md) var(--spacing-sm);
+		border-bottom: 1px solid hsl(var(--border));
 		text-decoration: none;
 		color: hsl(var(--foreground));
-		transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+		transition: background-color var(--dur-short) var(--ease-out);
 	}
 
-	.recall-card:hover {
-		border-color: hsl(var(--primary) / 0.3);
-		box-shadow: var(--shadow-card-hover);
+	.recall-row:hover {
+		background-color: hsl(var(--primary) / 0.04);
 		text-decoration: none;
 	}
 
-	.recall-card-head {
+	.recall-row[hidden] {
+		display: none;
+	}
+
+	.recall-tile {
+		flex-shrink: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 3rem;
+		height: 3rem;
+		border-radius: var(--radius-md);
+		font-size: 1.3rem;
+		font-weight: 700;
+	}
+
+	.tile--dog-food,
+	.tile--dog-treat {
+		background-color: hsl(var(--primary) / 0.1);
+		color: hsl(var(--primary));
+	}
+
+	.tile--cat-food {
+		background-color: hsl(var(--secondary) / 0.14);
+		color: hsl(var(--secondary-dark));
+	}
+
+	.tile--pet-food,
+	.tile--supplement,
+	.tile--other {
+		background-color: hsl(var(--muted));
+		color: hsl(var(--muted-foreground));
+	}
+
+	.recall-row-main {
+		flex: 1;
+		min-width: 0;
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+
+	.recall-row-top {
+		display: flex;
 		align-items: center;
 		gap: var(--spacing-sm);
+		flex-wrap: wrap;
+	}
+
+	.recall-brand {
+		font-weight: 700;
+		font-size: 1rem;
 	}
 
 	.recall-status {
-		font-size: 0.7rem;
+		font-size: 0.65rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
-		padding: 0.2rem 0.6rem;
+		padding: 0.15rem 0.55rem;
 		border-radius: 9999px;
 		white-space: nowrap;
 	}
@@ -403,67 +640,79 @@ const itemListSchema = {
 		color: hsl(var(--muted-foreground));
 	}
 
-	.recall-cat {
-		font-size: 0.7rem;
+	.recall-product {
+		font-size: 0.95rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.recall-row-meta {
+		font-size: 0.85rem;
+		color: hsl(var(--muted-foreground));
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.recall-date-mobile {
+		display: none;
+	}
+
+	.recall-row-date {
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.1rem;
+		min-width: 6.5rem;
+		text-align: right;
+	}
+
+	.recall-date {
+		font-size: 0.85rem;
 		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
+		color: hsl(var(--foreground));
+		white-space: nowrap;
+	}
+
+	.recall-date-note {
+		font-size: 0.75rem;
 		color: hsl(var(--muted-foreground));
 		white-space: nowrap;
 	}
 
-	.recall-brand {
-		font-size: 1.3rem;
-		margin: 0;
-	}
-
-	.recall-product {
+	/* Load more */
+	.recall-load-more {
+		align-self: center;
+		margin-top: var(--spacing-lg);
+		padding: 0.6rem 1.5rem;
 		font-size: 0.9rem;
-		margin: 0;
-		flex: 1;
-	}
-
-	.recall-hazard {
-		margin: 0;
-		font-size: 0.9rem;
-	}
-
-	.recall-hazard-label {
 		font-weight: 600;
-		color: hsl(var(--tox-severe));
-	}
-
-	.recall-status--terminated ~ .recall-hazard .recall-hazard-label,
-	.recall-date {
-		color: hsl(var(--muted-foreground));
-	}
-
-	.recall-lots {
-		font-size: 0.85rem;
-		font-family: ui-monospace, monospace;
-		margin: 0;
 		color: hsl(var(--foreground));
-		background-color: hsl(var(--muted));
-		padding: 0.3rem 0.6rem;
-		border-radius: var(--radius-sm);
-		align-self: flex-start;
+		background-color: transparent;
+		border: 1px solid hsl(var(--border));
+		border-radius: 9999px;
+		cursor: pointer;
+		transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
 	}
 
-	.recall-link {
-		font-weight: 600;
-		font-size: 0.9rem;
-		color: hsl(var(--primary));
-		margin-top: var(--spacing-xs);
+	.recall-load-more:hover {
+		border-color: hsl(var(--primary));
+		background-color: hsl(var(--primary) / 0.05);
+	}
+
+	.recall-load-more[hidden] {
+		display: none;
 	}
 
 	.recall-empty {
-		grid-column: 1 / -1;
 		padding: var(--spacing-2xl) var(--spacing-lg);
 		border: 1px dashed hsl(var(--border));
 		border-radius: var(--radius-card);
 		background-color: hsl(var(--card));
 		max-width: 640px;
-		margin: 0 auto;
+		margin: var(--spacing-lg) auto 0;
 	}
 
 	.recall-empty h2 {
@@ -474,7 +723,28 @@ const itemListSchema = {
 		margin-top: var(--spacing-lg);
 	}
 
-	.recall-card[hidden] {
-		display: none;
+	@media (max-width: 640px) {
+		.recall-row-date {
+			display: none;
+		}
+
+		.recall-date-mobile {
+			display: inline;
+		}
+
+		.recall-latest-date {
+			display: none;
+		}
+
+		.recall-product {
+			white-space: normal;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+		}
+
+		.recall-row-meta {
+			white-space: normal;
+		}
 	}
 </style>

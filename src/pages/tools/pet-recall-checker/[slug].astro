@@ -44,8 +44,14 @@ const categoryLabel: Record<RecallCategory, string> = {
 	other: 'Other',
 };
 
+// Same-brand history gets its own section when it exists;
+// "More Recalls to Check" then covers other brands to avoid duplication.
+const sameBrandRecalls = recalls
+	.filter((r) => r.slug !== recall.slug && r.brand === recall.brand)
+	.sort((a, b) => (b.updatedDate || b.recallDate).localeCompare(a.updatedDate || a.recallDate));
+
 const otherRecalls = recalls
-	.filter((r) => r.slug !== recall.slug)
+	.filter((r) => r.slug !== recall.slug && (sameBrandRecalls.length === 0 || r.brand !== recall.brand))
 	.sort((a, b) => (b.updatedDate || b.recallDate).localeCompare(a.updatedDate || a.recallDate))
 	.slice(0, 4);
 
@@ -109,6 +115,16 @@ const articleSchema = {
 			</dl>
 		</section>
 
+		<section class="recall-lot-help" aria-label="How to check your package">
+			<h2>How to Check Your Package</h2>
+			<p>
+				Find the printed code on the side or back of the bag, can, or pouch — usually stamped near the
+				best-by date and labeled "Lot," "LOT," or a date code. Compare it against the affected lots and
+				dates listed above. If the printing is smudged or you can't find a code, treat the product as
+				affected and contact the company with your receipt before feeding it.
+			</p>
+		</section>
+
 		<section class="recall-actions" aria-label="What to do">
 			<h2>What To Do If You Have This Product</h2>
 			<ol class="action-list">
@@ -136,6 +152,21 @@ const articleSchema = {
 
 		<ToxinDisclaimer lead="This page indexes an official recall notice — it is not itself an official notice." />
 		<PoisonHotlines compact={true} />
+
+		{sameBrandRecalls.length > 0 && (
+			<section class="other-recalls" aria-label={`More ${recall.brand} recalls`}>
+				<h2>More {recall.brand} Recalls</h2>
+				<ul class="other-list">
+					{sameBrandRecalls.map((r) => (
+						<li>
+							<a href={`/tools/pet-recall-checker/${r.slug}/`}>
+								<strong>{r.brand}</strong> — {r.hazard} ({r.recallDate})
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
 
 		<section class="other-recalls" aria-label="More recalls">
 			<h2>More Recalls to Check</h2>
@@ -193,6 +224,7 @@ const articleSchema = {
 	}
 
 	.recall-facts h2,
+	.recall-lot-help h2,
 	.recall-actions h2,
 	.recall-sources h2,
 	.other-recalls h2 {
