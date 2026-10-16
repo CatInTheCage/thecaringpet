@@ -147,3 +147,80 @@
 - 例：`Pin for Later: Best Slow Feeder Bowls for Large Breeds`
 
 把上面 13 个标题套进不同前缀，就能批量产出 40+ 个不重复 Pin，不会被判重复。
+
+---
+
+# 2026-10-16 新批次（7 张）
+
+> 图片已生成：`public/images/pins-upload/` 传 JPG 压缩版。发布节奏：**每天 1 张**，Halloween 那张最优先（时效最强）。
+
+## 🗂️ 建议新加 1 个 Board
+
+本批出现 3 张安全/健康主题 Pin，原 3 个 Board 装不下，建议创建：
+
+- **Pet Safety & Health** ← 毒素、召回、急救类（Halloween、Recall Checker、猫尿堵都归这里）
+
+其余 4 张归入原 Board（见各条标注）。
+
+## 14. Halloween Candy Toxicity（⚠️ 最优先发布）
+
+- **图片**：`pin-halloween-candy-toxicity.jpg`
+- **URL**：https://thecaringpet.com/blog/halloween-candy-toxic-to-dogs-cats/
+- **Board**：Pet Safety & Health（新建）
+- **标题**：Halloween Candy That Can Kill Dogs & Cats (Vet-Reviewed List)
+- **描述**：Which Halloween candies are toxic to dogs and cats? Chocolate, xylitol, raisins, and even candy wrappers can send your pet to the ER. This vet-reviewed guide lists the dangerous treats, the symptoms to watch for, and what to do if your pet sneaks a bite. Save this before trick-or-treat night.
+- **标签**：halloween pet safety, chocolate toxicity dogs, xylitol danger, halloween candy dogs, pet poison, dog safety
+
+## 15. Cat Age Chart
+
+- **图片**：`pin-cat-age-chart.jpg`
+- **URL**：https://thecaringpet.com/tools/cat-age-calculator/
+- **Board**：Cat Care & Feeding
+- **标题**：Cat Years to Human Years Chart (Vet-Approved 16-5-4 Rule)
+- **描述**：How old is your cat really in human years? This vet-backed chart uses the Cornell 16-5-4 model: year one equals 16 human years, year two adds 5, and every year after adds 4. See the full conversion chart and find your cat's life stage. Save this for every cat parent.
+- **标签**：cat years to human years, cat age chart, cat age calculator, cat care, cat life stages, cat lifespan
+
+## 16. Dog Age Chart
+
+- **图片**：`pin-dog-age-chart.jpg`
+- **URL**：https://thecaringpet.com/tools/dog-age-calculator/
+- **Board**：Dog Feeding & Enrichment
+- **标题**：How Old Is Your Dog in Human Years? Size-Based Chart
+- **描述**：The old "multiply by 7" rule is wrong. A dog's human-age equivalent depends on breed size — a one-year-old Great Dane ages very differently from a Chihuahua. Open the chart to convert your dog's age by size and see their life stage. Save this for later.
+- **标签**：dog years to human years, dog age chart, dog age calculator, dog care, dog life stages, dog lifespan
+
+## 17. Recall Checker
+
+- **图片**：`pin-recall-checker.jpg`
+- **URL**：https://thecaringpet.com/tools/pet-recall-checker/
+- **Board**：Pet Safety & Health（新建）
+- **标题**：Is Your Pet Food on the Recall List? Check Before You Feed
+- **描述**：Pet food recalls happen more often than you think — salmonella, listeria, aflatoxin, and mislabeling. Search our free recall checker by brand, product, or lot code, with FDA notices and verified dates. Check your pantry before the next meal. Save this tool.
+- **标签**：pet food recall, dog food recall 2026, cat food recall, fda pet food recall, pet safety, pet food safety
+
+## 18. Microchip Cat Feeders
+
+- **图片**：`pin-microchip-feeders.jpg`
+- **URL**：https://thecaringpet.com/blog/best-microchip-cat-feeders-2026/
+- **Board**：Cat Care & Feeding
+- **标题**：Best Microchip Cat Feeders for Multi-Cat Homes (Diet Control)
+- **描述**：One cat on a prescription diet and another stealing her food? Microchip cat feeders only open for the right cat. We compared the top 2026 models on chip and tag reliability, lid sealing, and cleaning so every cat gets the right meal. Save this before you buy.
+- **标签**：microchip cat feeder, surefeed microchip feeder, multi cat household, cat feeding, automatic cat feeder, cat care
+
+## 19. Cat Urinary Blockage
+
+- **图片**：`pin-cat-urinary-blockage.jpg`
+- **URL**：https://thecaringpet.com/blog/cat-straining-to-pee/
+- **Board**：Pet Safety & Health（新建）
+- **标题**：Cat Straining to Pee? It's a 24-Hour Emergency
+- **描述**：A cat straining in the litter box, crying out, or producing no urine may have a blocked urethra — male cats can die within 24 to 48 hours. Learn the red-flag symptoms, what ER treatment really costs, and how to prevent urinary blockages. Save this — it could save your cat's life.
+- **标签**：cat urinary blockage, cat straining to pee, flutd, male cat emergency, cat health, pet emergency
+
+## 20. Slow Feeders for Cats（⚠️ 等 B1 文章发布后再发，URL 需更新）
+
+- **图片**：`pin-cat-slow-feeder.jpg`
+- **URL**：https://thecaringpet.com/blog/best-slow-feeders-for-cats/ ← **占位，以 B1 实际 slug 为准**
+- **Board**：Cat Care & Feeding
+- **标题**：Best Slow Feeders for Cats (Stop Gulp-and-Vomit Meals)
+- **描述**：Cats eat fast for instinctive reasons — but gulp-and-vomit meals aren't something to live with. These cat-sized slow feeders and lick mats slow eating, reduce post-meal vomiting, and add enrichment. We picked the safest options shaped for feline faces. Save this before you shop.
+- **标签**：slow feeder for cats, cat eats too fast, cat vomiting after eating, lick mat for cats, cat feeding, cat bowl

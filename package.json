@@ -15,7 +15,8 @@
     "radar": "node scripts/trending-radar.mjs",
     "radar:browser": "node scripts/trending-radar-browser.mjs",
     "radar:social": "node scripts/trending-radar-social.mjs",
-    "radar:all": "npm run radar && npm run radar:browser && npm run radar:social"
+    "radar:all": "npm run radar && npm run radar:browser && npm run radar:social",
+    "wb": "node scripts/wb.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.0",
