@@ -1330,4 +1330,605 @@ export const plantToxins: Toxin[] = [
 		],
 		lastReviewed: '2026-07-11',
 	},
+	{
+		slug: 'lily-of-the-valley',
+		name: 'Lily of the Valley',
+		aliases: ['convallaria majalis', 'may bells', "our lady's tears", 'valley lily', 'lilly of the valley'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and diarrhea within hours',
+					'Slow or irregular heartbeat, low blood pressure',
+					'Weakness, wobbliness, and collapse',
+					'Seizures and death in serious cases (cardiac glycoside poisoning, like foxglove)',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — do not wait for symptoms.',
+					'Note which parts were eaten (flowers, leaves, berries, or water from a vase) and how much.',
+					'Remove any remaining plant material from the mouth.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any part of lily of the valley was eaten — even a small amount',
+					'Vomiting, drooling, or weakness',
+					'Slow, fast, or irregular heartbeat, collapse, or seizures',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and loss of appetite',
+					'Slow or irregular heartbeat and low blood pressure',
+					'Weakness, lethargy, and collapse',
+					'Seizures and death in serious cases',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately.',
+					'Note the parts eaten and amount, including vase water.',
+					'Remove any remaining plant material from the mouth.',
+					'Keep the cat calm while getting guidance.',
+				],
+				callVetIf: [
+					'Any part of lily of the valley was eaten',
+					'Vomiting, lethargy, or weakness',
+					'Abnormal heartbeat, collapse, or seizures',
+				],
+			},
+		},
+		description: 'Lily of the valley is severely toxic to both cats and dogs — cardiac glycosides slow or disrupt the heart. Unlike true lilies, it harms the heart, not the kidneys.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Is lily of the valley as dangerous to cats as true lilies?',
+				answer: 'It is dangerous, but in a different way. True lilies cause kidney failure in cats. Lily of the valley contains cardiac glycosides — the same type of toxin as foxglove and oleander — which disturb the heart rhythm and can be fatal to both cats and dogs. Any exposure warrants an immediate vet call.',
+			},
+			{
+				question: 'Are the berries or the flowers more toxic?',
+				answer: 'All parts of the plant — flowers, leaves, stems, and the small red-orange berries — contain cardiac glycosides, and even the water the flowers were arranged in can carry the toxin. There is no "safe part" to nibble. Treat any ingestion as an emergency.',
+			},
+			{
+				question: 'What treatment will my pet need?',
+				answer: 'Veterinarians typically decontaminate (induced vomiting or activated charcoal if appropriate), run an ECG to monitor heart rhythm, give intravenous fluids, and use heart medications such as digoxin-specific antibodies in serious cases. Early treatment before symptoms appear gives the best outcome — which is why calling immediately matters.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'castor-bean',
+		name: 'Castor Bean Plant',
+		aliases: ['ricinus communis', 'ricin', 'castor oil plant', 'mole bean plant', 'castor bean seeds'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Burning of the mouth, vomiting, and bloody diarrhea within hours',
+					'Severe abdominal pain and dehydration',
+					'Weakness, tremors, and collapse',
+					'Seizures, kidney failure, and death in serious cases (ricin poisoning)',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — do not wait for symptoms.',
+					'Note how many seeds or how much plant material was eaten; whole chewed seeds are the most dangerous.',
+					'Remove any remaining material from the mouth.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any part of a castor bean plant was eaten, especially seeds',
+					'Vomiting, bloody diarrhea, or abdominal pain',
+					'Weakness, tremors, collapse, or seizures',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Mouth irritation, drooling, vomiting, and diarrhea',
+					'Abdominal pain and dehydration',
+					'Weakness, lethargy, and collapse',
+					'Seizures, kidney failure, and death in serious cases',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately.',
+					'Note the parts eaten and amount.',
+					'Remove any remaining material from the mouth.',
+					'Keep the cat calm while getting guidance.',
+				],
+				callVetIf: [
+					'Any part of a castor bean plant was eaten',
+					'Vomiting, drooling, or abdominal pain',
+					'Weakness, collapse, or seizures',
+				],
+			},
+		},
+		description: 'Castor bean seeds contain ricin, one of the deadliest plant toxins — severely toxic to both cats and dogs. Chewed seeds are a life-threatening emergency.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'How dangerous are castor beans really?',
+				answer: 'Very. The seeds contain ricin, one of the most potent plant toxins known — it blocks cells from making proteins, causing severe vomiting, bloody diarrhea, organ failure, and potentially death. The bean coat must be broken (chewed) to release ricin, but you cannot rely on a pet not to chew. A single chewed seed can be fatal to a small pet.',
+			},
+			{
+				question: 'Is castor oil dangerous too?',
+				answer: 'No — commercial castor oil is heat-treated, which destroys the ricin, so castor oil itself is not a ricin risk (it may just cause loose stools). The danger is the whole beans and the ornamental castor bean plant, which is grown in gardens and common in warm climates. Remove seed pods if you grow one around pets.',
+			},
+			{
+				question: 'My dog swallowed a whole seed without chewing it. Is that safer?',
+				answer: 'An intact, unchewed seed may pass through with less ricin absorbed, but you cannot count on that — treat it as an emergency anyway. X-rays can confirm where the seed is, and a vet may induce vomiting or retrieve it endoscopically. Call a vet or poison hotline immediately either way.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'foxglove',
+		name: 'Foxglove',
+		aliases: ['digitalis', 'digitalis purpurea', 'digitalis lanata', 'fox glove', 'fairy bells'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and diarrhea within hours',
+					'Slow, fast, or irregular heartbeat and low blood pressure',
+					'Weakness, wobbliness, and collapse',
+					'Seizures and death in serious cases (cardiac glycoside poisoning)',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — do not wait for symptoms.',
+					'Note which parts were eaten (leaves and seeds are most concentrated) and how much.',
+					'Remove any remaining plant material from the mouth.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any part of a foxglove was eaten — even a small amount',
+					'Vomiting, drooling, or weakness',
+					'Abnormal heartbeat, collapse, or seizures',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and loss of appetite',
+					'Slow or irregular heartbeat and low blood pressure',
+					'Weakness, lethargy, and collapse',
+					'Seizures and death in serious cases',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately.',
+					'Note the parts eaten and amount.',
+					'Remove any remaining plant material from the mouth.',
+					'Keep the cat calm while getting guidance.',
+				],
+				callVetIf: [
+					'Any part of a foxglove was eaten',
+					'Vomiting, lethargy, or weakness',
+					'Abnormal heartbeat, collapse, or seizures',
+				],
+			},
+		},
+		description: 'Foxglove is severely toxic to both cats and dogs — it contains digitalis, the same cardiac glycoside used in heart medicine. Any ingestion is an immediate emergency.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Why is a heart medicine also a poison?',
+				answer: 'Foxglove contains digoxin and related cardiac glycosides — in carefully controlled doses they treat human heart conditions, but a pet chewing the plant gets an uncontrolled dose. The toxin slows and disrupts the heart rhythm and can cause fatal arrhythmias. All parts of the plant are toxic, with seeds and leaves most concentrated.',
+			},
+			{
+				question: 'How is foxglove poisoning treated?',
+				answer: 'Treatment includes decontamination, continuous ECG monitoring of the heart rhythm, intravenous fluids, and in serious cases digoxin-specific antibody fragments (Digibind/DigiFab), which can bind the toxin. Treatment works best before symptoms appear — call the vet immediately, do not watch and wait.',
+			},
+			{
+				question: 'How do I tell foxglove apart from safe garden plants?',
+				answer: 'Foxglove has tall spikes of drooping bell-shaped flowers (purple, pink, or white) with speckled throats, and soft, fuzzy, lance-shaped leaves. It resembles the safe snapdragon only loosely, but it is often confused with comfrey and borage, which have similar fuzzy leaves. If you are unsure what your pet ate, take a photo or sample of the plant to the vet.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'yew',
+		name: 'Yew (Japanese, English, American)',
+		aliases: ['taxus', 'japanese yew', 'english yew', 'american yew', 'taxine', 'yew tree', 'yew hedge'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and diarrhea',
+					'Tremors, wobbliness, and difficulty breathing',
+					'Slow or irregular heartbeat and low blood pressure',
+					'Sudden collapse, seizures, and death — sometimes without earlier warning signs',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — do not wait for symptoms.',
+					'Note which parts were eaten; needles and seeds are most toxic (the red berry flesh is the only non-toxic part).',
+					'Remove any remaining needles or seeds from the mouth.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any part of a yew was eaten — needles, bark, or seeds',
+					'Vomiting, tremors, or breathing difficulty',
+					'Collapse, seizure, or unresponsiveness — go to an emergency clinic',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting and drooling',
+					'Tremors, weakness, and difficulty breathing',
+					'Slow or irregular heartbeat',
+					'Sudden collapse and death, sometimes without earlier warning signs',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately.',
+					'Note the parts eaten and amount.',
+					'Remove any remaining material from the mouth.',
+					'Keep the cat calm — stress worsens cardiac strain — while getting guidance.',
+				],
+				callVetIf: [
+					'Any part of a yew was eaten',
+					'Tremors, weakness, or breathing difficulty',
+					'Collapse or unresponsiveness — emergency clinic immediately',
+				],
+			},
+		},
+		description: 'Yew trees and hedges are severely toxic to both cats and dogs — taxine alkaloids can stop the heart, and death can occur suddenly without warning. Any chewing is an emergency.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Is the red berry on the yew dangerous?',
+				answer: 'The red, fleshy cup around the seed (the aril) is the only non-toxic part of the yew — but the seed inside it is highly toxic, as are the needles, bark, and wood. Pets that swallow berries have usually also crunched the seed. Treat any yew exposure as an emergency.',
+			},
+			{
+				question: 'Why is yew poisoning often sudden?',
+				answer: 'Taxine alkaloids block sodium channels in the heart, and in serious cases the heart can stop with little or no warning — animals have been found dead beside chewed yew branches. That is why "any amount eaten = call immediately" is the rule here, even though the pet seems fine.',
+			},
+			{
+				question: 'Are yew clippings from pruning dangerous?',
+				answer: 'Yes — and they stay dangerous. Dried yew clippings in compost, mulch, or a neighbor’s yard remain toxic, and livestock and pets have died from eating week-old trimmings. Bag and dispose of yew prunings where pets cannot reach them, and do not let dogs forage near yew hedges.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'hydrangea',
+		name: 'Hydrangea',
+		aliases: ['hydrangea macrophylla', 'hortensia', 'bigleaf hydrangea', 'hydrangea leaves', 'hydrangea flowers'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and diarrhea within a few hours',
+					'Lethargy and loss of appetite',
+					'Abdominal discomfort',
+					'Rapid recovery is common, but large amounts can cause more serious effects',
+				],
+				firstAid: [
+					'Remove any remaining plant material from the mouth.',
+					'Rinse the mouth with water if there is drooling.',
+					'Offer water and watch closely for a few hours.',
+					'Call a vet if vomiting is repeated or your pet seems unusually lethargic.',
+				],
+				callVetIf: [
+					'A large amount of leaves or flowers was eaten',
+					'Persistent vomiting, diarrhea, or lethargy',
+					'Any unusual behavior or breathing changes',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and diarrhea',
+					'Lethargy and reduced appetite',
+					'Abdominal discomfort',
+					'Signs usually appear within a few hours and are usually mild',
+				],
+				firstAid: [
+					'Remove any remaining plant material from the mouth.',
+					'Rinse the mouth with water if there is drooling.',
+					'Offer water and monitor closely.',
+					'Call a vet if vomiting persists or the cat seems lethargic.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Persistent vomiting or lethargy',
+					'Any breathing changes or unusual behavior',
+				],
+			},
+		},
+		description: 'Hydrangea is moderately toxic to both cats and dogs — leaves and flowers contain cyanogenic glycosides, usually causing vomiting and diarrhea. Serious cases are uncommon.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Does hydrangea contain cyanide?',
+				answer: 'The leaves and buds contain cyanogenic glycosides, which can release small amounts of cyanide when chewed — but in typical household nibbling cases the dose is far too small for cyanide poisoning. The realistic outcome is vomiting, diarrhea, and lethargy. Large ingestions still warrant a vet call.',
+			},
+			{
+				question: 'Which parts of the plant are the problem?',
+				answer: 'The leaves and flower buds have the highest concentration of the toxin; flowers are lower. Cut hydrangea stems in bouquets also pose a risk, and the flower water can become contaminated. Keep both garden plants and arrangements out of reach.',
+			},
+			{
+				question: 'Will my pet need treatment after eating hydrangea?',
+				answer: 'Most cases need only monitoring and supportive care — the stomach upset usually resolves within a day. A vet may give anti-nausea medication and fluids. If a large amount was eaten, the vet may induce vomiting or give activated charcoal. Call for guidance rather than waiting if symptoms persist beyond a few hours.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'monstera',
+		name: 'Monstera (Swiss Cheese Plant)',
+		aliases: ['monstera deliciosa', 'swiss cheese plant', 'split-leaf philodendron', 'monstera adansonii', 'fruit salad plant', 'ceriman'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Burning and irritation of the mouth, lips, and tongue',
+					'Heavy drooling and pawing at the mouth',
+					'Vomiting and difficulty swallowing',
+					'Hoarse vocalization or reluctance to eat',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth with water or offer milk or ice to soothe the irritation.',
+					'Offer water but do not force food while the mouth is sore.',
+					'Call a vet if drooling, vomiting, or refusal to eat persists beyond several hours.',
+				],
+				callVetIf: [
+					'A large amount was eaten or the mouth is badly swollen',
+					'Persistent vomiting or refusal to eat',
+					'Breathing difficulty or severe swelling of the tongue or airway',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Burning mouth irritation and heavy drooling',
+					'Pawing at the mouth and head shaking',
+					'Vomiting and reluctance to eat',
+					'Hoarse meowing from throat irritation',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth or offer water or a small amount of milk to soothe.',
+					'Keep water available and monitor closely.',
+					'Call a vet if drooling or vomiting continues for several hours.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Persistent drooling, vomiting, or refusal to eat',
+					'Any breathing difficulty or severe swelling',
+				],
+			},
+		},
+		description: 'Monstera is moderately toxic to both cats and dogs — needle-like calcium oxalate crystals burn the mouth, causing drooling and vomiting. It is not usually life-threatening.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Why does monstera burn the mouth?',
+				answer: 'Monstera contains insoluble calcium oxalate crystals — microscopic needles that fire into the tissues of the mouth and throat when the leaf is chewed, causing instant burning pain, drooling, and swelling. The same mechanism applies to pothos, philodendron, dieffenbachia, and ZZ plants. The pain itself usually stops most pets after one bite.',
+			},
+			{
+				question: 'Is monstera fruit dangerous too?',
+				answer: 'Yes, if unripe. Monstera deliciosa earned its name because the fully ripe fruit is edible for humans, but unripe fruit is full of the same oxalate crystals and will irritate the mouth of pets and people alike. Practically speaking, keep the whole plant — fruit included — away from pets.',
+			},
+			{
+				question: 'How can I keep my cat away from my monstera?',
+				answer: 'Place it on a high shelf or in a room the cat cannot access, or offer a cat grass pot as a safe alternative to chew. Bitter apple spray on the leaves helps some pets. If your cat persistently targets houseplants, choose pet-safe plants instead — spider plants, calathea, peperomia, and money trees are all non-toxic options.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'snake-plant',
+		name: 'Snake Plant (Mother-in-Law\'s Tongue)',
+		aliases: ['sansevieria', 'dracaena trifasciata', 'mother in laws tongue', 'mother-in-law tongue', 'vipers bowstring hemp', 'snakeplant'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Mild drooling and mouth irritation from chewing the leaves',
+					'Nausea, vomiting, or diarrhea in larger amounts',
+					'Clinical signs are usually mild and self-limiting',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth with water if there is drooling.',
+					'Offer water and watch for vomiting over the next few hours.',
+					'Call a vet only if vomiting is persistent or your pet seems unwell.',
+				],
+				callVetIf: [
+					'A large amount of leaves was eaten',
+					'Persistent vomiting or diarrhea',
+					'Lethargy or refusal to eat beyond a day',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Mild drooling and mouth irritation',
+					'Occasional vomiting or mild diarrhea',
+					'Signs are usually mild and settle on their own',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth with water if there is drooling.',
+					'Offer water and monitor closely.',
+					'Call a vet if vomiting continues or the cat stops eating.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Repeated vomiting or diarrhea',
+					'Lethargy or loss of appetite',
+				],
+			},
+		},
+		description: 'Snake plant is mildly toxic to both cats and dogs — saponins in the leaves cause drooling, vomiting, and diarrhea in nibblers. Serious illness is unlikely; treat supportively.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Is the snake plant actually dangerous to cats?',
+				answer: 'Only mildly. The leaves contain saponins, which irritate the stomach and cause drooling, vomiting, or diarrhea if a cat eats a meaningful amount of leaf. It will not cause organ failure, and most cases pass with little more than an upset stomach — but repeated nibbling is still worth preventing.',
+			},
+			{
+				question: 'What are saponins?',
+				answer: 'Saponins are bitter, soap-like compounds that many plants produce as a natural defense against grazing. In pets they irritate the stomach lining, causing nausea and loose stools. The same compounds are found in other popular houseplants such as the corn plant (Dracaena) — snake plant is among the milder saponin-containing plants.',
+			},
+			{
+				question: 'My cat keeps chewing my snake plant. What should I do?',
+				answer: 'Move the plant out of reach and offer a pot of cat grass as an acceptable alternative — most cats chew plants for fiber or boredom. If the behavior persists, talk to your vet about enrichment, or swap to verified non-toxic plants such as spider plants, calathea, or peperomia so chewing carries no risk at all.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'zz-plant',
+		name: 'ZZ Plant',
+		aliases: ['zamioculcas zamiifolia', 'zanzibar gem', 'zuzu plant', 'aroid palm', 'eternity plant', 'zz plant leaves'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Burning or irritation of the mouth and lips from chewing',
+					'Drooling and pawing at the mouth',
+					'Occasional vomiting or mild diarrhea',
+					'Signs are usually mild and resolve within hours',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth with water or offer milk to soothe irritation.',
+					'Offer water and monitor for a few hours.',
+					'Call a vet only if vomiting persists or the mouth is badly swollen.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Persistent drooling, vomiting, or refusal to eat',
+					'Breathing difficulty or severe swelling',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Mouth burning and heavy drooling',
+					'Pawing at the mouth and head shaking',
+					'Occasional vomiting',
+					'Signs are usually mild and resolve within hours',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth or offer water to soothe.',
+					'Keep water available and monitor closely.',
+					'Call a vet if drooling or vomiting continues.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Persistent drooling or vomiting',
+					'Any breathing difficulty',
+				],
+			},
+		},
+		description: 'ZZ plant is mildly to moderately toxic to both cats and dogs — calcium oxalate crystals cause mouth burning, drooling, and vomiting. Not usually life-threatening.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Is the ZZ plant really "highly toxic"? I have heard scary things.',
+				answer: 'Online rumors exaggerate it. The ZZ plant contains the same insoluble calcium oxalate crystals as pothos and monstera — it causes painful mouth irritation, drooling, and sometimes vomiting, but it does not cause organ failure. The pain usually stops pets after one bite. It is unpleasant, not deadly — though a vet call is still wise if a lot was eaten.',
+			},
+			{
+				question: 'Is it safe to touch a ZZ plant?',
+				answer: 'Handling the plant is generally fine, though the sap can irritate sensitive skin — wear gloves when pruning or repotting, and wash your hands afterward. The risk to pets comes from chewing the leaves or stems, not from walking past it or brushing against it.',
+			},
+			{
+				question: 'What should I do right after my pet chews a ZZ plant leaf?',
+				answer: 'Remove any plant material from the mouth, rinse the mouth with water, and offer milk or ice — the fat and cold help soothe the crystal irritation. Most pets settle within a few hours. Call a vet if drooling, vomiting, or swelling persists, or if your pet has trouble breathing.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'peace-lily',
+		name: 'Peace Lily',
+		aliases: ['spathiphyllum', 'spath', 'white sails', 'cobra plant', 'peace lilly'],
+		category: 'plant',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Burning of the mouth, lips, and tongue from chewing leaves or flowers',
+					'Heavy drooling and pawing at the mouth',
+					'Vomiting and difficulty swallowing',
+					'Hoarse barking or reluctance to eat while the mouth is sore',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth with water or offer milk or ice to soothe the burn.',
+					'Offer water but do not force food while the mouth is sore.',
+					'Call a vet if drooling, vomiting, or refusal to eat persists.',
+				],
+				callVetIf: [
+					'A large amount was eaten or the mouth is badly swollen',
+					'Persistent vomiting or refusal to eat',
+					'Breathing difficulty or severe swelling of the tongue',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Burning mouth irritation and heavy drooling',
+					'Pawing at the mouth and head shaking',
+					'Vomiting and reluctance to eat',
+					'Hoarse meowing from throat irritation',
+				],
+				firstAid: [
+					'Remove any remaining leaf material from the mouth.',
+					'Rinse the mouth or offer water or a small amount of milk to soothe.',
+					'Keep water available and monitor closely.',
+					'Call a vet if drooling or vomiting continues for several hours.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Persistent drooling, vomiting, or refusal to eat',
+					'Any breathing difficulty or severe swelling',
+				],
+			},
+		},
+		description: 'Peace lily is moderately toxic to both cats and dogs — oxalate crystals burn the mouth, unlike true lilies which cause cat kidney failure. It still warrants a vet call.',
+		sources: [ASPCA_PLANTS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Is a peace lily as deadly to cats as a true lily?',
+				answer: 'No — and the distinction matters. Peace lilies (Spathiphyllum) are not true lilies; they contain calcium oxalate crystals that burn the mouth and cause drooling and vomiting, but they do NOT cause the fatal kidney failure that true lilies (Easter, Tiger, Asiatic, Oriental) do. Still, treat any chewing as a reason to call the vet — the pain and vomiting are real.',
+			},
+			{
+				question: 'How do I tell a peace lily from a true lily?',
+				answer: 'Peace lilies have a single white hood-like spathe around a central spike, with glossy dark leaves growing directly from the soil. True lilies grow from bulbs on tall stems with large, showy six-petaled flowers (Easter, Tiger, Asiatic, Oriental) and scattered grass-like leaves. If you are unsure which "lily" your cat chewed, assume the worst and call a vet immediately.',
+			},
+			{
+				question: 'What should I do right after my pet chews a peace lily?',
+				answer: 'Remove any plant material from the mouth, rinse with water, and offer milk or ice to soothe the crystal irritation. Most pets recover within a few hours as the pain fades. Call a vet if drooling, vomiting, or refusal to eat lasts more than a few hours, or if there is any swelling that affects breathing.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
 ];

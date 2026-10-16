@@ -531,4 +531,274 @@ export const insecticideToxins: Toxin[] = [
 		],
 		lastReviewed: '2026-07-11',
 	},
+	{
+		slug: 'boric-acid',
+		name: 'Boric Acid & Borax',
+		aliases: ['borax', 'boric powder', 'roach powder', 'ant powder', 'borate', 'boric acid powder', 'twenty mule team borax', 'roach hotel powder'],
+		category: 'insecticide',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and diarrhea after eating powder or bait',
+					'Mouth and throat irritation (boric acid is a mild caustic)',
+					'Lethargy and increased thirst in larger amounts',
+					'Tremors or a wobbly gait only with large ingestions',
+				],
+				firstAid: [
+					'Remove any remaining powder; wipe paws and muzzle.',
+					'Rinse the mouth with water and offer fresh water.',
+					'Do NOT induce vomiting — boric acid is mildly caustic.',
+					'Call a vet if more than a lick of powder or several baits were eaten.',
+				],
+				callVetIf: [
+					'A significant amount of powder or many bait stations were eaten',
+					'Persistent vomiting, bloody diarrhea, or lethargy',
+					'Tremors, wobbliness, or seizures',
+					'Skin or eye contact with redness that does not settle',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling and mouth irritation',
+					'Vomiting or mild diarrhea',
+					'Lethargy in larger amounts',
+					'Tremors only with significant ingestion',
+				],
+				firstAid: [
+					'Remove any remaining powder; wipe paws and fur.',
+					'Rinse the mouth and offer fresh water.',
+					'Do NOT induce vomiting.',
+					'Call a vet if vomiting persists.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Persistent vomiting or refusal to eat',
+					'Tremors or wobbliness',
+				],
+			},
+		},
+		description: 'Boric acid and borax are mildly toxic to both cats and dogs — a lick of roach powder causes drooling and stomach upset; large amounts can irritate the gut and nervous system.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Is borax really toxic? I thought it was a natural cleaner.',
+				answer: '"Natural" and "non-toxic" are not the same thing. Borax (sodium borate) and boric acid are low-toxicity compared to most insecticides, but they are mildly caustic and can cause vomiting, diarrhea, and mouth irritation — and large ingestions affect the kidneys and nervous system. A dog that licks a trace of powder will be fine; a dog that eats open bait powder by the spoonful needs a vet call.',
+			},
+			{
+				question: 'Are the bait stations (roach hotels) dangerous if chewed open?',
+				answer: 'The liquid or gel inside most commercial bait stations is heavily diluted — a single station eaten by a dog usually causes, at most, drooling and mild stomach upset, and the plastic shell is often the bigger (obstruction) concern. Multiple stations, or the raw powder form, are more serious. Count what was chewed and call with the product name; keep stations under appliances where paws cannot flip them.',
+			},
+			{
+				question: 'How should I apply boric acid safely around pets?',
+				answer: 'Use it as a thin dusting deep in cracks, under appliances, and inside wall voids — places tongues and paws cannot reach — rather than visible piles along baseboards. Keep pets out of the room while applying, wipe up visible powder, and never mix it into bait blobs on open floors. Stored powder belongs in a sealed container up high; the fine powder is also an inhalation irritant for you.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'fly-bait-methomyl',
+		name: 'Fly Bait (Methomyl)',
+		aliases: ['methomyl', 'fly bait granules', 'golden malrin', 'blue fly bait', 'fly strips', 'flying insect bait', 'lannate', 'carbamate fly bait'],
+		category: 'insecticide',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Excessive drooling, vomiting, and diarrhea within minutes to an hour',
+					'Pinpoint pupils, slow heart rate, and trembling',
+					'Wobbliness progressing to weakness and collapse',
+					'Difficulty breathing and seizures without rapid treatment (carbamate poisoning)',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline IMMEDIATELY — this is a cholinesterase-inhibiting poison.',
+					'Bring the product name (methomyl percentage) and estimate the amount eaten.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+					'Keep the pet calm and get to the clinic — time to treatment is everything.',
+				],
+				callVetIf: [
+					'Any fly bait granules were eaten — even a few',
+					'Drooling, trembling, or pinpoint pupils',
+					'Collapse, seizures, or breathing difficulty — emergency clinic now',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Sudden heavy drooling, vomiting, and diarrhea',
+					'Pinpoint pupils, tremors, and slow heart rate',
+					'Weakness, wobbliness, and collapse',
+					'Difficulty breathing and seizures without rapid treatment',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline IMMEDIATELY.',
+					'Bring the product name and estimate the amount eaten.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+					'Keep the cat calm while getting to the clinic.',
+				],
+				callVetIf: [
+					'Any fly bait was eaten or licked',
+					'Drooling, tremors, or pinpoint pupils',
+					'Collapse or breathing difficulty — emergency clinic now',
+				],
+			},
+		},
+		description: 'Methomyl fly bait is severely toxic to both cats and dogs — a carbamate poison causing drooling, tremors, and breathing failure within an hour. Any ingestion is a race to the vet.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Why is fly bait so much more dangerous than ant bait?',
+				answer: 'Methomyl — the active ingredient in popular blue or golden fly-bait granules — is a carbamate, the same chemical family as the dangerous organophosphate insecticides: it shuts down the enzyme that regulates nerve signals. Commercial fly baits run 1% methomyl and are mixed with sugar to attract flies — which also makes them attractive to dogs. Ant and roach baits typically use far less toxic actives at tiny doses (see our ant & roach bait page).',
+			},
+			{
+				question: 'I have heard of people using fly bait to poison coyotes. Is that why it is so dangerous?',
+				answer: 'Unfortunately yes — methomyl fly bait mixed with meat or eggs has been widely misused to kill predators, and it is banned for that use. The same lethality applies to any dog or cat that finds it. If you suspect your pet was deliberately poisoned with fly bait, tell your veterinarian — law enforcement treats malicious poisoning as a crime, and knowing helps the vet choose the right emergency treatment.',
+			},
+			{
+				question: 'What does treatment look like?',
+				answer: 'Carbamate poisoning is treated with atropine (an antidote that blocks the poison at nerve receptors) plus decontamination, IV fluids, and seizure control. Recovery with fast treatment is genuinely possible — but the window is short, since breathing muscle failure can develop within an hour. This is a go-now emergency, not a watch-and-wait one.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'pyrethrins',
+		name: 'Natural Pyrethrins',
+		aliases: ['pyrethrin', 'pyrethrum', 'chrysanthemum extract', 'natural insecticide', 'pyrethrin spray', 'organic flea spray', 'cattle ear tag', 'garden insect spray'],
+		category: 'insecticide',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and mild stomach upset after licking spray or concentrate',
+					'Skin itching or redness at contact points',
+					'Tremors only with concentrated products or heavy application',
+					'Low-concentration household sprays rarely cause more than drooling',
+				],
+				firstAid: [
+					'Wipe or bathe off any spray on the fur with mild dish soap.',
+					'Rinse the mouth and offer fresh water.',
+					'Keep the product label with the concentration.',
+					'Call a vet if tremors, vomiting, or wobbliness appear.',
+				],
+				callVetIf: [
+					'A concentrated product was ingested',
+					'Tremors, twitching, or a wobbly gait',
+					'Repeated vomiting or labored breathing',
+					'Skin redness with drooling that will not stop',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Muscle tremors and twitching (ear flicking, skin rippling) within hours',
+					'Drooling, vomiting, and paw flicking',
+					'Wobbliness, dilated pupils, and hiding',
+					'Seizures and death without treatment — cats cannot metabolize pyrethrins',
+				],
+				firstAid: [
+					'Bathe the cat immediately with mild dish soap in lukewarm water to remove all residue.',
+					'Call a veterinarian or emergency clinic IMMEDIATELY — even before symptoms appear.',
+					'Bring the product label with the concentration.',
+					'Keep the cat warm and quiet during transport.',
+				],
+				callVetIf: [
+					'ANY pyrethrin product touched the cat — spray, fogger, or a dog\'s treated fur',
+					'Tremors, twitching, or drooling',
+					'Seizures or unresponsiveness — emergency clinic now',
+				],
+			},
+		},
+		description: 'Natural pyrethrins are mildly toxic to dogs but severely toxic to cats — cats cannot metabolize them, and tremors can progress to seizures. Any cat contact needs immediate bathing and a vet call.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Aren\'t pyrethrins "natural" and therefore safe?',
+				answer: 'Natural is not the same as safe. Pyrethrins come from chrysanthemum flowers, but they are still neurotoxins — and cats are uniquely vulnerable because their liver cannot break the compounds down. A "natural" flea spray that is safe for a dog can cause fatal tremors and seizures in a cat. Check the label: "safe for use around cats" means something; "natural" means nothing.',
+			},
+			{
+				question: 'My dog was treated with a pyrethrin spray. Is my cat in danger just from living with the dog?',
+				answer: 'Possibly — cats are poisoned by grooming residue off a treated dog\'s fur, sleeping against a freshly treated dog, or sharing bedding. Keep the cat away from the dog until the product is fully dry and absorbed (follow the label; often 24 hours), wash shared bedding, and never apply a dog product to a cat. If your cat starts twitching or drooling, bathe them and call the vet immediately.',
+			},
+			{
+				question: 'How is pyrethrin poisoning in cats treated?',
+				answer: 'Treatment is decontamination (the immediate bath), methocarbamol or diazepam to control tremors, IV fluids, and temperature support — tremoring muscles overheat the cat dangerously. Most cats treated promptly recover fully within 24 to 72 hours. The key is the bath and the call happening early, before the tremors escalate to seizures.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'insect-foggers',
+		name: 'Insect Foggers & Bug Bombs',
+		aliases: ['bug bomb', 'fogger', 'total release fogger', 'raid fogger', 'insect bomb', 'flea bomb', 'household fogger', 'bug fogger'],
+		category: 'insecticide',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and coughing if present during or right after fogging',
+					'Watery eyes and breathing irritation from the fog',
+					'Wobbliness or lethargy with heavy exposure',
+					'Tremors in dogs exposed to wet residue or over-used foggers',
+				],
+				firstAid: [
+					'Remove the dog from the house immediately and get to fresh air.',
+					'Air the house out thoroughly per the label (usually 2–4 hours minimum) before re-entry.',
+					'Wipe down surfaces and wash pet bedding before the pet returns.',
+					'Call a vet if coughing, drooling, or wobbliness persists after fresh air.',
+				],
+				callVetIf: [
+					'The pet was inside during fogging or returned before the label interval',
+					'Persistent coughing, vomiting, or drooling',
+					'Tremors, wobbliness, or labored breathing',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Muscle tremors and twitching from grooming pyrethroid residue off fur',
+					'Drooling, vomiting, and coughing',
+					'Wobbliness, dilated pupils, and hiding',
+					'Seizures in cats exposed to foggers containing permethrin or heavy residues',
+				],
+				firstAid: [
+					'Remove the cat from the house immediately; get to fresh air.',
+					'If residue is on the fur, bathe the cat with mild dish soap and lukewarm water.',
+					'Call a veterinarian — describe the fogger active ingredients from the label.',
+					'Air the house and wipe surfaces thoroughly before the cat returns.',
+				],
+				callVetIf: [
+					'The cat was inside during fogging',
+					'Tremors, twitching, or drooling',
+					'Seizures or breathing difficulty — emergency clinic now',
+				],
+			},
+		},
+		description: 'Bug bombs are moderately toxic to dogs and severely toxic to cats — fogger residue groomed off fur causes tremors and seizures in cats. Pets must be out during and after fogging.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'How long do pets need to stay out after a bug bomb?',
+				answer: 'Follow the label, but the usual minimum is 2 to 4 hours with windows open — and for cats, longer is safer. The bigger hazard for cats is not the airborne fog (they were out during that) but the residue that settles on floors, furniture, and bedding: cats walk through it and groom it off, delivering a pyrethroid dose. Wipe hard floors and counters, wash bedding, and vacuum carpets before a cat comes home.',
+			},
+			{
+				question: 'Are foggers with permethrin worse for cats?',
+				answer: 'Yes — many flea-focused foggers use permethrin or other pyrethroids, and cats cannot metabolize them (see our permethrin and pyrethrins pages). A cat re-entering a freshly fogged house and grooming the residue can develop the same tremors and seizures as direct permethrin exposure. Choose a product explicitly labeled safe for homes with cats, and keep the cat out longer anyway.',
+			},
+			{
+				question: 'My dog sneezed and drooled after we fogged, but we aired the house out. Is he okay?',
+				answer: 'Brief exposure to a fully aired-out house usually causes only transient nose and throat irritation that settles in fresh air. Call a vet if the drooling continues, if he develops coughing, vomiting, wobbliness, or tremors, or if he was actually in the room when the fogger went off — direct fog exposure is a different, more serious situation than post-airing residue.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
 ];

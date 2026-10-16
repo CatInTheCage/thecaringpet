@@ -1441,4 +1441,339 @@ export const foodToxins: Toxin[] = [
 		],
 		lastReviewed: '2026-07-11',
 	},
+	{
+		slug: 'stone-fruit-pits',
+		name: 'Stone Fruit Pits (Cherry, Peach, Plum, Apricot)',
+		aliases: ['cherry pits', 'peach pit', 'plum pit', 'apricot kernel', 'cherries', 'peaches', 'plums', 'apricots', 'cyanide fruit', 'fruit pit obstruction'],
+		category: 'food',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and difficulty swallowing if a pit is swallowed (obstruction risk)',
+					'Bright red gums, dilated pupils, and breathing difficulty (cyanide, from crushed pits)',
+					'Abdominal pain, straining, or no stool if a pit lodges in the intestine',
+					'Seizures and collapse in serious cyanide cases',
+				],
+				firstAid: [
+					'Check whether the pit was swallowed whole or crushed/chewed — crushed is the emergency.',
+					'Do NOT induce vomiting without veterinary guidance (pits can damage the throat coming back up).',
+					'Note the fruit, number of pits, and your dog\'s size.',
+					'Call a vet or poison hotline for guidance either way.',
+				],
+				callVetIf: [
+					'Pits were crushed or chewed, or several were eaten',
+					'Vomiting, abdominal pain, straining to defecate, or no stool within 24–48 hours',
+					'Bright red or blue gums, breathing difficulty, or collapse — emergency',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling or vomiting from chewing the fruit flesh or pit',
+					'Mouth irritation',
+					'Obstruction signs are rare in cats (they rarely eat pits whole)',
+					'Breathing difficulty only with large crushed-pit exposure',
+				],
+				firstAid: [
+					'Remove any pit material from the mouth.',
+					'Rinse the mouth with water if there is drooling.',
+					'Note what was eaten and how much.',
+					'Call a vet if vomiting persists or breathing changes.',
+				],
+				callVetIf: [
+					'A pit was chewed or crushed',
+					'Persistent vomiting or refusal to eat',
+					'Breathing difficulty or collapse — emergency',
+				],
+			},
+		},
+		description: 'Stone fruit pits are moderately toxic to dogs — chewing releases cyanide compounds, and swallowed pits cause intestinal blockages. Cats rarely eat enough; risk is mild.',
+		sources: [ASPCA_PEOPLE_FOODS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Can my dog just eat the flesh of a peach or cherry?',
+				answer: 'Small amounts of the flesh are generally fine — the toxicity lives in the pit (and the leaves and stems), which contain cyanogenic compounds that release cyanide when crushed. Cut the fruit away from the pit, and never leave halved stone fruit where a dog can reach the pit. A single swallowed whole pit from a large dog is usually an obstruction question, not a cyanide one.',
+			},
+			{
+				question: 'What is the bigger danger — cyanide or the blockage?',
+				answer: 'For most dogs, the blockage. Whole pits (a peach pit is the size of a golf ball) commonly lodge in the small intestine and require surgery, especially in small dogs. Cyanide poisoning needs the pit to be cracked or chewed, which releases amygdalin — that is the emergency with bright red gums and breathing trouble. Either scenario warrants a vet call; tell the vet whether the pit came back up or went down whole.',
+			},
+			{
+				question: 'My dog swallowed a cherry pit hours ago and seems fine. What now?',
+				answer: 'Cherry pits are small and usually pass intact in 24 to 48 hours in medium and large dogs — but monitor closely. Feed normally, watch for vomiting, abdominal pain, straining, or no stool, and check the stool for the pit if you can. If your dog is small, ate several, or shows any obstruction sign within two days, call the vet — retained pits are much easier to manage early.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'wild-mushrooms',
+		name: 'Wild Mushrooms',
+		aliases: ['mushrooms from yard', 'backyard mushrooms', 'lawn mushrooms', 'wild fungi', 'death cap', 'amanita', 'destroying angel', 'toadstools', 'mushroom poisoning'],
+		category: 'food',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and diarrhea within 15 minutes to several hours (depends on species)',
+					'Wobbliness, weakness, tremors, or seizures (neurotoxic species)',
+					'Yellowing of gums and eyes, lethargy — delayed liver failure (death caps, 6–24 hours)',
+					'Collapse, kidney failure, and death without rapid treatment',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — treat every wild mushroom as toxic until identified.',
+					'Collect a photo and, if possible, a sample of the mushroom (wrap in damp paper towel, not plastic) for identification.',
+					'Remove any remaining pieces from the mouth.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'ANY wild mushroom was eaten — species cannot be identified safely at home',
+					'Vomiting, wobbliness, tremors, or seizures',
+					'Lethargy or jaundice hours later — death cap liver failure is delayed',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and diarrhea',
+					'Weakness, wobbliness, or seizures (neurotoxic species)',
+					'Jaundice and lethargy hours later (liver-toxic species)',
+					'Collapse, kidney or liver failure, and death without treatment',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately.',
+					'Photograph or sample the mushroom for identification.',
+					'Remove any remaining pieces from the mouth.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any wild mushroom was eaten',
+					'Vomiting, weakness, or seizures',
+					'Jaundice or collapse — emergency',
+				],
+			},
+		},
+		description: 'Wild mushrooms are severely toxic to both cats and dogs — deadly species like the death cap look almost identical to harmless ones. Any backyard mushroom eaten is an emergency.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Are the mushrooms in my lawn dangerous? Most seem harmless.',
+				answer: 'Most lawn mushrooms are harmless, but a few — notably the death cap (Amanita phalloides) and destroying angel — are among the deadliest organisms on earth, and they can grow in the same lawn as harmless ones. There is no home rule of thumb ("if animals eat it", "if it peels", "if it is white") that separates them; even experienced foragers rely on spore prints and expert ID. Treat any eaten wild mushroom as an emergency and bring a sample.',
+			},
+			{
+				question: 'Why is death cap poisoning delayed?',
+				answer: 'Death caps contain amatoxins that quietly destroy liver cells. Pets often vomit and seem to improve after 6 to 24 hours — the deceptive "honeymoon" phase — while liver failure builds. By the time jaundice and collapse appear, the damage is severe. This is exactly why "ate it and seems fine" is not reassurance: call immediately, because treatment started early is the difference between survival and fatal liver failure.',
+			},
+			{
+				question: 'Are store-bought mushrooms and moldy mushrooms the same risk?',
+				answer: 'No — plain white button, cremini, and portobello mushrooms from the store are not toxic (a raw nibble may cause mild stomach upset, and a moldy mushroom can cause standard food-poisoning signs). The emergency applies to wild and unidentified mushrooms. If your dog got into the trash and ate moldy mushrooms, watch for vomiting and tremors from mycotoxins and call the vet if they appear.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'marijuana',
+		name: 'Marijuana / Cannabis (including Edibles)',
+		aliases: ['weed', 'thc', 'cannabis', 'edibles', 'gummies', 'pot', 'marihuana', 'hemp', 'cbd oil', 'marijuana butter', 'weed brownies'],
+		category: 'food',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Wobbliness, stumbling, and dilated pupils within 30 minutes to a few hours',
+					'Urinary incontinence (dribbling urine) — a hallmark sign',
+					'Lethargy, glassy eyes, and exaggerated startle response',
+					'Vomiting, low heart rate, and low body temperature',
+					'Seizures and coma in large doses (especially edibles and concentrates)',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline — be honest about what was eaten; vets are not required to report and need the truth to treat.',
+					'Note the form (plant, edible, concentrate), approximate amount, and whether it contained chocolate or xylitol.',
+					'Keep the dog warm and quiet — THC lowers body temperature.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any amount was eaten — especially edibles, butter, or concentrates',
+					'Wobbliness, dribbling urine, or glassy eyes',
+					'Seizures, vomiting, or unresponsiveness — emergency',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Wobbliness, lethargy, and dilated pupils',
+					'Drooling and vomiting',
+					'Unusual vocalization or hiding',
+					'Seizures and unresponsiveness in large doses',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline and describe exactly what was eaten.',
+					'Note the form and approximate amount.',
+					'Keep the cat warm and quiet while getting guidance.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any amount was eaten',
+					'Wobbliness, drooling, or vomiting',
+					'Seizures or unresponsiveness — emergency',
+				],
+			},
+		},
+		description: 'Marijuana is moderately toxic to both cats and dogs — THC causes wobbliness, dribbling urine, and lethargy; edibles add chocolate or xylitol risk. Be honest with your vet.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Why is cannabis more dangerous to pets than to people?',
+				answer: 'Pets metabolize THC differently and dose far out of proportion to their weight — a brownie made for a 150 lb adult is a massive dose for a 15 lb dog. Dogs also absorb THC more completely from edible fats and butter, and they will eat the plant or product eagerly rather than cautiously. Most cases recover with supportive care, but severe ingestions cause seizures and coma.',
+			},
+			{
+				question: 'My dog ate an edible gummy. What extra risks come with edibles?',
+				answer: 'The carrier matters as much as the THC. Cannabis edibles routinely contain chocolate (see our chocolate page), xylitol-sweetened gummies (severely toxic to dogs), or high-fat butter that can trigger pancreatitis. Tell the vet the exact product — the chocolate or xylitol component can be more dangerous than the THC itself.',
+			},
+			{
+				question: 'Is CBD oil the same thing?',
+				answer: 'No — CBD is not intoxicating like THC and is generally well tolerated in dogs and cats, though it can cause mild drowsiness or diarrhea and some products are contaminated with more THC than labeled. The emergency applies to THC-containing products (flower, edibles, concentrates). If you use CBD, buy pet products with a certificate of analysis and start with vet-approved dosing.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'citrus',
+		name: 'Citrus (Lemons, Limes, Oranges, Grapefruit)',
+		aliases: ['lemon', 'lime', 'orange', 'grapefruit', 'citrus peel', 'lemon rind', 'citric acid', 'key lime', 'clementines', 'tangerines'],
+		category: 'food',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling from the sour, irritating oils',
+					'Vomiting and mild diarrhea after eating peel, pith, or large amounts of flesh',
+					'Skin or mouth irritation from contact with the oils',
+					'Serious effects require large amounts of peel or leaves — uncommon',
+				],
+				firstAid: [
+					'Remove any remaining peel or fruit.',
+					'Rinse the mouth with water to clear the sour oils.',
+					'Offer water and watch for vomiting.',
+					'Call a vet only if vomiting persists or a large amount of peel was eaten.',
+				],
+				callVetIf: [
+					'A large amount of peel, pith, or leaves was eaten',
+					'Persistent vomiting or diarrhea',
+					'Tremors or unusual weakness (rare)',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling and mouth irritation (cats find citrus strongly aversive)',
+					'Vomiting after licking peel or eating flesh',
+					'Skin irritation from citrus oils',
+					'Serious effects are rare — cats rarely eat citrus',
+				],
+				firstAid: [
+					'Remove any remaining fruit or peel.',
+					'Rinse the mouth with water if drooling.',
+					'Offer water and monitor.',
+					'Call a vet if vomiting persists.',
+				],
+				callVetIf: [
+					'A large amount was eaten',
+					'Persistent vomiting or refusal to eat',
+					'Tremors or unusual weakness',
+				],
+			},
+		},
+		description: 'Citrus is mildly toxic to both cats and dogs — the oils in peel, pith, and leaves cause drooling and stomach upset. A small piece of flesh is usually harmless.',
+		sources: [ASPCA_PEOPLE_FOODS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Can dogs eat oranges or apples-like fruit safely?',
+				answer: 'A small segment of peeled orange is generally harmless for a dog — the fruit flesh is low in the irritating compounds. The problem is the peel, pith, seeds, and leaves, which concentrate psoralens and essential oils (limonene, linalool) that irritate the mouth and stomach. Treat peel-heavy snacking, and any grapefruit (more psoralens), as the risky version.',
+			},
+			{
+				question: 'Why does my cat hate lemons so much?',
+				answer: 'Cats are strongly averse to citrus smell — their noses and mouths are far more sensitive to the essential oils, and many cat-deterring sprays are literally citrus-scented for this reason. A cat that licks a lemon will usually drool and retreat immediately. Actual poisoning needs the cat to eat meaningful amounts of peel or leaves, which their own aversion makes rare.',
+			},
+			{
+				question: 'Are citrus essential oils the same risk?',
+				answer: 'No — concentrated citrus essential oils are a much bigger hazard, especially for cats, whose livers cannot process the oils. Diffused or undiluted citrus oil can cause drooling, tremors, and breathing trouble in cats. See our essential oils page for that risk; a fruit bowl lemon is a mild problem, but a bottle of lemon essential oil is not.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'corn-cob',
+		name: 'Corn on the Cob',
+		aliases: ['corn cob', 'corn cobs', 'maize cob', 'corn husk', 'corn dog chew', 'sweetcorn cob', 'corn cob obstruction'],
+		category: 'food',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, gagging, or retching within hours if the cob lodges in the stomach or gut',
+					'Loss of appetite, abdominal pain, and a hunched or praying posture',
+					'Straining to defecate or no stool as the blockage sets in',
+					'Lethargy, dehydration, and gut tissue death if untreated — surgical emergency',
+				],
+				firstAid: [
+					'Call a veterinarian immediately — cobs are one of the most common surgical obstructions in dogs.',
+					'Note the cob size (whole or partial), how much was eaten, and your dog\'s size.',
+					'Do NOT induce vomiting — a cob can lodge in the esophagus coming back up.',
+					'Do not feed bulk food or fiber to "push it through" without vet guidance.',
+				],
+				callVetIf: [
+					'ANY amount of cob was eaten — even a chunk, and even if the dog seems fine',
+					'Vomiting, gagging, refusal to eat, or abdominal pain',
+					'No stool, straining, or lethargy within 24–48 hours',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Vomiting or gagging if a piece is swallowed',
+					'Obstruction is rare in cats — pieces are usually small',
+					'Loss of appetite or constipation if a larger piece lodges',
+				],
+				firstAid: [
+					'Remove any remaining cob.',
+					'Monitor for vomiting or appetite changes over 24–48 hours.',
+					'Offer water as normal.',
+					'Call a vet if vomiting persists or the cat stops eating.',
+				],
+				callVetIf: [
+					'A chunk of cob was swallowed',
+					'Repeated vomiting or refusal to eat',
+					'Straining, no stool, or abdominal pain',
+				],
+			},
+		},
+		description: 'Corn on the cob is not toxic but severely dangerous to dogs — the cob is one of the most common causes of intestinal obstruction requiring surgery. Any eaten cob means a vet call.',
+		sources: [ASPCA_PEOPLE_FOODS, MERCK_TOXICOLOGY, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Why is a corn cob so dangerous if corn kernels are fine?',
+				answer: 'The kernels are digestible; the cob is dense, indigestible fiber that dogs gulp in chunks. Chunks swell and wedge in the narrow part of the small intestine, causing a complete blockage that cuts off blood supply to the gut. Veterinary surgeons rank corn cobs among their most frequent foreign-body surgeries — ahead of socks and toys in many summer practices.',
+			},
+			{
+				question: 'My big dog ate a whole cob two days ago and seems fine. Are we in the clear?',
+				answer: 'Not necessarily. Cobs can sit in the stomach for days before passing into the intestine and lodging — "seems fine" today can turn into vomiting and pain tomorrow. Call your vet now: an X-ray is quick, and a cob still in the stomach can sometimes be retrieved endoscopically, avoiding major abdominal surgery. Give the timeline and cob size when you call.',
+			},
+			{
+				question: 'Can I just wait and watch for it to pass?',
+				answer: 'Waiting is how simple retrievals turn into emergency surgeries. The safe version of "watchful waiting" is vet-directed: imaging first to know where the cob is, then monitoring for passage only if the vet confirms it is small and moving. Watch at home only for a dog that swallowed tiny crumbs of cob — vomiting, appetite loss, straining, or no stool at any point means an immediate clinic visit.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
 ];

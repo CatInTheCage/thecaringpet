@@ -812,4 +812,406 @@ export const medicationToxins: Toxin[] = [
 		],
 		lastReviewed: '2026-07-11',
 	},
+	{
+		slug: 'fluorouracil-cream',
+		name: '5-Fluorouracil Cream (5-FU)',
+		aliases: ['fluorouracil', '5-fu', 'efudex', 'efudix', 'carac', 'tolak', 'fluoroplex', 'skin cancer cream', 'chemo cream'],
+		category: 'medication',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting (often with blood), drooling, and severe diarrhea within 30 minutes to a few hours',
+					'Wobbliness, tremors, and seizures',
+					'Breathing difficulty and irregular heartbeat',
+					'Collapse and death — even a lick or two of cream has been fatal',
+				],
+				firstAid: [
+					'Go to an emergency veterinarian or call a poison hotline IMMEDIATELY — minutes matter.',
+					'Prevent further licking; wipe any cream off the mouth and paws.',
+					'Bring the cream tube or a photo of the label with the concentration.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'ANY exposure — a single lick of the tube or treated skin is an emergency',
+					'Vomiting, drooling, or wobbliness',
+					'Seizures, collapse, or irregular heartbeat',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and diarrhea within hours',
+					'Weakness, tremors, and seizures',
+					'Breathing difficulty and irregular heartbeat',
+					'Rapid collapse and death — extremely small amounts are lethal',
+				],
+				firstAid: [
+					'Go to an emergency veterinarian or call a poison hotline IMMEDIATELY.',
+					'Prevent further licking; wipe cream off the mouth and fur.',
+					'Bring the product label with the concentration.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'ANY exposure — even grooming cream off a treated human skin area',
+					'Vomiting, drooling, or weakness',
+					'Seizures, collapse, or irregular heartbeat',
+				],
+			},
+		},
+		description: '5-fluorouracil cream is severely toxic to both cats and dogs — a single lick has killed dogs within hours. There is no antidote. Any exposure is a go-now emergency.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'How much 5-FU cream is dangerous?',
+				answer: 'Extremely small amounts. Fatalities have been reported in dogs from licking a few treated skin spots or chewing an open tube — a fraction of a milligram per kilogram in some cases. There is no antidote, and death can occur within 6 to 12 hours from seizures and cardiac arrest. This is the most lethal common topical medication in homes: treat any exposure as a race to the emergency vet.',
+			},
+			{
+				question: 'My pet licked skin where I applied 5-FU hours ago and seems fine. Is that a risk?',
+				answer: 'Yes — even that counts as an exposure, and the cream remains on skin for hours. Do not wait for symptoms: call a veterinarian or poison hotline now. Symptoms can be delayed a few hours, and by the time vomiting and seizures appear, treatment options are limited. If your pet was treated with 5-FU at home, keep them away from the treated area until it is fully absorbed and washed.',
+			},
+			{
+				question: 'How can I use 5-FU safely in a home with pets?',
+				answer: 'Apply it in a closed room away from pets, wear gloves, store the tube in a sealed container high up or in a locked drawer, and never leave the tube on a nightstand — chewed tubes are the most common exposure. Consider asking your doctor about pet-safer alternatives such as imiquimod or topical diclofenac if you live with curious pets, and dispose of used applicators where pets cannot reach them.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'glp1-meds',
+		name: 'GLP-1 Weight-Loss & Diabetes Medications',
+		aliases: ['semaglutide', 'ozempic', 'wegovy', 'rybelsus', 'tirzepatide', 'mounjaro', 'zepbound', 'liraglutide', 'victoza', 'saxenda', 'glp-1', 'weight loss injection'],
+		category: 'medication',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Vomiting and diarrhea within hours to a day',
+					'Lethargy and reduced appetite',
+					'Drooling or nausea',
+					'Serious effects are uncommon, but prolonged vomiting risks dehydration',
+				],
+				firstAid: [
+					'Remove any remaining tablets, pens, or needles from reach.',
+					'Offer water and withhold food for a few hours if the stomach is upset.',
+					'Watch for repeated vomiting over the next 24 hours.',
+					'Call a vet if vomiting persists, your pet seems weak, or a pen was chewed.',
+				],
+				callVetIf: [
+					'A whole bottle of tablets or an injection pen was eaten',
+					'Repeated vomiting or diarrhea lasting more than a day',
+					'Extreme lethargy, wobbliness, or collapse',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Vomiting, drooling, and reduced appetite',
+					'Lethargy',
+					'Diarrhea in some cases',
+					'Serious effects are uncommon with small exposures',
+				],
+				firstAid: [
+					'Remove any remaining medication from reach.',
+					'Offer fresh water and monitor closely.',
+					'Watch for vomiting over the next 24 hours.',
+					'Call a vet if vomiting persists or the cat stops eating.',
+				],
+				callVetIf: [
+					'A large amount was ingested or a pen was chewed',
+					'Repeated vomiting or refusal to eat',
+					'Lethargy, wobbliness, or collapse',
+				],
+			},
+		},
+		description: 'GLP-1 medications (Ozempic, Wegovy, Mounjaro) are mildly toxic to both cats and dogs — mainly vomiting, diarrhea, and lethargy. Chewed injection pens add a foreign-body risk.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'How dangerous is it if my dog eats my Ozempic pen?',
+				answer: 'The medication itself is usually low risk — expect nausea, vomiting, and diarrhea. The bigger problems are physical: the plastic pen casing can cause mouth injuries or an intestinal obstruction if swallowed in pieces, and the tiny needle can puncture the gut. If a pen was chewed or swallowed whole, call a vet for imaging and monitoring advice.',
+			},
+			{
+				question: 'Can GLP-1 medications cause low blood sugar in pets?',
+				answer: 'On their own, rarely — GLP-1 drugs lower blood sugar mainly when combined with insulin or sulfonylureas, which they work alongside in some households. If your pet also got into diabetes tablets (such as glipizide) or a diabetic pet in the house is on insulin, watch harder for wobbliness, trembling, and weakness, and call a vet — that combination is genuinely dangerous.',
+			},
+			{
+				question: 'These medications are everywhere now. How do I store them safely?',
+				answer: 'Keep pens and tablets in a closed drawer or a high cabinet — never in a purse, gym bag, or on the nightstand, all common chew targets. Refrigerated pens are fine for storage, but the smell of the carrying case and the novelty of dropped pens draw pets in. Sharps and used pens belong in a sealed disposal container out of reach.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'thyroid-meds',
+		name: 'Thyroid Medications',
+		aliases: ['levothyroxine', 'synthroid', 'thyroxine', 'euthyrox', 'methimazole', 'tapazole', 'thyroid tablets', 'armour thyroid', 'hypothyroid meds', 'hyperthyroid meds'],
+		category: 'medication',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Restlessness, hyperactivity, and panting within hours to a day',
+					'Rapid heartbeat and rapid breathing',
+					'Vomiting, diarrhea, and increased thirst',
+					'Tremors and fever in large overdoses',
+				],
+				firstAid: [
+					'Remove any remaining tablets from reach and count how many are missing.',
+					'Note the dose (mcg) and your dog\'s weight — dose math matters here.',
+					'Offer water and keep the dog calm.',
+					'Call a vet or poison hotline for guidance, even if no symptoms have started.',
+				],
+				callVetIf: [
+					'More than a few extra tablets were eaten (the threshold depends on the dose)',
+					'Hyperactivity, panting, or a racing heart',
+					'Tremors, vomiting, or fever',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Vomiting and reduced appetite (more typical of methimazole overdose)',
+					'Lethargy and drooling',
+					'Increased thirst or changes in breathing',
+					'Bruising or bleeding with large methimazole overdoses',
+				],
+				firstAid: [
+					'Remove any remaining tablets and count how many are missing.',
+					'Note the medication name and dose — levothyroxine and methimazole act differently.',
+					'Offer water and monitor closely.',
+					'Call a vet or poison hotline for guidance.',
+				],
+				callVetIf: [
+					'More than a single extra tablet was eaten',
+					'Vomiting, drooling, or refusal to eat',
+					'Bruising, bleeding, or breathing changes',
+				],
+			},
+		},
+		description: 'Thyroid medications are moderately toxic to both cats and dogs — levothyroxine overdose speeds up the heart and metabolism; methimazole overdose causes stomach and blood effects.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'My dog just ate my levothyroxine. Dogs take that drug too — is it actually dangerous?',
+				answer: 'Dogs are indeed prescribed levothyroxine, so an extra tablet or two is usually minor — but the human doses vary widely, and a small dog eating a large number of high-strength tablets can develop a real thyroid storm: racing heart, hyperactivity, panting, tremors, and fever. Call a vet or poison hotline with the tablet strength (mcg), the count eaten, and your dog\'s weight for dose-specific advice.',
+			},
+			{
+				question: 'What is the difference between levothyroxine and methimazole exposures?',
+				answer: 'They treat opposite problems. Levothyroxine replaces thyroid hormone — an overdose speeds the metabolism up (racing heart, hyperactivity). Methimazole suppresses hormone production — an overdose slows things down, causing vomiting, drooling, and in large overdoses blood-cell suppression with bruising or bleeding. Both warrant a vet call; note which one was eaten because the treatment differs.',
+			},
+			{
+				question: 'Which pets are most at risk from thyroid pill bottles?',
+				answer: 'Dogs that raid pill organizers and handbags are the classic case — levothyroxine is one of the most commonly prescribed medications and often sits in a weekly pill minder that smells faintly of the owner. Cats rarely steal tablets, but a cat being treated for hyperthyroidism can get a double dose if the household loses track of who was medicated. Keep pill organizers closed and stored up high.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'muscle-relaxants',
+		name: 'Muscle Relaxants',
+		aliases: ['baclofen', 'cyclobenzaprine', 'amrix', 'flexeril', 'methocarbamol', 'robaxin', 'tizanidine', 'zanaflex', 'carisoprodol', 'soma', 'muscle relaxer'],
+		category: 'medication',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Extreme drowsiness, stumbling, and collapse within 30 minutes to a few hours',
+					'Slow breathing and low body temperature',
+					'Vocalization, agitation, and tremors (especially baclofen)',
+					'Seizures, coma, and death in serious cases',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — do not wait for symptoms.',
+					'Bring the medication name, strength (mg), and how many tablets are missing.',
+					'Keep the pet warm and quiet while getting guidance.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any muscle relaxant tablet was eaten — even one',
+					'Severe drowsiness, stumbling, or collapse',
+					'Slow breathing, seizures, or unresponsiveness — emergency clinic immediately',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Profound drowsiness, weakness, and wobbliness',
+					'Slow breathing and low body temperature',
+					'Vomiting and drooling',
+					'Seizures, coma, and death — cats are extremely sensitive to baclofen',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately.',
+					'Bring the medication name, strength, and amount missing.',
+					'Keep the cat warm and quiet while getting guidance.',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any tablet was eaten — even a fragment',
+					'Extreme drowsiness, weakness, or vomiting',
+					'Slow breathing, seizures, or unresponsiveness — emergency clinic immediately',
+				],
+			},
+		},
+		description: 'Muscle relaxants are severely toxic to both cats and dogs — baclofen in particular causes profound sedation, seizures, and death from a single tablet. Any ingestion is an emergency.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Is one baclofen tablet really an emergency?',
+				answer: 'Yes. Baclofen is one of the most dangerous human medications a pet can eat — doses as low as 1 mg/kg have caused severe poisoning in dogs, and cats are even more sensitive. It causes profound sedation within an hour, then vocalization, tremors, seizures, dangerously slow breathing, and potentially death. There is no antidote; treatment is intensive supportive care, often on a ventilator in severe cases. Go to the vet immediately.',
+			},
+			{
+				question: 'Are all muscle relaxants equally dangerous?',
+				answer: 'No, but treat them all as emergencies. Baclofen is by far the most toxic. Cyclobenzaprine is sedating and also affects the heart rhythm; methocarbamol is the mildest and is actually used in veterinary medicine (often for IV disk disease), though an oral overdose still causes severe sedation. Carisoprodol and tizanidine fall in between. Whatever the drug, a single tablet in a small pet warrants an immediate call.',
+			},
+			{
+				question: 'My pet seems fine but ate the tablet an hour ago. Should I still go in?',
+				answer: 'Yes. Symptoms can come on suddenly, and by the time deep sedation and slow breathing appear, the pet is much harder to stabilize. Early decontamination (induced vomiting at the clinic, activated charcoal) dramatically changes the outcome. An hour of "seems fine" is exactly when you want to go — not three hours later when they cannot walk.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'iron-supplements',
+		name: 'Iron Supplements & Prenatal Vitamins',
+		aliases: ['iron pills', 'ferrous sulfate', 'ferrous gluconate', 'prenatal vitamins', 'prenatals', 'iron tablets', 'vitamins with iron', 'multivitamin overdose', 'ferritin supplements'],
+		category: 'medication',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Vomiting (sometimes with blood) and diarrhea within hours',
+					'Abdominal pain and lethargy as iron damages the gut lining',
+					'Dehydration and weakness over the following day',
+					'Liver failure and shock in large overdoses (a day or more later)',
+				],
+				firstAid: [
+					'Remove the bottle and count how many tablets are missing.',
+					'Note the elemental iron amount per tablet (mg) — not just "iron".',
+					'Offer water; do not induce vomiting without guidance.',
+					'Call a vet or poison hotline with the tablet strength and count.',
+				],
+				callVetIf: [
+					'A large number of tablets was eaten, especially by a small dog',
+					'Vomiting with blood, bloody diarrhea, or abdominal pain',
+					'Lethargy, collapse, or yellowing of the gums a day later',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Vomiting and drooling within hours',
+					'Diarrhea, sometimes with blood',
+					'Lethargy and reduced appetite',
+					'Liver effects in large overdoses (delayed)',
+				],
+				firstAid: [
+					'Remove the bottle and estimate how many tablets were eaten.',
+					'Note the elemental iron amount per tablet.',
+					'Offer water and monitor closely.',
+					'Call a vet or poison hotline for guidance.',
+				],
+				callVetIf: [
+					'More than a tablet or two was eaten',
+					'Persistent vomiting or bloody diarrhea',
+					'Lethargy, collapse, or jaundice',
+				],
+			},
+		},
+		description: 'Iron supplements and prenatal vitamins are moderately toxic to both cats and dogs — overdoses burn the gut and can damage the liver. Gummy vitamins may also contain xylitol.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Why are prenatal vitamins a double risk?',
+				answer: 'They pack high doses of iron, and some formulas also contain xylitol or vitamin D — a third hazard on its own (see our vitamin D and xylitol pages). Check the label for xylitol, birch sugar, and vitamin D content, and call a vet with the full ingredient list, not just "prenatal vitamins". The iron dose determines the gut and liver risk.',
+			},
+			{
+				question: 'What does "elemental iron" mean and why does the vet ask for it?',
+				answer: 'Labels list the total compound (for example ferrous sulfate 325 mg) but the toxic part is only the iron inside it — ferrous sulfate 325 mg contains about 65 mg of elemental iron. Toxicity is calculated against elemental iron, so having the exact product name or a photo of the label lets the vet give a real risk assessment instead of a guess.',
+			},
+			{
+				question: 'Are gummy vitamins as dangerous as pills?',
+				answer: 'The iron dose per gummy is usually lower, so a few gummies are rarely serious — but gummies are far easier to eat by the handful, and many contain xylitol, which is severely toxic to dogs. Check the label first: if xylitol is in the ingredient list, treat it as an xylitol emergency; if not, the main issue is iron and sugar, and a call for dose guidance is still the right move.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'apoquel',
+		name: 'Apoquel (Oclacitinib)',
+		aliases: ['oclacitinib', 'apoquel tablets', 'apoquel 16mg', 'apoquel 5.4mg', 'zenrelia', 'itch medicine for dogs', 'allergy pills for dogs'],
+		category: 'medication',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Vomiting, diarrhea, and soft stools after eating multiple tablets',
+					'Lethargy and reduced appetite',
+					'Large overdoses can suppress the immune system, raising infection risk',
+					'Pre-existing skin or ear infections may worsen temporarily',
+				],
+				firstAid: [
+					'Remove the bottle and count how many tablets are missing.',
+					'Note the tablet strength (5.4 mg, 16 mg) and your dog\'s weight.',
+					'Offer water and watch for vomiting over 24 hours.',
+					'Call a vet or poison hotline with the strength and count for dose guidance.',
+				],
+				callVetIf: [
+					'Many tablets were eaten, especially by a small dog',
+					'Repeated vomiting, diarrhea, or lethargy',
+					'Fever, wounds that will not heal, or signs of infection in the following weeks',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Vomiting and drooling within hours',
+					'Lethargy and reduced appetite',
+					'Wobbliness or unusual behavior',
+					'Cats are not routinely dosed with oclacitinib, so an accidental dose warrants a vet call',
+				],
+				firstAid: [
+					'Remove the bottle and estimate how many tablets were eaten.',
+					'Note the tablet strength.',
+					'Offer water and monitor closely.',
+					'Call a vet or poison hotline for guidance — do not wait for symptoms.',
+				],
+				callVetIf: [
+					'Any amount was eaten by a cat',
+					'Vomiting, drooling, or refusal to eat',
+					'Wobbliness, tremors, or collapse',
+				],
+			},
+		},
+		description: 'Apoquel (oclacitinib) is an immunosuppressant for dog allergies — mildly toxic to dogs, moderately concerning for cats. Poison hotline reports of pet exposures are rising.',
+		sources: [PPH_POISONS, MERCK_TOXICOLOGY, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Why are Apoquel poisoning calls increasing?',
+				answer: 'Pet Poison Helpline reported a rise in toxin calls involving Apoquel (September 2026) as the allergy medication becomes more widely prescribed. It sits in purses, on counters, and in weekly pill organizers, and it smells like food to a dog. Because one bottle holds a month of tablets, a determined chewer can eat far more than a therapeutic dose.',
+			},
+			{
+				question: 'Is Apoquel dangerous for cats?',
+				answer: 'Oclacitinib is labeled for dogs only. Cats are not routinely given it, and they appear more sensitive — an accidental dose (the classic case is a cat that knocks over the dog\'s bottle and eats the tablets) warrants a vet call even before symptoms. Watch for vomiting, drooling, lethargy, or wobbliness.',
+			},
+			{
+				question: 'What happens if a dog eats a whole bottle of Apoquel?',
+				answer: 'Doses above the therapeutic range mainly cause vomiting and diarrhea, but large overdoses suppress the immune system, which can lead to infections days or weeks later. Call a vet or poison hotline with the tablet strength and count eaten — they may recommend decontamination and monitoring. Watch for fever, sores, or worsening skin infections after the initial exposure.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
 ];

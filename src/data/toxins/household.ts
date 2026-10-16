@@ -907,4 +907,413 @@ export const householdToxins: Toxin[] = [
 		],
 		lastReviewed: '2026-07-11',
 	},
+	{
+		slug: 'nicotine',
+		name: 'Nicotine (Cigarettes, Vapes, Gum & Patches)',
+		aliases: ['cigarettes', 'nicotine gum', 'nicotine patches', 'vaping', 'e-cigarette', 'e-liquid', 'vape juice', 'snus', 'nicotine pouches', 'tobacco', 'zyban'],
+		category: 'household',
+		species: {
+			dog: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and diarrhea within 15 minutes to an hour',
+					'Hyperactivity, tremors, and a rapid heart rate',
+					'Wobbliness progressing to weakness and collapse',
+					'Seizures, dangerously slow breathing, and death in serious cases',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately — nicotine acts fast.',
+					'Note what was eaten (gum and patches are far stronger than cigarettes) and how much.',
+					'Take a photo of the product label with the nicotine strength (mg).',
+					'Do not induce vomiting unless a veterinarian instructs you to.',
+				],
+				callVetIf: [
+					'Any nicotine product was eaten — gum, patches, vapes, or cigarette butts',
+					'Vomiting, tremors, or hyperactivity',
+					'Collapse, seizures, or slow/labored breathing',
+				],
+			},
+			cat: {
+				level: 'severe',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and diarrhea',
+					'Hyperactivity, tremors, and a rapid heart rate',
+					'Weakness, wobbliness, and collapse',
+					'Seizures and dangerously slow breathing in serious cases',
+				],
+				firstAid: [
+					'Call a veterinarian or poison hotline immediately.',
+					'Note the product and amount, including any leaked vape liquid.',
+					'Take a photo of the label with the nicotine strength.',
+					'Keep the cat calm while getting guidance.',
+				],
+				callVetIf: [
+					'Any nicotine product was eaten or licked',
+					'Vomiting, tremors, or hyperactivity',
+					'Collapse, seizures, or breathing changes',
+				],
+			},
+		},
+		description: 'Nicotine is severely toxic to both cats and dogs — vape liquid, gum, and patches are concentrated enough that one product can be fatal. Any ingestion is an immediate emergency.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Which nicotine products are the most dangerous?',
+				answer: 'The concentrated ones: vape liquid and refill bottles, nicotine gum (one piece can hold 2–4 mg, more than a cigarette), patches (each contains 7–21 mg, absorbed even through the gut), and modern nicotine pouches. A 10 lb dog eating a single 21 mg patch can face life-threatening poisoning. Cigarette butts in ashtrays are the classic household exposure — keep ashtrays and all products out of reach.',
+			},
+			{
+				question: 'How fast do nicotine symptoms appear?',
+				answer: 'Fast — often within 15 to 60 minutes, starting with drooling and vomiting, then tremors and a racing heart. In serious cases seizures and breathing failure follow within hours. That speed is why you call immediately rather than watch: early treatment (decontamination, fluids, seizure control) dramatically changes the outcome.',
+			},
+			{
+				question: 'Is secondhand vape smoke or smoke exposure a risk to pets?',
+				answer: 'Chronic smoke exposure causes respiratory irritation over time but is not the same as acute nicotine poisoning. The acute risk is ingestion or skin contact with the products themselves — chewed vapes, spilled e-liquid absorbed through the gums or skin, or a patch stuck to fur and groomed off. Store everything up high and sealed; wipe up any spilled liquid immediately with gloves.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'laundry-detergent-pods',
+		name: 'Laundry & Dishwasher Detergent Pods',
+		aliases: ['laundry pods', 'dishwasher pods', 'dishwasher tablets', 'tide pods', 'detergent capsules', 'pod bites', 'dishwasher detergent', 'laundry detergent'],
+		category: 'household',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Immediate drooling, mouth pain, and pawing at the mouth',
+					'Vomiting (sometimes with blood) and gagging',
+					'Burns or ulcers on the tongue, gums, and throat',
+					'Labored breathing or lethargy if detergent was aspirated into the lungs',
+				],
+				firstAid: [
+					'Rinse the mouth thoroughly with water — several minutes of gentle flushing.',
+					'Offer water or a small meal to help dilute the detergent.',
+					'Do NOT induce vomiting — it re-exposes the throat and risks aspiration.',
+					'Call a vet for guidance; watch breathing closely for 24 hours.',
+				],
+				callVetIf: [
+					'The pod burst in the mouth or was swallowed whole',
+					'Persistent drooling, vomiting, or refusal to eat (ulcer signs)',
+					'Coughing, labored breathing, or lethargy — aspiration is an emergency',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Drooling, mouth pain, and pawing at the mouth',
+					'Vomiting and gagging',
+					'Mouth ulcers or burns on the tongue and gums',
+					'Labored breathing or lethargy if detergent was aspirated',
+				],
+				firstAid: [
+					'Rinse the mouth gently with water for several minutes.',
+					'Offer water to dilute the detergent.',
+					'Do NOT induce vomiting.',
+					'Call a vet for guidance and monitor breathing for 24 hours.',
+				],
+				callVetIf: [
+					'A pod burst in the mouth or was swallowed',
+					'Persistent drooling, vomiting, or refusal to eat',
+					'Coughing or labored breathing — emergency',
+				],
+			},
+		},
+		description: 'Detergent pods are moderately toxic to both cats and dogs — the concentrated liquid burns the mouth and throat, and vomited detergent can be aspirated into the lungs.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Why are pods worse than liquid detergent?',
+				answer: 'Pods concentrate a whole capful of detergent into a water-soluble pouch that bursts under pressure — so a bite delivers the full concentrated dose directly into the mouth and often squirts it toward the back of the throat. The liquid can then be aspirated into the lungs, causing chemical pneumonitis, which is the most serious complication. Regular detergent spilled on the floor is usually licked in smaller, more dilute amounts.',
+			},
+			{
+				question: 'My pet bit a pod and seems fine after rinsing. Do we still need a vet?',
+				answer: 'A light nibble with thorough rinsing often causes only transient drooling — monitoring may be all that is needed. But call a vet if the pod burst fully, if your pet swallowed pieces of the pouch, or if drooling, gagging, or refusal to eat continues. The delayed risks are mouth ulcers and aspiration pneumonitis, which show up over hours, so a 24-hour watch on breathing and appetite is the right move.',
+			},
+			{
+				question: 'Why should I not make my pet vomit?',
+				answer: 'Two reasons. First, the corrosive detergent would burn the esophagus a second time on the way up. Second, and more dangerous, vomited detergent froths and is easily inhaled into the lungs, causing chemical aspiration pneumonia — the complication that turns a mouth burn into a life-threatening event. Rinse the mouth, dilute with water or food, and let a vet decide if decontamination is needed.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'ice-melt',
+		name: 'Ice Melt & Rock Salt',
+		aliases: ['rock salt', 'road salt', 'deicer', 'ice melt', 'calcium chloride', 'magnesium chloride', 'sodium chloride deicer', 'paw salt', 'winter salt'],
+		category: 'household',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and mouth irritation after licking paws or granules',
+					'Increased thirst',
+					'Diarrhea in larger amounts',
+					'Paw pad irritation, cracking, or chemical burns from walking on treated ground',
+					'Tremors and seizures only in large ingestions (salt toxicity)',
+				],
+				firstAid: [
+					'Wipe or rinse the paws and belly with lukewarm water to remove residue.',
+					'Rinse the mouth and offer fresh water.',
+					'Let the pet drink normally — do not force large amounts of water.',
+					'Call a vet if vomiting is repeated, or if tremors or wobbliness appear.',
+				],
+				callVetIf: [
+					'A handful or more of granules was eaten, or a pet-safe claim is uncertain with a large lick',
+					'Repeated vomiting or diarrhea',
+					'Tremors, wobbliness, or seizures — emergency',
+					'Cracked, bleeding, or painful paw pads that are not improving',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling and vomiting after grooming salt off paws',
+					'Increased thirst',
+					'Mild diarrhea',
+					'Sore, cracked paw pads from walking on treated surfaces',
+				],
+				firstAid: [
+					'Rinse the paws with lukewarm water.',
+					'Rinse the mouth and offer fresh water.',
+					'Monitor for vomiting over the next few hours.',
+					'Call a vet if vomiting persists or the cat seems unwell.',
+				],
+				callVetIf: [
+					'A large amount was ingested',
+					'Repeated vomiting or refusal to drink',
+					'Tremors or wobbliness — emergency',
+				],
+			},
+		},
+		description: 'Ice melt and rock salt are mildly toxic to both cats and dogs — licking paws causes drooling and stomach upset, and untreated granules in quantity can raise salt levels dangerously.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Is "pet-safe" ice melt actually safe?',
+				answer: 'Pet-safe formulations (usually urea- or CMA-based) are gentler on paws and much less toxic if licked, but not edible — a pet that eats a bowlful can still get very sick, and urea in quantity causes stomach upset too. The practical answer: pet-safe products are the right choice for your driveway, but you still rinse paws after walks because you cannot control what neighbors spread.',
+			},
+			{
+				question: 'What is the real winter danger — the salt itself or the paws?',
+				answer: 'Both, in different ways. Most poisonings come from paw-licking: enough salt residue licked over a walk causes drooling, vomiting, and thirst, and a dog that eats spilled granules directly can develop genuine salt toxicity with tremors and seizures. Separately, the crystals are abrasive and chemically irritating, causing cracked, burning pads — especially with calcium chloride products. Rinse paws after every winter walk.',
+			},
+			{
+				question: 'How do I protect my pet through the winter?',
+				answer: 'Use pet-safe deicer at home, walk your dog toward the curb edge where less salt accumulates, rinse or wipe paws (and belly, for low-slung dogs) after each walk, and consider paw balm or booties for sensitive pads. Keep the bag of ice melt sealed and stored up high — direct granule eating is far more dangerous than paw residue, and dogs do raid the bag.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'fertilizer',
+		name: 'Fertilizer (Lawn & Garden)',
+		aliases: ['lawn fertilizer', 'plant food', 'blood meal', 'bone meal', 'miracle gro', 'npk fertilizer', 'garden fertilizer', 'grass fertilizer', 'fish emulsion', 'rose food'],
+		category: 'household',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and diarrhea within hours of eating granules or treated grass',
+					'Mouth and skin irritation from contact with treated areas',
+					'Abdominal pain and lethargy',
+					'Tremors, bloody vomiting, or pancreatitis with blood meal/bone meal or iron-heavy products',
+					'Bowel obstruction risk from clumps of bone meal eaten in quantity',
+				],
+				firstAid: [
+					'Remove the pet from the treated area and wipe paws and fur.',
+					'Rinse the mouth and offer fresh water.',
+					'Note the product name and take a photo of the label (iron and herbicide content matter).',
+					'Call a vet or poison hotline if more than a small lick occurred.',
+				],
+				callVetIf: [
+					'A meaningful amount of granules, blood meal, or bone meal was eaten',
+					'Repeated vomiting, bloody stool, or abdominal pain',
+					'Tremors, wobbliness, or collapse',
+					'Loss of appetite or constipation a day later (obstruction signs)',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Drooling and vomiting after licking treated grass or granules',
+					'Mouth irritation and increased thirst',
+					'Diarrhea and lethargy',
+					'Tremors with iron-heavy or combination products',
+				],
+				firstAid: [
+					'Remove the cat from the treated area and wipe paws and fur.',
+					'Rinse the mouth and offer fresh water.',
+					'Note the product name and label contents.',
+					'Call a vet or poison hotline if vomiting persists.',
+				],
+				callVetIf: [
+					'A meaningful amount was eaten or licked from fur',
+					'Repeated vomiting or refusal to eat',
+					'Tremors, wobbliness, or collapse',
+				],
+			},
+		},
+		description: 'Lawn and garden fertilizers are moderately toxic to both cats and dogs — granules and treated grass cause vomiting and diarrhea, while blood/bone meal add obstruction and pancreatitis risk.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'How long after fertilizing is the lawn safe for pets?',
+				answer: 'Follow the product label, but the standard rule is to keep pets off until the product is watered in and fully dry — typically 24 to 72 hours. Granules sitting loose on the grass are the exposure risk; once they have dissolved or been washed into the soil, residue is much lower. Bag and store the leftover product immediately — dogs find the smell of blood meal and fish emulsion genuinely appealing.',
+			},
+			{
+				question: 'Why are blood meal and bone meal singled out?',
+				answer: 'Because dogs love the smell — they are dried animal products, and dogs eat them by the mouthful. Blood meal is nitrogen-rich and causes vomiting, diarrhea, and in large amounts pancreatitis and iron overload. Bone meal forms chalky clumps that can cement into an intestinal obstruction requiring surgery. If your dog treats the garden bag as a snack, switch to a slow-release product stored in a sealed bin.',
+			},
+			{
+				question: 'Are "organic" fertilizers safer?',
+				answer: 'For the environment often yes, but not for a dog that eats them — organic products are often made of blood meal, bone meal, fish meal, and feather meal, which are more attractive to eat than synthetic granules, and they carry the obstruction and pancreatitis risks above. Synthetic products can also include herbicides and iron. The label matters more than the word "organic": check the ingredients and the pet-reentry interval.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'herbicides',
+		name: 'Weed Killers & Herbicides',
+		aliases: ['weed killer', 'glyphosate', 'roundup', '2 4-d', 'paraquat', 'weed and feed', 'lawn herbicide', 'pesticide spray', 'weed b gon'],
+		category: 'household',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and mild diarrhea after licking wet or granular product',
+					'Mouth and paw irritation from walking on wet treated grass',
+					'Increased thirst',
+					'Severe signs (tremors, collapse) are rare and mostly from concentrates or industrial products',
+				],
+				firstAid: [
+					'Move the pet off the treated area and wipe or rinse paws and belly.',
+					'Rinse the mouth and offer fresh water.',
+					'Keep the product label — the active ingredient determines the risk.',
+					'Call a vet or poison hotline if concentrate was ingested or symptoms persist.',
+				],
+				callVetIf: [
+					'Any concentrated product was eaten (undiluted bottle, sprayer tank)',
+					'Repeated vomiting, tremors, or wobbliness',
+					'Difficulty breathing or collapse — emergency',
+					'Persistent drooling or refusal to eat',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: true,
+				symptoms: [
+					'Drooling and vomiting after grooming product off fur or paws',
+					'Mouth and paw irritation',
+					'Lethargy and reduced appetite',
+					'Severe signs are rare and mostly from concentrates',
+				],
+				firstAid: [
+					'Move the cat off the treated area; bathe off any wet residue on fur.',
+					'Rinse the mouth and offer fresh water.',
+					'Keep the product label for the active ingredient.',
+					'Call a vet if vomiting persists or the cat seems unwell.',
+				],
+				callVetIf: [
+					'Any concentrate was ingested',
+					'Repeated vomiting or refusal to eat',
+					'Tremors, breathing difficulty, or collapse — emergency',
+				],
+			},
+		},
+		description: 'Weed killers are mildly toxic to both cats and dogs once dry — wet granules or concentrates cause drooling and vomiting. Concentrate ingestion or paraquat exposure is a dire emergency.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Is Roundup (glyphosate) dangerous to pets?',
+				answer: 'Ready-to-use glyphosate products are among the milder herbicides — after the spray has fully dried, a pet walking on the lawn faces little risk, and a small lick of dried residue causes at most mild stomach upset. The dangers are the wet product, the concentrates, and other additives in the formulation. Keep pets off until dry (usually 24 hours), and store the bottle sealed — an undiluted drink is a real poisoning.',
+			},
+			{
+				question: 'Which herbicide should I be genuinely scared of?',
+				answer: 'Paraquat. It is extremely toxic in tiny amounts — a single lick of concentrate causes progressive, irreversible lung scarring and has no antidote. It is restricted in many countries but found in agricultural settings and some imported products; any suspected exposure is a drop-everything emergency. Also treat "weed and feed" combinations seriously, since they mix herbicide with fertilizer (see our fertilizer page) and sometimes insecticide.',
+			},
+			{
+				question: 'My dog licked paws after a neighbor sprayed. What now?',
+				answer: 'Rinse the paws and mouth, offer water, and watch for drooling or vomiting over the next few hours. If the spray was visibly wet when your dog walked through, or your dog develops repeated vomiting or wobbliness, call a vet and, if possible, ask the neighbor what product they used — the active ingredient changes everything. Dried residue on a lawn is unlikely to cause more than mild, transient upset.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
+	{
+		slug: 'hydrocarbons',
+		name: 'Hydrocarbons (Gasoline, Lighter Fluid, Kerosene)',
+		aliases: ['gasoline', 'petrol', 'lighter fluid', 'kerosene', 'lamp oil', 'diesel', 'mineral spirits', 'paint thinner', 'turpentine', 'motor oil', 'charcoal starter'],
+		category: 'household',
+		species: {
+			dog: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and mouth/throat burning within minutes to hours',
+					'Coughing, choking, wheezing, or rapid breathing (aspiration into the lungs)',
+					'Lethargy, wobbliness, and weakness',
+					'Tremors and low body temperature in larger exposures',
+					'Skin redness or chemical burns where the liquid contacted fur and skin',
+				],
+				firstAid: [
+					'Do NOT induce vomiting — hydrocarbons aspirate catastrophically into the lungs.',
+					'Move the pet to fresh air if fumes are strong.',
+					'Wash skin contact off with mild dish soap and lukewarm water.',
+					'Call a vet or poison hotline immediately and monitor breathing closely for 24 hours.',
+				],
+				callVetIf: [
+					'Any hydrocarbon liquid was swallowed — even a mouthful',
+					'Coughing, wheezing, rapid or labored breathing — emergency',
+					'Wobbliness, tremors, or collapse',
+					'Large skin exposure or any burn-like redness',
+				],
+			},
+			cat: {
+				level: 'moderate',
+				toxic: true,
+				symptoms: [
+					'Drooling, vomiting, and mouth irritation',
+					'Coughing, rapid or labored breathing from aspiration',
+					'Weakness, wobbliness, and lethargy',
+					'Skin irritation or chemical burn where liquid contacted fur',
+				],
+				firstAid: [
+					'Do NOT induce vomiting.',
+					'Move the cat to fresh air.',
+					'Bathe off skin contact with mild dish soap and lukewarm water.',
+					'Call a vet or poison hotline immediately and watch breathing for 24 hours.',
+				],
+				callVetIf: [
+					'Any amount was swallowed or licked from fur',
+					'Coughing or labored breathing — emergency',
+					'Wobbliness, tremors, or collapse',
+				],
+			},
+		},
+		description: 'Gasoline, lighter fluid, and kerosene are moderately to severely toxic to both cats and dogs — the liquid burns on the way down and can be aspirated into the lungs. Never induce vomiting.',
+		sources: [MERCK_TOXICOLOGY, PPH_POISONS, ASPCA_POISON_CONTROL],
+		faqs: [
+			{
+				question: 'Why is vomiting so dangerous with these products?',
+				answer: 'Hydrocarbons are extremely slippery and volatile — when vomited, they foam and are easily inhaled into the lungs, where they cause chemical aspiration pneumonia that can be fatal. The gut irritation from a small swallow is far less dangerous than the lung damage from one aspiration event. This is the classic "never induce vomiting" toxin: rinse the mouth, wash the skin, and let professionals handle decontamination.',
+			},
+			{
+				question: 'What about the fumes — is being in the garage with the moped enough?',
+				answer: 'Ordinary brief exposure to fumes in a ventilated space causes little harm, but a pet shut in a space with open containers or strong fumes can develop drooling, dizziness, and breathing irritation. The real hazards are ingestion of pooled liquid (drip pans, open gas cans, grill starter) and skin contact, both of which absorb and cause systemic signs. Store fuels in sealed containers off the floor.',
+			},
+			{
+				question: 'My dog stepped in gasoline and then licked its paw. What should I do?',
+				answer: 'Wash the paw (and any splashed fur) immediately with mild dish soap and lukewarm water — do not use solvents or anything harsher. Offer water, then watch closely for 24 hours: coughing, wheezing, drooling, vomiting, or wobbliness all mean a vet visit now. A single paw-lick of gasoline is unlikely to be fatal, but it is not a "wait and see" toxin — make the call.',
+			},
+		],
+		lastReviewed: '2026-10-16',
+	},
 ];
