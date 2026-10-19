@@ -36,6 +36,12 @@ const PINS = [
   { img: 'best-microchip-cat-feeders-2026.jpg', title: 'Best Microchip|Cat Feeders|for Multi-Cat Homes', file: 'pin-microchip-feeders.png' },
   { img: 'cat-straining-to-pee-hero.jpg', title: 'Cat Straining|to Pee Is an|Emergency', file: 'pin-cat-urinary-blockage.png' },
   { img: 'cat-eating.jpg', title: 'Best Slow|Feeders|for Cats', file: 'pin-cat-slow-feeder.png' },
+  // 2026-10-19 批次：覆盖 10-16 新文 + 工具页 + 召回簇
+  { img: 'why-some-cats-live-to-20-hero.jpg', title: 'Why Some Cats|Live to 20:|5 Vet-Backed Habits', file: 'pin-why-cats-live-to-20.png' },
+  { img: 'cat-houseplants.jpg', title: '105 Things in Your Home|Toxic to Dogs|& Cats', file: 'pin-pet-toxin-lookup.png' },
+  { img: 'pedigree-recall-hero.jpg', title: 'Why So Many Pet Food|Recalls in 2026?|(Data-Backed)', file: 'pin-pet-food-recalls-2026.png' },
+  { img: 'when-to-say-goodbye-senior-cat-hero.jpg', title: 'When to Say Goodbye|to Your Senior Cat|(Vet Guide)', file: 'pin-senior-cat-goodbye.png' },
+  { img: 'are-plug-in-air-fresheners-toxic-to-cats-hero.jpg', title: 'Are Plug-In Air|Fresheners Toxic|to Cats?', file: 'pin-air-freshener-cats.png' },
 ];
 
 // 把标题文字按 | 分行，生成 SVG 蒙层 + 文字

@@ -224,3 +224,54 @@
 - **标题**：Best Slow Feeders for Cats (Stop Gulp-and-Vomit Meals)
 - **描述**：Cats eat fast for instinctive reasons — but gulp-and-vomit meals aren't something to live with. These cat-sized slow feeders and lick mats slow eating, reduce post-meal vomiting, and add enrichment. We picked the safest options shaped for feline faces. Save this before you shop.
 - **标签**：slow feeder for cats, cat eats too fast, cat vomiting after eating, lick mat for cats, cat feeding, cat bowl
+
+---
+
+## 2026-10-19 批次（5 个新 Pin）
+
+> 覆盖 10-16 新发布的 why-some-cats-live-to-20 + 工具页 + 召回簇。上周只发了 1 个，本周补齐到 3–5/周。老规矩：**不要同一天全发**，分到 2–3 天、欧美晚 8–11 点发。
+
+## 21. Why Some Cats Live to 20（本周主推）
+
+- **图片**：`pin-why-cats-live-to-20.jpg`
+- **URL**：https://thecaringpet.com/blog/why-some-cats-live-to-20/
+- **Board**：Cat Care & Feeding
+- **标题**：Why Do Some Cats Live to 20? 5 Vet-Backed Habits of Long-Lived Cats
+- **描述**：Some cats routinely reach 20 while others don't make 13 — and the difference is rarely luck. Vets see the same five habits in every long-lived cat: staying lean, drinking more water, tended teeth, daily play, and bloodwork before symptoms show. Save this checklist for your cat's long life.
+- **标签**：cat lifespan, how long do cats live, senior cat care, cat health tips, cat longevity, old cat care
+
+## 22. Pet Toxin Lookup（工具页，105 种毒素）
+
+- **图片**：`pin-pet-toxin-lookup.jpg`
+- **URL**：https://thecaringpet.com/tools/pet-toxin-lookup/
+- **Board**：Pet Safety & Health
+- **标题**：105 Things in Your Home That Are Toxic to Dogs & Cats (Searchable List)
+- **描述**：Lilies, pothos, xylitol, grapes, ibuprofen, detergent pods — your home holds more pet hazards than you think. Search this free vet-reviewed database of 105 toxic foods, plants, medications, and household products, with symptoms and first aid for dogs and cats. Check it before your pet gets into something.
+- **标签**：toxic foods for dogs, toxic plants for cats, pet poison, dog ate, cat ate, household toxins pets, pet safety
+
+## 23. Why So Many Pet Food Recalls (2026)
+
+- **图片**：`pin-pet-food-recalls-2026.jpg`
+- **URL**：https://thecaringpet.com/blog/why-so-many-pet-food-recalls-2026/
+- **Board**：Pet Safety & Health
+- **标题**：Why Are There So Many Pet Food Recalls in 2026? A Data-Backed Answer
+- **描述**：Salmonella, listeria, aflatoxin — pet food recall headlines are everywhere in 2026. We analyzed 22 FDA-verified recalls to answer the real question: is your pet's food less safe, or are we just hearing more? Plus a 5-minute safety check you can run on your own bag today.
+- **标签**：pet food recall 2026, dog food recall, cat food recall, fda pet food recall, is pet food safe, pet food safety
+
+## 24. When to Say Goodbye to a Senior Cat
+
+- **图片**：`pin-senior-cat-goodbye.jpg`
+- **URL**：https://thecaringpet.com/blog/when-to-say-goodbye-senior-cat/
+- **Board**：Cat Care & Feeding
+- **标题**：When to Say Goodbye to Your Senior Cat (Quality-of-Life Guide)
+- **描述**：There is no single moment that tells you it's time — but there is a framework. The HHHHHMM scale vets actually use, the daily signs worth tracking, and how to stop second-guessing the hardest decision in cat ownership. Save this for when you need it.
+- **标签**：senior cat care, when to put a cat down, cat quality of life, elderly cat care, saying goodbye to a cat, cat end of life
+
+## 25. Plug-In Air Fresheners & Cats
+
+- **图片**：`pin-air-freshener-cats.jpg`
+- **URL**：https://thecaringpet.com/blog/are-plug-in-air-fresheners-toxic-to-cats/
+- **Board**：Cat Care & Feeding
+- **标题**：Are Plug-In Air Fresheners Toxic to Cats? What Vets Want You to Know
+- **描述**：That scented plug-in in your hallway releases vapors that irritate a cat's sensitive airways — and the concentrated oil is toxic if it's licked off fur. Learn which air fresheners carry the most risk, the symptoms to watch for, and pet-safe ways to keep your home fresh instead.
+- **标签**：air freshener cat safety, are plug ins safe for cats, toxic household products cats, cat breathing problems, pet safe home, cat health
