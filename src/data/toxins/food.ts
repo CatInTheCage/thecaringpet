@@ -1776,4 +1776,124 @@ export const foodToxins: Toxin[] = [
 		],
 		lastReviewed: '2026-10-16',
 	},
+	{
+		slug: 'marshmallows',
+		name: 'Marshmallows',
+		aliases: ['marshmallow', 'sugar-free marshmallows', 'fluff', 'marshmallow creme'],
+		category: 'food',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: false,
+				symptoms: ['Stomach upset', 'Vomiting or diarrhea from the sugar load', 'Choking on a large or sticky marshmallow', 'Pancreatitis risk if eaten in quantity or by a small dog'],
+				firstAid: [
+					'Remove remaining marshmallows from reach.',
+					'Check the label: if it is sugar-free and lists xylitol (also called birch sugar), treat as an emergency — call a vet or poison hotline immediately.',
+					'For one or two regular marshmallows, offer water and monitor.',
+				],
+				callVetIf: [
+					'The marshmallows were sugar-free and contain xylitol',
+					'A large quantity was eaten, especially by a small dog',
+					'Vomiting, diarrhea, or abdominal pain develops',
+					'Gagging or difficulty swallowing after a large marshmallow',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: false,
+				symptoms: ['Stomach upset', 'Vomiting or diarrhea', 'Choking on sticky candy'],
+				firstAid: [
+					'Remove remaining marshmallows from reach.',
+					'Confirm the product was not sugar-free with xylitol — if it was, call a vet immediately.',
+					'For a small taste of regular marshmallow, offer water and monitor.',
+				],
+				callVetIf: [
+					'Sugar-free marshmallows with xylitol were eaten',
+					'Vomiting persists or the cat refuses food',
+					'Any sign of choking or distress',
+				],
+			},
+		},
+		description: 'Regular marshmallows are not toxic to dogs or cats, but the sugar causes stomach upset, sticky pieces are a choking hazard, and sugar-free versions containing xylitol are dangerous to both species.',
+		sources: [ASPCA_PEOPLE_FOODS, PPH_POISONS],
+		faqs: [
+			{
+				question: 'Can dogs have regular marshmallows as a treat?',
+				answer: 'A plain marshmallow will not poison a dog, but it is a poor treat choice: it is almost entirely sugar with no nutritional value. Small dogs can choke on the sticky texture, and repeated sugary treats contribute to obesity and pancreatitis risk. If you want a soft training treat, a tiny piece of plain cooked chicken beats a marshmallow every time.',
+			},
+			{
+				question: 'Why are sugar-free marshmallows an emergency?',
+				answer: 'Sugar-free marshmallows are often sweetened with xylitol, which is highly toxic to dogs even in small amounts — it triggers a rapid insulin release that can cause life-threatening low blood sugar within 10–60 minutes, and larger doses can damage the liver. Check any "diet" or "keto" marshmallow label for xylitol or birch sugar before it ever reaches the campfire bag.',
+			},
+			{
+				question: 'My cat stole a mini marshmallow. Should I worry?',
+				answer: 'One regular mini marshmallow is not toxic to cats — expect at most a brief stomach upset. Confirm it was not a sugar-free version containing xylitol, which is dangerous for cats too. Watch for vomiting over the next day, and call a vet if your cat vomits repeatedly, stops eating, or seems lethargic.',
+			},
+			{
+				question: 'What about marshmallows roasted over a campfire?',
+				answer: 'The roasted part adds the same problems in a hotter, stickier package: burned sugar can irritate the mouth and throat, and molten marshmallow is an easy way for a dog to burn its tongue or choke. Keep roasting sticks and s\'mores supplies well above nose level, and count sticks — a discarded skewer is a separate puncture hazard.',
+			},
+		],
+		lastReviewed: '2026-10-20',
+	},
+	{
+		slug: 'caramel',
+		name: 'Caramel & Caramel Candies',
+		aliases: ['caramel', 'caramel candy', 'caramel apple', 'caramel corn', 'toffee', 'dulce de leche'],
+		category: 'food',
+		species: {
+			dog: {
+				level: 'mild',
+				toxic: false,
+				symptoms: ['Stomach upset from the sugar and fat', 'Vomiting or diarrhea', 'Pancreatitis risk after a large amount', 'Danger from add-ins: chocolate, xylitol, macadamia nuts, or candy wrappers'],
+				firstAid: [
+					'Remove the rest of the caramel and its wrapper from reach.',
+					'Identify what it was: plain caramel is a minor upset risk, but caramel apples-on-a-stick, sugar-free candy, and chocolate-covered caramels change the picture.',
+					'For a small amount of plain caramel, offer water and monitor.',
+				],
+				callVetIf: [
+					'The candy was sugar-free and may contain xylitol',
+					'It was chocolate-covered or contained macadamia nuts or raisins',
+					'The wooden stick or a wrapper was swallowed',
+					'Vomiting, diarrhea, or abdominal pain follows a larger amount',
+				],
+			},
+			cat: {
+				level: 'mild',
+				toxic: false,
+				symptoms: ['Stomach upset', 'Vomiting or diarrhea', 'Risk from wrappers or sticks swallowed with the candy'],
+				firstAid: [
+					'Remove remaining candy, wrappers, and sticks.',
+					'For a small lick of plain caramel, offer water and monitor.',
+					'If the candy was sugar-free, chocolate, or raisin-based, call a vet promptly.',
+				],
+				callVetIf: [
+					'Sugar-free, chocolate, or raisin-containing caramel was eaten',
+					'A wrapper or stick was swallowed',
+					'Vomiting persists or the cat stops eating',
+				],
+			},
+		},
+		description: 'Plain caramel is not toxic to dogs or cats but the sugar and fat cause stomach upset and pancreatitis risk in quantity. The real dangers are add-ins: xylitol in sugar-free candy, chocolate, macadamias, raisins, and swallowed wrappers or apple sticks.',
+		sources: [ASPCA_PEOPLE_FOODS, PPH_POISONS],
+		faqs: [
+			{
+				question: 'My dog ate a caramel apple. What actually matters here?',
+				answer: 'Three separate hazards stack up: the caramel itself is a sugar-and-fat load, the apple seeds in a whole eaten apple release cyanide compounds in tiny amounts, and the wooden stick is a puncture and obstruction risk on the way through. A few licks of caramel off an apple is a monitor-at-home situation; a swallowed stick or a whole apple core means a vet call.',
+			},
+			{
+				question: 'Is caramel corn dangerous for dogs?',
+				answer: 'Caramel corn adds hard kernels and often raisins or nuts to the sugar load. A few pieces of plain caramel corn cause at most stomach upset, but sugar-free versions may contain xylitol, and recipes with raisins or macadamias are genuinely toxic. With any homemade or bulk-bin batch you cannot verify, call a vet if more than a taste was eaten.',
+			},
+			{
+				question: 'Can cats taste caramel, and will they want it?',
+				answer: 'Cats cannot taste sweetness at all — they lack the taste receptors for it — so a cat investigating caramel is usually drawn by the butter or fat smell rather than the sugar. That does not make it safe: the fat load can trigger vomiting or diarrhea, and dairy-heavy caramel sauces upset many cats\' digestion. There is no reason to offer it.',
+			},
+			{
+				question: 'When is a caramel exposure a real emergency?',
+				answer: 'Plain caramel never is. Call a vet or poison hotline immediately if the candy was sugar-free (possible xylitol), chocolate-covered (theobromine), or contained macadamia nuts or raisins — or if your pet swallowed a caramel apple stick, which can perforate the intestinal tract. Have the wrapper or label in hand when you call.',
+			},
+		],
+		lastReviewed: '2026-10-20',
+	},
 ];

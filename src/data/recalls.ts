@@ -11,6 +11,34 @@ const FDA_RECALLS_PAGE = {
 
 export const recalls: Recall[] = [
 	{
+		slug: 'fi-dog-supplements-salmonella-2026',
+		brand: 'FI',
+		product: 'Fi Calming Supplement for Dogs & Fi 8-in-1 Formula Supplement for Dogs',
+		aliases: ['fi', 'fi barking labs', 'tryfi', 'fi collar', 'fi calming', 'fi 8-in-1', 'fi supplements'],
+		category: 'supplement',
+		company: 'Fi Barking Labs Corp',
+		lotCodes: ['26118', '26159'],
+		sizes: '180 g jars',
+		hazard: 'Salmonella contamination',
+		hazardDetail:
+			'Two Fi dog supplements may be contaminated with Salmonella from an ingredient supplied to Fi\'s manufacturer. Salmonella can infect dogs eating the product and can spread to people handling the jar or cleaning up after an infected animal. Infected dogs may be lethargic with diarrhea (sometimes bloody), fever, and vomiting; some infected pets show no signs but can still shed the bacteria.',
+		recallDate: '2026-09-08',
+		status: 'active',
+		species: ['dog'],
+		whatToDo: [
+			'Stop using the recalled supplements and check the lot number on the bottom of the jar: Fi Calming Supplement lot 26118 (UPC 8 50064 80011 1) and Fi 8-in-1 Formula lot 26159 (UPC 8 50055 11168 4).',
+			'Seal the container tightly and dispose of it in the trash — do not pour it down the drain or return opened product to a store.',
+			'Wash your hands and any bowls, surfaces, or storage areas that contacted the supplement.',
+			'Dogs with lethargy, diarrhea, fever, or vomiting after eating the supplement should see a veterinarian; mention the possible Salmonella exposure.',
+			'Contact Fi at 1-888-434-3647 (7 days a week, 10am–8pm ET) or support@tryfi.com with questions, and report adverse events to the FDA at fda.gov/reportanimalae.',
+		],
+		source: {
+			name: 'FDA Recall Notice — Fi Recalls Supplements for Dogs (September 8, 2026)',
+			url: 'https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/fi-recalls-supplements-dogs-because-possible-salmonella-contamination',
+		},
+		lastVerified: '2026-10-20',
+	},
+	{
 		slug: 'revival-feline-milk-replacer-2026',
 		brand: "Breeder's Edge / Shelter's Choice",
 		product: "Breeder's Edge Foster Care Feline Milk Replacer & Shelter's Choice Feline Milk Replacer",
