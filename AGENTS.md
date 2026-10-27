@@ -95,7 +95,7 @@ Global styles live in `src/styles/global.css`. The design system uses HSL CSS cu
 
 Utility classes include `.container`, `.container-narrow`, `.section`, `.card`, `.badge`, `.btn`, `.btn-primary`, `.btn-secondary`, `.text-muted`, `.section-eyebrow`, `.affiliate-disclosure`, `.newsletter-form`, and `.faq-item`.
 
-The site imports Google Fonts (`Inter` for body, `Playfair Display` for headings). Article body text is constrained to `.container-narrow` (max-width 720px) for readability.
+Fonts (`Inter` for body, `Playfair Display` for headings) are **self-hosted via `@fontsource` npm packages** (latin subsets, weights: Inter 400/500/600/700, Playfair 600/700), imported in `BaseHead.astro`. Do not reintroduce Google Fonts `<link>`/`@import` — the render-blocking `fonts.googleapis.com` stylesheet made pages load very slowly from regions where Google domains are slow/unreachable (2026-10-27 fix). Article body text is constrained to `.container-narrow` (max-width 720px) for readability. `public/_headers` sets long-lived caching for `/_astro/`, `/fonts/`, `/images/`, and `/downloads/` on Cloudflare Pages.
 
 ### Constants and IDs
 
