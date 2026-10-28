@@ -687,4 +687,37 @@ export const recalls: Recall[] = [
 		},
 		lastVerified: '2026-08-03',
 	},
+	{
+		slug: 'darwins-chicken-recipe-cat-fda-advisory-2026',
+		brand: "Darwin's Natural Pet Products",
+		product: "Natural Selections Chicken Recipe for Cats (frozen raw)",
+		aliases: ['darwins', "darwin's", "darwin's natural", 'arrow reliance', 'natural selections chicken'],
+		category: 'cat-food',
+		company: "Arrow Reliance Inc. (Darwin's Natural Pet Products)",
+		lotCodes: ['12731', '12493'],
+		sizes: '2 lb frozen packages (white/clear plastic, green & black label; lot code printed on front lower-left unit)',
+		hazard: 'Salmonella',
+		hazardDetail:
+			"The FDA collected and tested samples after a consumer complaint about two cats that developed gastrointestinal illness from the product — one cat was hospitalized; both recovered after the food was stopped. The FDA recommended a recall of the two lots, but the company has not initiated an adequate recall. The packages carry no expiration date, so affected food may still be sitting in home freezers. Sold online via subscription.",
+		recallDate: '2026-10-26',
+		status: 'fda-advisory',
+		species: ['cat'],
+		whatToDo: [
+			'Check your freezer — the affected food is frozen raw with no expiration date, so it may have been stored for months. Look for Lot 12731 (made 7/8/2026) or Lot 12493 (made 4/2/2026) on the front lower-left unit of the package.',
+			'Stop feeding affected lots immediately — do not thaw or finish the package even if your cat seems fine.',
+			'Dispose of the food double-bagged in a sealed trash container where pets and wildlife cannot reach it; wash hands, bowls, and any surfaces it touched.',
+			'Call your veterinarian if your cat ate an affected lot — watch for vomiting, diarrhea (may be bloody), fever, or lethargy. Raw-food handlers with symptoms should contact a physician.',
+		],
+		source: {
+			name: "FDA Advisory — Do Not Feed Two Lots of Darwin's Natural Pet Products Chicken Recipe Cat Food (October 26, 2026)",
+			url: 'https://www.fda.gov/animal-veterinary/outbreaks-and-advisories/fda-advisory-do-not-feed-two-lots-darwins-natural-pet-products-chicken-recipe-cat-food-due',
+		},
+		secondarySources: [
+			{
+				name: 'PetfoodIndustry — FDA warns two Darwin’s cat food lots contain Salmonella (Oct 27, 2026)',
+				url: 'https://www.petfoodindustry.com/safety-quality/pet-food-recalls/news/15975598/fda-warns-two-darwins-cat-food-lots-contain-salmonella',
+			},
+		],
+		lastVerified: '2026-10-28',
+	},
 ];
