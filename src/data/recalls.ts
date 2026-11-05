@@ -720,4 +720,53 @@ export const recalls: Recall[] = [
 		],
 		lastVerified: '2026-10-28',
 	},
+	{
+		slug: 'wedgewood-compounded-medications-potency-2026',
+		brand: 'Wedgewood Pharmacy',
+		product:
+			'Compounded veterinary medications within expiry (powders, pastes, oral suspensions, injectables, ophthalmic ointments/solutions, ear solutions, topical sprays, gels)',
+		aliases: [
+			'wedgewood',
+			'wedgewood pharmacy',
+			'wedgewood pet',
+			'compounded medication',
+			'compounded meds',
+			'compounded prescription',
+		],
+		category: 'other',
+		company: 'Wedgewood Pharmacy, LLC',
+		// Affected lot numbers are per-prescription — thousands of items. Owners must
+		// verify their specific product at wedgewood.com/recall-lookup/ instead of
+		// matching a lot list, so lotCodes stays empty (= "verify against source").
+		lotCodes: [],
+		sizes: 'All package sizes; shipped between February 18, 2026 and October 6, 2026',
+		hazard: 'Incorrect potency (subpotent or superpotent)',
+		hazardDetail:
+			"Inconsistencies in the reliability of analytical testing data from Wedgewood's laboratory mean affected compounded medications may contain too little active ingredient (ineffective treatment) or too much (toxicity/overdose). Nearly 4,000 products are covered; Wedgewood has received 98 complaints, 7 of them serious. The recall covers medications for companion animals, horses, exotics, and other non-food animals.",
+		recallDate: '2026-10-21',
+		status: 'active',
+		species: ['dog', 'cat'],
+		whatToDo: [
+			'Check whether your pet takes any compounded medication from Wedgewood Pharmacy (the label or your vet can confirm) — the recall covers only products shipped between 2/18/2026 and 10/6/2026.',
+			'Look up your exact product, lot number, and expiration date at wedgewood.com/recall-lookup/ — the affected list is too long to guess from memory.',
+			'If your product is affected: stop using it, retain the product (do not discard yet), and call Wedgewood recall services (Sedgwick) at 866-562-5931 (Mon–Fri 8am–9pm ET, Sat 9am–5pm ET) for a refund or replacement.',
+			'Contact your veterinarian about a clinically appropriate alternative before interrupting treatment — especially for seizure, heart, thyroid, or eye medications where stopping abruptly is risky.',
+			'Watch for signs of under-dosing (symptoms returning) or overdosing (lethargy, vomiting, tremors) and call your vet if you see either; report problems to the FDA at 1-888-FDA-VETS or fda.gov/reportanimalae.',
+		],
+		source: {
+			name: 'FDA — Wedgewood Pharmacy Issues Recall of Certain Compounded Veterinary Medications Within Expiry Due to Potential Potency Issues (October 21, 2026)',
+			url: 'https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/wedgewood-pharmacy-issues-recall-certain-compounded-veterinary-medications-within-expiry-due',
+		},
+		secondarySources: [
+			{
+				name: 'AVMA — Nearly 4,000 pharmaceutical products recalled by Wedgewood Pharmacy',
+				url: 'https://www.avma.org/news/nearly-4000-pharmaceutical-products-recalled-wedgewood-pharmacy',
+			},
+			{
+				name: 'Cornell Riney Canine Health Center — Wedgewood Pharmacy recall',
+				url: 'https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-topics/wedgewood-pharmacy-recall',
+			},
+		],
+		lastVerified: '2026-11-05',
+	},
 ];
