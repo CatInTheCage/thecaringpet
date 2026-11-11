@@ -133,7 +133,8 @@ async function fetchRss(src) {
 
 // Petful 召回追踪页：HTML，解析召回条目（<h3> 标题 + 旁边日期）。
 // 页面结构 2026-07-17 实测：召回条目标题为 <h3 class="font-bold text-dark truncate">…</h3>，
-// 日期为 "Month DD, YYYY" 文本。按出现顺序即为最新→最旧。
+// 2026-11-11 结构变更：召回标题改为 <h3 class="… line-clamp-2 …">…</h3>（页脚还有
+// 白色 uppercase h3，不能匹配到）。日期为 "Month DD, YYYY" 文本。按出现顺序即为最新→最旧。
 const MONTHS = { January:1, February:2, March:3, April:4, May:5, June:6, July:7, August:8, September:9, October:10, November:11, December:12 };
 async function fetchPetful(src) {
   try {
@@ -147,8 +148,8 @@ async function fetchPetful(src) {
     clearTimeout(t);
     if (!res.ok) return { error: `HTTP ${res.status}` };
     const html = await res.text();
-    // 抓所有召回标题（h3 带 truncate class）
-    const titleRe = /<h3[^>]*class="[^"]*font-bold[^"]*truncate[^"]*"[^>]*>([\s\S]*?)<\/h3>/g;
+    // 抓所有召回标题（h3 带 truncate 或 line-clamp-2 class，排除页脚白色 uppercase h3）
+    const titleRe = /<h3[^>]*class="[^"]*(?:truncate|line-clamp-2)[^"]*"[^>]*>([\s\S]*?)<\/h3>/g;
     const titles = [];
     let m;
     while ((m = titleRe.exec(html)) !== null) {
