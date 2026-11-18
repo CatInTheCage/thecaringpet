@@ -42,6 +42,10 @@ const PINS = [
   { img: 'pedigree-recall-hero.jpg', title: 'Why So Many Pet Food|Recalls in 2026?|(Data-Backed)', file: 'pin-pet-food-recalls-2026.png' },
   { img: 'when-to-say-goodbye-senior-cat-hero.jpg', title: 'When to Say Goodbye|to Your Senior Cat|(Vet Guide)', file: 'pin-senior-cat-goodbye.png' },
   { img: 'are-plug-in-air-fresheners-toxic-to-cats-hero.jpg', title: 'Are Plug-In Air|Fresheners Toxic|to Cats?', file: 'pin-air-freshener-cats.png' },
+  // 2026-11-18 批次：饮水机评测 + 肾病 + 喂药
+  { img: 'best-cat-water-fountains-2026-hero.jpg', title: 'Best Cat Water|Fountains|of 2026', file: 'pin-cat-water-fountains.png' },
+  { img: 'senior-cat-kidney-disease-hero.jpg', title: 'Kidney Disease in|Senior Cats:|Early Signs', file: 'pin-senior-cat-kidney.png' },
+  { img: 'how-to-give-a-cat-a-pill-hero.jpg', title: 'How to Give|a Cat a Pill|(4 Methods)', file: 'pin-give-cat-a-pill.png' },
 ];
 
 // 把标题文字按 | 分行，生成 SVG 蒙层 + 文字
