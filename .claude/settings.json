@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sips -Z 1200 /Users/bigpower/Downloads/pexels-karola-g-5717980.jpg --out /tmp/hero-tg/full-preview.jpg)",
+      "Bash(sips -g pixelWidth -g pixelHeight /tmp/hero-tg/full-preview.jpg)",
+      "Bash(sips -c 4704 4480 --cropOffset 2016 0 /Users/bigpower/Downloads/pexels-karola-g-5717980.jpg --out cropped.jpg)",
+      "Bash(sips -Z 1600 cropped.jpg --out hero-thanksgiving-home.jpg)",
+      "Bash(sips -g pixelWidth -g pixelHeight hero-thanksgiving-home.jpg)",
+      "Bash(sips -Z 800 hero-thanksgiving-home.jpg --out check.jpg)",
+      "Bash(sips -z 1679 1600 cropped.jpg --out hero-thanksgiving-home.jpg)",
+      "Bash(sips -Z 700 hero-thanksgiving-home.jpg --out check.jpg)",
+      "Bash(sips -g pixelWidth -g pixelHeight public/images/home-hero-thanksgiving.jpg)",
+      "Bash(md5 public/images/thanksgiving-foods-toxic-to-dogs-cats-hero.jpg dist/images/thanksgiving-foods-toxic-to-dogs-cats-hero.jpg)",
+      "Bash(curl -s http://localhost:4321/images/thanksgiving-foods-toxic-to-dogs-cats-hero.jpg -o /tmp/served-hero.jpg)",
+      "Bash(md5 /tmp/served-hero.jpg)",
+      "Bash(curl -s -o /tmp/thanksgiving-page.html -w \"HTTP %{http_code} | total %{time_total}s | size %{size_download} bytes | TTFB %{time_starttransfer}s\\\\n\" \"https://thecaringpet.com/blog/thanksgiving-foods-toxic-to-dogs-cats/\")"
+    ]
+  }
+}

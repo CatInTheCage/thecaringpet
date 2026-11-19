@@ -65,6 +65,11 @@ export interface Toxin {
 	/** Short description. Also the visible subtitle AND the meta description,
 	 *  so keep it ≤155 chars and state the species split explicitly. */
 	description: string;
+	/** Optional override for the <title> tag, for entries targeting a specific
+	 *  search query. Falls back to the "Is {name} Toxic to Cats and Dogs?"
+	 *  template. Keep the rendered title (after the " | The Caring Pet" suffix
+	 *  added by BaseHead) ≤60 chars. */
+	seoTitle?: string;
 	/** ≥2 independent authoritative sources (ASPCA / Merck / PPH / etc.). */
 	sources: ToxinSource[];
 	/** Optional affiliate products. Ships empty for now — ProductCard stays

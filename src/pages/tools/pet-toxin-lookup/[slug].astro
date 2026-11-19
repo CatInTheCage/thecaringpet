@@ -20,7 +20,7 @@ interface Props {
 }
 const { toxin, toxins } = Astro.props;
 
-const title = `Is ${toxin.name} Toxic to Cats and Dogs?`;
+const title = toxin.seoTitle ?? `Is ${toxin.name} Toxic to Cats and Dogs?`;
 const description = toxin.description; // already ≤155 chars with species split
 const image = '/images/hero.jpg';
 

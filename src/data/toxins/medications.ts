@@ -660,7 +660,8 @@ export const medicationToxins: Toxin[] = [
 				],
 			},
 		},
-		description: 'Vitamin A (retinol) is moderately toxic to cats and dogs — chronic excess harms bones and joints, and cats are especially prone. Call a vet for guidance.',
+		seoTitle: 'Retinol Toxic to Cats: Signs & First Aid',
+		description: 'Retinol (vitamin A) is toxic to cats — see the symptoms, first aid steps, and exactly when to call the vet or a poison hotline.',
 		sources: [MERCK_TOXICOLOGY, PPH_POISONS],
 		faqs: [
 			{
