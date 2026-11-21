@@ -1,5 +1,5 @@
 ---
-import { AMAZON_ASSOCIATES_TAG } from '../consts.ts';
+import { AMAZON_ASSOCIATES_TAG, SITE_URL } from '../consts.ts';
 
 interface Props {
 	product: {
@@ -19,9 +19,45 @@ interface Props {
 }
 
 const { product, badge } = Astro.props;
+
+// JSON-LD: emit Product schema only when the visible card data parses cleanly,
+// so the markup always mirrors what is actually rendered.
+const priceMatch = product.price.match(/\$?\s*([\d,]+(?:\.\d+)?)/);
+const priceValue = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : null;
+const ratingValue = Number.parseFloat(product.rating);
+const reviewMatch = product.reviews.match(/[\d,]+/);
+const reviewCount = reviewMatch ? parseInt(reviewMatch[0].replace(/,/g, ''), 10) : null;
+
+const amazonUrl = `https://www.amazon.com/dp/${product.amazonId}/?tag=${AMAZON_ASSOCIATES_TAG}`;
+
+let schemaJson: Record<string, unknown> | null = null;
+if (priceValue && Number.isFinite(ratingValue) && reviewCount) {
+	schemaJson = {
+		'@context': 'https://schema.org',
+		'@type': 'Product',
+		name: product.name,
+		image: `${SITE_URL}${product.image}`,
+		description: product.bestFor,
+		sku: product.amazonId,
+		offers: {
+			'@type': 'Offer',
+			url: amazonUrl,
+			priceCurrency: 'USD',
+			price: priceValue.toFixed(2),
+			availability: 'https://schema.org/InStock',
+		},
+		aggregateRating: {
+			'@type': 'AggregateRating',
+			ratingValue: ratingValue,
+			bestRating: 5,
+			reviewCount: reviewCount,
+		},
+	};
+}
 ---
 
 <article class="product-card">
+	{schemaJson && <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaJson)} />}
 	<div class="product-image">
 		<img src={product.image} alt={product.name} loading="lazy" />
 		{badge && <span class="badge badge-primary product-badge">{badge}</span>}
