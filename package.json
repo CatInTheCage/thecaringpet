@@ -16,7 +16,9 @@
     "radar:browser": "node scripts/trending-radar-browser.mjs",
     "radar:social": "node scripts/trending-radar-social.mjs",
     "radar:all": "npm run radar && npm run radar:browser && npm run radar:social",
-    "wb": "node scripts/wb.mjs"
+    "wb": "node scripts/wb.mjs",
+    "pins": "node scripts/make-pinterest-pins.mjs",
+    "pins:publish": "node scripts/pinterest/publish-pins.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.0",
