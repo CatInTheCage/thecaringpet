@@ -13,17 +13,37 @@ import { createServer } from 'node:http';
 import { readFileSync, writeFileSync, chmodSync } from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
-import { exec } from 'node:child_process';
+import { exec, spawnSync } from 'node:child_process';
+import net from 'node:net';
+
+// —— 代理引导: NODE_USE_ENV_PROXY 必须在进程启动前生效 ——
+// 探测顺序: 本机 7890(ApexCore) 开着→带代理重启自己; 否则直连。
+async function portOpen(port) {
+	return new Promise(r => {
+		const s = net.connect({ host: '127.0.0.1', port, timeout: 800 });
+		s.on('connect', () => { s.destroy(); r(true); });
+		s.on('error', () => r(false));
+		s.on('timeout', () => { s.destroy(); r(false); });
+	});
+}
+if (process.env.PIN_PROXY_BOOTSTRAPPED !== '1') {
+	const useProxy = await portOpen(7890);
+	const env = { ...process.env, PIN_PROXY_BOOTSTRAPPED: '1' };
+	if (useProxy) {
+		env.NODE_USE_ENV_PROXY = '1';
+		env.HTTPS_PROXY = 'http://127.0.0.1:7890';
+		env.HTTP_PROXY = 'http://127.0.0.1:7890';
+	}
+	const r = spawnSync(process.execPath, process.argv.slice(1), { env, stdio: 'inherit' });
+	process.exit(r.status ?? 0);
+}
 
 const CFG = path.join(homedir(), '.config', 'thecaringpet', 'pinterest-app.json');
 const OUT = path.join(homedir(), '.config', 'thecaringpet', 'pinterest-token');
 const REDIRECT = 'http://localhost:8080/callback';
 const SCOPES = 'boards:read boards:write pins:read pins:write user_accounts:read';
 
-// 网络需走本机代理(ApexCore 7890);NODE_USE_ENV_PROXY 交给调用方/默认开启
-process.env.NODE_USE_ENV_PROXY ||= '1';
-process.env.HTTPS_PROXY ||= 'http://127.0.0.1:7890';
-process.env.HTTP_PROXY ||= 'http://127.0.0.1:7890';
+// 网络代理由顶部引导段决定(7890 开→走代理, 否则直连), 这里不再重复设置
 
 const { app_id, app_secret } = JSON.parse(readFileSync(CFG, 'utf8'));
 const state = Math.random().toString(36).slice(2) + Date.now().toString(36);

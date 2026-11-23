@@ -20,6 +20,29 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
+import net from 'node:net';
+
+// —— 代理引导: 本机 7890(ApexCore) 开着→带代理重启自己(NODE_USE_ENV_PROXY 须启动前生效); 否则直连 ——
+async function portOpen(port) {
+	return new Promise(r => {
+		const s = net.connect({ host: '127.0.0.1', port, timeout: 800 });
+		s.on('connect', () => { s.destroy(); r(true); });
+		s.on('error', () => r(false));
+		s.on('timeout', () => { s.destroy(); r(false); });
+	});
+}
+if (process.env.PIN_PROXY_BOOTSTRAPPED !== '1') {
+	const useProxy = await portOpen(7890);
+	const env = { ...process.env, PIN_PROXY_BOOTSTRAPPED: '1' };
+	if (useProxy) {
+		env.NODE_USE_ENV_PROXY = '1';
+		env.HTTPS_PROXY = 'http://127.0.0.1:7890';
+		env.HTTP_PROXY = 'http://127.0.0.1:7890';
+	}
+	const r = spawnSync(process.execPath, process.argv.slice(1), { env, stdio: 'inherit' });
+	process.exit(r.status ?? 0);
+}
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const QUEUE_FILE = path.join(ROOT, 'scripts', 'pinterest', 'pin-queue.json');
@@ -133,6 +156,7 @@ if (DRY) {
 }
 
 // ---- publish ----
+let trialBlocked = false;
 for (const p of pending) {
 	const boardId = boardsByName.get(p.board);
 	if (!boardId) {
@@ -151,6 +175,12 @@ for (const p of pending) {
 		state.published[p.id] = { pinId: pin.id, url: pin.link ?? p.link, board: p.board, publishedAt: new Date().toISOString() };
 		console.log(`✓ 已发布 [${p.id}] pinId=${pin.id}`);
 	} catch (e) {
+		// Trial 权限(403 code 29): 不记失败、中止本次——Standard 批准后定时任务自动重试
+		if (e.status === 403 && /Trial access/i.test(JSON.stringify(e.body ?? {}))) {
+			console.error(`⏸ [${p.id}] app 仍为 Trial 权限(403 code 29) — 未记为失败, Standard 批准后重跑即自动发布。`);
+			trialBlocked = true;
+			break;
+		}
 		// schema 类错误(如 media_source 字段不匹配)时把响应原文打出来,便于对照 v5 文档修正
 		state.failed[p.id] = { error: errSummary(e), at: new Date().toISOString() };
 		console.error(`✗ [${p.id}] ${errSummary(e)}`);
