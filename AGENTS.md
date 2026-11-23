@@ -165,6 +165,21 @@ This is a content-heavy affiliate site. When writing or rewriting blog posts, ai
 
 **Critical:** Product images in `public/images/products/` must match the actual ASIN being linked. Do not reuse images across different models, pack sizes, or variants.
 
+### Pinterest publishing pipeline
+
+Pin publishing runs through the Pinterest **API v5** (app `caringpet-publisher`, app_id 1643158). **Manual weekly cadence, tied to the Wednesday article-writing routine — user requires human review; do NOT schedule it (launchd / `.claude/scheduled_tasks.json` cron never fires reliably on this machine and was deliberately removed 2026-11-23).**
+
+```bash
+node scripts/pinterest/publish-pins.mjs --dry   # preview: review titles/links/boards first
+node scripts/pinterest/publish-pins.mjs          # publish next 3 pending pins
+```
+
+- **Queue**: `scripts/pinterest/pin-queue.json` (13 evergreen pins as of 2026-11-23; money pages first). **Copy**: `pinterest-pin-copy.md` (28 entries). **Images**: `public/images/pins-upload/*.jpg` — these ARE committed (un-ignored 2026-11-23) because the API references them live at `thecaringpet.com/images/pins-upload/`; regenerate all via `npm run pins`. **Idempotent state**: `content-ideas/pinterest-state.json` — published/failed records make re-runs safe; `--pin <id>` retries individual failures.
+- **Token**: `~/.config/thecaringpet/pinterest-token` (OAuth user token, write scopes). Console quick-generator issues read-only scopes only — regenerate via `node scripts/pinterest/oauth-token.mjs` (one browser Allow click). App credentials: `~/.config/thecaringpet/pinterest-app.json`. On 401 → re-run the OAuth script; on 403 code 29 → app still on Trial access (Standard access requested 2026-11-23, video demo recorded); on 429 → just re-run later.
+- **Network**: terminal needs the local proxy (`127.0.0.1:7890`, ApexCore system proxy) to reach `api.pinterest.com` — the script auto-detects: port 7890 open → proxies, else connects direct. `NODE_USE_ENV_PROXY` must be set before process start (handled by the script's self-restart bootstrap).
+- **Known platform quirk**: Pinterest serves soft-blocked blank shells to the Chrome/webbridge environment (all routes `bodyLen 0`); **Safari is unaffected** — drive Pinterest web pages via Safari + AppleScript, not webbridge. Boards live at `Cat Care Tips` / `Dog Feeding & Enrichment` / `New Pet Parent Checklist` / `Pet Safety & Health` (queue auto-creates missing ones once write access is granted).
+- **Adding pins for a new article**: add copy to `pinterest-pin-copy.md` + a `PINS` entry in `scripts/make-pinterest-pins.mjs` → `npm run pins` → commit & push the new JPG (must be deployed before publishing) → append to `pin-queue.json`.
+
 ### Trending radar pipeline
 
 Weekly topic-scan (cron: Wednesdays 09:07 via `.claude/scheduled_tasks.json`). Three scripts write one report, `content-ideas/radar-YYYY-MM-DD.md` (the whole `content-ideas/` dir is gitignored; raw last30days JSON archives land in `content-ideas/raw/`). **Run order matters**: `trending-radar.mjs` full-overwrites the day's file; the browser/social scripts merge their block before the `## 下一步行动建议` marker, keyed on their own `<!-- BROWSER-RADAR-BEGIN/END -->` / `<!-- SOCIAL-RADAR-BEGIN/END -->` comments, so same-day re-runs replace rather than duplicate (shared helper: `scripts/lib/radar-merge.mjs`).
