@@ -9,6 +9,8 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const IMG_DIR = path.join(ROOT, 'public', 'images');
 const OUT_DIR = path.join(ROOT, 'public', 'images', 'pins');
+// 压缩 JPG 输出目录（供线上引用 / Pinterest API image_url 使用）
+const UP_DIR = path.join(ROOT, 'public', 'images', 'pins-upload');
 
 const W = 1000;
 const H = 1500;
@@ -87,20 +89,25 @@ async function makeOne(pin) {
   const outPath = path.join(OUT_DIR, pin.file);
   const overlay = Buffer.from(buildOverlay(pin.title));
 
-  await sharp(srcPath)
+  const pipeline = sharp(srcPath)
     .resize(W, H, { fit: 'cover', position: 'attention' }) // attention 智能裁剪到主体
-    .composite([{ input: overlay, top: 0, left: 0 }])
-    .png()
-    .toFile(outPath);
+    .composite([{ input: overlay, top: 0, left: 0 }]);
 
-  console.log('✓', pin.file);
+  await pipeline.clone().png().toFile(outPath);
+
+  // 同步产出压缩 JPG（54-177KB），线上部署后供 Pinterest API image_url 引用
+  const jpgFile = pin.file.replace(/\.png$/, '.jpg');
+  await pipeline.clone().jpeg({ quality: 80, mozjpeg: true }).toFile(path.join(UP_DIR, jpgFile));
+
+  console.log('✓', pin.file, '+', jpgFile);
 }
 
 (async () => {
   await mkdir(OUT_DIR, { recursive: true });
+  await mkdir(UP_DIR, { recursive: true });
   for (const pin of PINS) {
     try { await makeOne(pin); }
     catch (e) { console.error('✗', pin.file, '—', e.message); }
   }
-  console.log('\n完成。输出目录:', OUT_DIR);
+  console.log('\n完成。输出目录:', OUT_DIR, '+', UP_DIR);
 })();

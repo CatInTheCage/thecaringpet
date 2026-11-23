@@ -27,8 +27,8 @@ pnpm-debug.log*
 .tmp/
 
 # generated Pinterest Pin images (regenerable via scripts/make-pinterest-pins.mjs)
+# pins/ 大文件 PNG 只留本地; pins-upload/ 压缩 JPG 需部署到线上,供 Pinterest API image_url 引用
 public/images/pins/
-public/images/pins-upload/
 
 # project planning documents (private)
 todo.md
