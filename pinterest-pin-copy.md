@@ -28,7 +28,7 @@
 在 Pinterest → 个人主页 → 创建 Board，建这 3 个：
 
 - **Dog Feeding & Enrichment** ← 狗喂食类文章
-- **Cat Care & Feeding** ← 猫类文章
+- **Cat Care Tips** ← 猫类文章
 - **New Pet Parent Checklist** ← 新手清单类文章
 
 ## 使用方法（重要，先读）
@@ -39,7 +39,7 @@
 - **链接**：每条 Pin 的"目标链接"填下面给的真实 URL（注意末尾 `/`）。
 - **建 3 个 Board 分类发**：
   - `Dog Feeding & Enrichment`（喂食、慢食碗、舔垫、益智碗、快吃问题）
-  - `Cat Care & Feeding`（猫咪自动喂食器、陶瓷碗、肢体语言、新手清单）
+  - `Cat Care Tips`（猫咪自动喂食器、陶瓷碗、肢体语言、新手清单）
   - `New Pet Parent Checklist`（新猫/新狗 30 天清单，lead magnet 转化最高）
 - **发布时间**：欧美时间晚上 8–11 点（你的目标用户下班刷手机），每周固定发 3–5 个。
 - **首月目标**：13 篇 × 3 张 Pin ≈ 40 个 Pin。Pinterest 流量是复利的，3–6 个月才起量，坚持发。
@@ -175,7 +175,7 @@
 
 - **图片**：`pin-cat-age-chart.jpg`
 - **URL**：https://thecaringpet.com/tools/cat-age-calculator/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：Cat Years to Human Years Chart (Vet-Approved 16-5-4 Rule)
 - **描述**：How old is your cat really in human years? This vet-backed chart uses the Cornell 16-5-4 model: year one equals 16 human years, year two adds 5, and every year after adds 4. See the full conversion chart and find your cat's life stage. Save this for every cat parent.
 - **标签**：cat years to human years, cat age chart, cat age calculator, cat care, cat life stages, cat lifespan
@@ -202,7 +202,7 @@
 
 - **图片**：`pin-microchip-feeders.jpg`
 - **URL**：https://thecaringpet.com/blog/best-microchip-cat-feeders-2026/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：Best Microchip Cat Feeders for Multi-Cat Homes (Diet Control)
 - **描述**：One cat on a prescription diet and another stealing her food? Microchip cat feeders only open for the right cat. We compared the top 2026 models on chip and tag reliability, lid sealing, and cleaning so every cat gets the right meal. Save this before you buy.
 - **标签**：microchip cat feeder, surefeed microchip feeder, multi cat household, cat feeding, automatic cat feeder, cat care
@@ -220,7 +220,7 @@
 
 - **图片**：`pin-cat-slow-feeder.jpg`
 - **URL**：https://thecaringpet.com/blog/best-slow-feeders-for-cats/ ← **占位，以 B1 实际 slug 为准**
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：Best Slow Feeders for Cats (Stop Gulp-and-Vomit Meals)
 - **描述**：Cats eat fast for instinctive reasons — but gulp-and-vomit meals aren't something to live with. These cat-sized slow feeders and lick mats slow eating, reduce post-meal vomiting, and add enrichment. We picked the safest options shaped for feline faces. Save this before you shop.
 - **标签**：slow feeder for cats, cat eats too fast, cat vomiting after eating, lick mat for cats, cat feeding, cat bowl
@@ -235,7 +235,7 @@
 
 - **图片**：`pin-why-cats-live-to-20.jpg`
 - **URL**：https://thecaringpet.com/blog/why-some-cats-live-to-20/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：Why Do Some Cats Live to 20? 5 Vet-Backed Habits of Long-Lived Cats
 - **描述**：Some cats routinely reach 20 while others don't make 13 — and the difference is rarely luck. Vets see the same five habits in every long-lived cat: staying lean, drinking more water, tended teeth, daily play, and bloodwork before symptoms show. Save this checklist for your cat's long life.
 - **标签**：cat lifespan, how long do cats live, senior cat care, cat health tips, cat longevity, old cat care
@@ -262,7 +262,7 @@
 
 - **图片**：`pin-senior-cat-goodbye.jpg`
 - **URL**：https://thecaringpet.com/blog/when-to-say-goodbye-senior-cat/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：When to Say Goodbye to Your Senior Cat (Quality-of-Life Guide)
 - **描述**：There is no single moment that tells you it's time — but there is a framework. The HHHHHMM scale vets actually use, the daily signs worth tracking, and how to stop second-guessing the hardest decision in cat ownership. Save this for when you need it.
 - **标签**：senior cat care, when to put a cat down, cat quality of life, elderly cat care, saying goodbye to a cat, cat end of life
@@ -271,7 +271,7 @@
 
 - **图片**：`pin-air-freshener-cats.jpg`
 - **URL**：https://thecaringpet.com/blog/are-plug-in-air-fresheners-toxic-to-cats/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：Are Plug-In Air Fresheners Toxic to Cats? What Vets Want You to Know
 - **描述**：That scented plug-in in your hallway releases vapors that irritate a cat's sensitive airways — and the concentrated oil is toxic if it's licked off fur. Learn which air fresheners carry the most risk, the symptoms to watch for, and pet-safe ways to keep your home fresh instead.
 - **标签**：air freshener cat safety, are plug ins safe for cats, toxic household products cats, cat breathing problems, pet safe home, cat health
@@ -280,7 +280,7 @@
 
 - **图片**：`pin-cat-water-fountains.jpg`
 - **URL**：https://thecaringpet.com/blog/best-cat-water-fountains-2026/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：Best Cat Water Fountains of 2026 (Quiet, Filtered & Easy to Clean)
 - **描述**：Cats drink more from moving water — and chronic under-drinking stresses their kidneys. We compared the best cat water fountains of 2026 on pump noise, filter cost, and how easy they are to actually clean. Find one your cat will use every day. Save this before you shop.
 - **标签**：cat water fountain, cat hydration, best cat fountain, cat care, pet water fountain, cat health
@@ -289,7 +289,7 @@
 
 - **图片**：`pin-senior-cat-kidney.jpg`
 - **URL**：https://thecaringpet.com/blog/senior-cat-kidney-disease/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：Kidney Disease in Senior Cats: 7 Early Signs Most Owners Miss
 - **描述**：Chronic kidney disease hides in plain sight — extra thirst, subtle weight loss, and a pickier appetite are often the only clues. Learn the 7 early signs vets check for, what ages matter most, and which questions to ask at your cat's next senior checkup.
 - **标签**：kidney disease in cats, senior cat health, cat kidney failure signs, elderly cat care, cat health tips, CKD in cats
@@ -298,7 +298,7 @@
 
 - **图片**：`pin-give-cat-a-pill.jpg`
 - **URL**：https://thecaringpet.com/blog/how-to-give-a-cat-a-pill/
-- **Board**：Cat Care & Feeding
+- **Board**：Cat Care Tips
 - **标题**：How to Give a Cat a Pill Without Getting Scratched (4 Methods)
 - **描述**：Pilling a cat doesn't have to end in scratches — or a spat-out pill. Four vet-aligned methods, from the towel wrap to pill shooters to hiding it in food the right way (some foods destroy the medicine — know which ones). Save this for the next worming or antibiotic round.
 - **标签**：how to give a cat a pill, cat medication, cat care tips, pilling a cat, cat health, vet tips for cats

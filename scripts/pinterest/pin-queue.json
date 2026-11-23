@@ -1,15 +1,24 @@
 {
   "comment": "Pinterest 发布队列。来源: pinterest-pin-copy.md #15-28(剔除 #14 万圣节季节性过期、#20 猫慢食碗文章未发布)。顺序即发布优先级: 钱页/工具页优先。publish-pins.mjs 每次运行取 pending 里前 N 个(默认3), 状态记录在 content-ideas/pinterest-state.json。加新 Pin: 追加条目并确保 public/images/pins-upload/<file> 存在(npm run pins 重新生成)。",
   "boards": [
-    { "name": "Cat Care & Feeding", "description": "Cat feeding guides, health tips, and care advice from thecaringpet.com" },
-    { "name": "Dog Feeding & Enrichment", "description": "Dog feeding guides, slow feeders, and enrichment ideas from thecaringpet.com" },
-    { "name": "Pet Safety & Health", "description": "Pet poison lookup, food recall alerts, and emergency health guides from thecaringpet.com" }
+    {
+      "name": "Cat Care Tips",
+      "description": "Cat feeding guides, health tips, and care advice from thecaringpet.com"
+    },
+    {
+      "name": "Dog Feeding & Enrichment",
+      "description": "Dog feeding guides, slow feeders, and enrichment ideas from thecaringpet.com"
+    },
+    {
+      "name": "Pet Safety & Health",
+      "description": "Pet poison lookup, food recall alerts, and emergency health guides from thecaringpet.com"
+    }
   ],
   "pins": [
     {
       "id": "water-fountains",
       "file": "pin-cat-water-fountains.jpg",
-      "board": "Cat Care & Feeding",
+      "board": "Cat Care Tips",
       "link": "https://thecaringpet.com/blog/best-cat-water-fountains-2026/",
       "title": "Best Cat Water Fountains of 2026 (Quiet, Filtered & Easy to Clean)",
       "description": "Cats drink more from moving water — and chronic under-drinking stresses their kidneys. We compared the best cat water fountains of 2026 on pump noise, filter cost, and how easy they are to actually clean. Find one your cat will use every day. Save this before you shop."
@@ -17,7 +26,7 @@
     {
       "id": "microchip-feeders",
       "file": "pin-microchip-feeders.jpg",
-      "board": "Cat Care & Feeding",
+      "board": "Cat Care Tips",
       "link": "https://thecaringpet.com/blog/best-microchip-cat-feeders-2026/",
       "title": "Best Microchip Cat Feeders for Multi-Cat Homes (Diet Control)",
       "description": "One cat on a prescription diet and another stealing her food? Microchip cat feeders only open for the right cat. We compared the top 2026 models on chip and tag reliability, lid sealing, and cleaning so every cat gets the right meal. Save this before you buy."
@@ -33,7 +42,7 @@
     {
       "id": "cat-age-chart",
       "file": "pin-cat-age-chart.jpg",
-      "board": "Cat Care & Feeding",
+      "board": "Cat Care Tips",
       "link": "https://thecaringpet.com/tools/cat-age-calculator/",
       "title": "Cat Years to Human Years Chart (Vet-Approved 16-5-4 Rule)",
       "description": "How old is your cat really in human years? This vet-backed chart uses the Cornell 16-5-4 model: year one equals 16 human years, year two adds 5, and every year after adds 4. See the full conversion chart and find your cat's life stage. Save this for every cat parent."
@@ -57,7 +66,7 @@
     {
       "id": "why-cats-live-to-20",
       "file": "pin-why-cats-live-to-20.jpg",
-      "board": "Cat Care & Feeding",
+      "board": "Cat Care Tips",
       "link": "https://thecaringpet.com/blog/why-some-cats-live-to-20/",
       "title": "Why Do Some Cats Live to 20? 5 Vet-Backed Habits of Long-Lived Cats",
       "description": "Some cats routinely reach 20 while others don't make 13 — and the difference is rarely luck. Vets see the same five habits in every long-lived cat: staying lean, drinking more water, tended teeth, daily play, and bloodwork before symptoms show. Save this checklist for your cat's long life."
@@ -73,7 +82,7 @@
     {
       "id": "senior-cat-kidney",
       "file": "pin-senior-cat-kidney.jpg",
-      "board": "Cat Care & Feeding",
+      "board": "Cat Care Tips",
       "link": "https://thecaringpet.com/blog/senior-cat-kidney-disease/",
       "title": "Kidney Disease in Senior Cats: 7 Early Signs Most Owners Miss",
       "description": "Chronic kidney disease hides in plain sight — extra thirst, subtle weight loss, and a pickier appetite are often the only clues. Learn the 7 early signs vets check for, what ages matter most, and which questions to ask at your cat's next senior checkup."
@@ -81,7 +90,7 @@
     {
       "id": "give-cat-a-pill",
       "file": "pin-give-cat-a-pill.jpg",
-      "board": "Cat Care & Feeding",
+      "board": "Cat Care Tips",
       "link": "https://thecaringpet.com/blog/how-to-give-a-cat-a-pill/",
       "title": "How to Give a Cat a Pill Without Getting Scratched (4 Methods)",
       "description": "Pilling a cat doesn't have to end in scratches — or a spat-out pill. Four vet-aligned methods, from the towel wrap to pill shooters to hiding it in food the right way (some foods destroy the medicine — know which ones). Save this for the next worming or antibiotic round."
@@ -105,7 +114,7 @@
     {
       "id": "senior-cat-goodbye",
       "file": "pin-senior-cat-goodbye.jpg",
-      "board": "Cat Care & Feeding",
+      "board": "Cat Care Tips",
       "link": "https://thecaringpet.com/blog/when-to-say-goodbye-senior-cat/",
       "title": "When to Say Goodbye to Your Senior Cat (Quality-of-Life Guide)",
       "description": "There is no single moment that tells you it's time — but there is a framework. The HHHHHMM scale vets actually use, the daily signs worth tracking, and how to stop second-guessing the hardest decision in cat ownership. Save this for when you need it."
