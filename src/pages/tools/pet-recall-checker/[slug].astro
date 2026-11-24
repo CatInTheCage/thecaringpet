@@ -20,7 +20,7 @@ const { recall } = Astro.props;
 
 const title = `${recall.brand} Recall ${new Date(recall.recallDate).getFullYear()}: Lot Codes & What To Do`;
 const description = `${recall.brand} recall (${recall.recallDate}): ${recall.hazard}. Affected: ${recall.product}${recall.lotCodes.length ? ` — lots ${recall.lotCodes.join(', ')}` : ''}. Check your package and learn what to do.`;
-const image = '/images/hero.jpg';
+const image = '/images/hero.webp';
 
 const breadcrumbs = [
 	{ label: 'Home', href: '/' },

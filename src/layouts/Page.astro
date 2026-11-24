@@ -16,7 +16,7 @@ interface Props {
 	compactHeader?: boolean;
 }
 
-const { title, description, image = '/images/hero.jpg', breadcrumbs, showNewsletter = true, wide = false, compactHeader = false } = Astro.props;
+const { title, description, image = '/images/hero.webp', breadcrumbs, showNewsletter = true, wide = false, compactHeader = false } = Astro.props;
 const containerClass = wide ? 'container' : 'container-narrow';
 const pageTitle = title;
 ---

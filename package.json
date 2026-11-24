@@ -19,6 +19,9 @@
     "pain": "node scripts/pain-radar/index.mjs",
     "wb": "node scripts/wb.mjs",
     "pins": "node scripts/make-pinterest-pins.mjs",
+    "revenue:export": "node scripts/revenue-export.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "pagespeed": "node scripts/pagespeed.mjs",
     "pins:publish": "node scripts/pinterest/publish-pins.mjs"
   },
   "dependencies": {
@@ -31,6 +34,10 @@
     "sharp": "^0.34.3"
   },
   "devDependencies": {
+    "@googleapis/analyticsadmin": "^22.0.2",
+    "@googleapis/analyticsdata": "^10.1.1",
+    "@googleapis/searchconsole": "^11.0.1",
+    "google-auth-library": "^11.3.4",
     "pagefind": "^1.5.2"
   }
 }
