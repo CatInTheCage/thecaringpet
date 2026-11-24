@@ -14,11 +14,67 @@ interface Props {
 		pros: string[];
 		cons: string[];
 		amazonId: string;
+		brand?: string;
 	};
 	badge?: string;
 }
 
 const { product, badge } = Astro.props;
+
+// Brand extraction for the schema.org `brand` field (one of the global
+// identifiers Google asks for). Most card names lead with the brand; a few
+// carry it in parentheses ("...(Neareal, 74oz)"). Matched as whole words,
+// case-insensitively, so "Pet Parents" never trips on "PETKIT" or "PetSafe".
+const KNOWN_BRANDS: Array<[pattern: string, canonical: string]> = [
+	['nina ottosson by outward hound', 'Nina Ottosson by Outward Hound'],
+	['arm & hammer', 'ARM & HAMMER'],
+	['best friends by sheri', 'Best Friends by Sheri'],
+	['midwest homes for pets', 'MidWest Homes for Pets'],
+	['rocco & roxie', 'Rocco & Roxie'],
+	['amazon basics', 'Amazon Basics'],
+	['outward hound', 'Outward Hound'],
+	['closer pets', 'Closer Pets'],
+	['cat mate', 'Cat Mate'],
+	['petfusion', 'PetFusion'],
+	['pet parents', 'Pet Parents'],
+	['pet lodge', 'Pet Lodge'],
+	['petsafe', 'PetSafe'],
+	['petlibro', 'PETLIBRO'],
+	['petkit', 'PETKIT'],
+	['lickimat', 'LickiMat'],
+	['go cat', 'Go Cat'],
+	['gocat', 'Go Cat'],
+	['le tauci', 'LE TAUCI'],
+	['inaba', 'INABA'],
+	['feliway', 'FELIWAY'],
+	['feelneedy', 'FEELNEEDY'],
+	['neareal', 'Neareal'],
+	['vivifying', 'Vivifying'],
+	['honomastry', 'Honomastry'],
+	['mateeylife', 'MateeyLife'],
+	['maohegou', 'Maohegou'],
+	['lusifaco', 'Lusifaco'],
+	['surefeed', 'SureFeed'],
+	['west paw', 'West Paw'],
+	['awoof', 'AWOOF'],
+	['kong', 'KONG'],
+	['sodapup', 'SodaPup'],
+	['veken', 'Veken'],
+	['churu', 'INABA'],
+	['xiaz', 'XIAZ'],
+	['y yhy', 'Y YHY'],
+	['yopsi', 'YOPSI'],
+	['k&h', 'K&H'],
+];
+
+function extractBrand(name: string): string | null {
+	const lower = name.toLowerCase();
+	for (const [pattern, canonical] of KNOWN_BRANDS) {
+		const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		if (new RegExp(`\\b${escaped}\\b`).test(lower)) return canonical;
+	}
+	return null;
+}
 
 // JSON-LD: emit Product schema only when the visible card data parses cleanly,
 // so the markup always mirrors what is actually rendered.
@@ -32,6 +88,11 @@ const amazonUrl = `https://www.amazon.com/dp/${product.amazonId}/?tag=${AMAZON_A
 
 let schemaJson: Record<string, unknown> | null = null;
 if (priceValue && Number.isFinite(ratingValue) && reviewCount) {
+	// We are an affiliate: the purchase happens on Amazon, so the offer-level
+	// policy fields describe Amazon's standard US terms (30-day return window,
+	// free returns by mail, Prime/free-shipping-eligible) and link to Amazon's
+	// policy pages rather than inventing our own.
+	const brandName = product.brand ?? extractBrand(product.name);
 	schemaJson = {
 		'@context': 'https://schema.org',
 		'@type': 'Product',
@@ -39,12 +100,43 @@ if (priceValue && Number.isFinite(ratingValue) && reviewCount) {
 		image: `${SITE_URL}${product.image}`,
 		description: product.bestFor,
 		sku: product.amazonId,
+		...(brandName
+			? { brand: { '@type': 'Brand', name: brandName } }
+			: // Generic no-name listings have no brand to declare; the ASIN serves
+			  // as the product identifier so the offer still carries a global ID.
+				{ mpn: product.amazonId }),
 		offers: {
 			'@type': 'Offer',
 			url: amazonUrl,
 			priceCurrency: 'USD',
 			price: priceValue.toFixed(2),
 			availability: 'https://schema.org/InStock',
+			itemCondition: 'https://schema.org/NewCondition',
+			hasMerchantReturnPolicy: {
+				'@type': 'MerchantReturnPolicy',
+				applicableCountry: 'US',
+				returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+				merchantReturnDays: 30,
+				returnMethod: 'https://schema.org/ReturnByMail',
+				url: 'https://www.amazon.com/returns',
+			},
+			shippingDetails: {
+				'@type': 'OfferShippingDetails',
+				shippingDestination: {
+					'@type': 'DefinedRegion',
+					addressCountry: 'US',
+				},
+				shippingRate: {
+					'@type': 'MonetaryAmount',
+					value: '0',
+					currency: 'USD',
+				},
+				deliveryTime: {
+					'@type': 'ShippingDeliveryTime',
+					handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 1, unitCode: 'DAY' },
+					transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 5, unitCode: 'DAY' },
+				},
+			},
 		},
 		aggregateRating: {
 			'@type': 'AggregateRating',
