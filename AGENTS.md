@@ -180,17 +180,25 @@ node scripts/pinterest/publish-pins.mjs          # publish next 3 pending pins
 - **Known platform quirk**: Pinterest serves soft-blocked blank shells to the Chrome/webbridge environment (all routes `bodyLen 0`); **Safari is unaffected** — drive Pinterest web pages via Safari + AppleScript, not webbridge. Boards live at `Cat Care Tips` / `Dog Feeding & Enrichment` / `New Pet Parent Checklist` / `Pet Safety & Health` (queue auto-creates missing ones once write access is granted).
 - **Adding pins for a new article**: add copy to `pinterest-pin-copy.md` + a `PINS` entry in `scripts/make-pinterest-pins.mjs` → `npm run pins` → commit & push the new JPG (must be deployed before publishing) → append to `pin-queue.json`.
 
-### Trending radar pipeline
+### Pain-point radar pipeline (需求/痛点检索)
 
-Weekly topic-scan (cron: Wednesdays 09:07 via `.claude/scheduled_tasks.json`). Three scripts write one report, `content-ideas/radar-YYYY-MM-DD.md` (the whole `content-ideas/` dir is gitignored; raw last30days JSON archives land in `content-ideas/raw/`). **Run order matters**: `trending-radar.mjs` full-overwrites the day's file; the browser/social scripts merge their block before the `## 下一步行动建议` marker, keyed on their own `<!-- BROWSER-RADAR-BEGIN/END -->` / `<!-- SOCIAL-RADAR-BEGIN/END -->` comments, so same-day re-runs replace rather than duplicate (shared helper: `scripts/lib/radar-merge.mjs`).
+Weekly Wednesday routine (manual trigger preferred; cron 09:07 Wed via `.claude/scheduled_tasks.json` is unreliable on this machine). Two layers — **scripts collect raw data only; Claude analyzes in-session**:
+
+1. **Collect** — `npm run radar:all` = `radar` (Petful recalls + PPH toxins RSS + recall-coverage check, unchanged) + `pain` (4-source pain collector, ~30–45 min, drives Chrome via webbridge; opens a tab group and closes it when done).
+   - `scripts/pain-radar/` — `index.mjs` (CLI: `--only=reddit|amazon|quora-google|trends`, `--task=<id>` for single query/ASIN), `config.mjs` (all queries + 16 verified ASINs), `sources/{reddit,amazon,google,trends}.mjs`, `lib/{runtime,webbridge,gsc}.mjs`.
+   - **Reddit**: last30days `--json-profile=raw` (no `--quick`) → post bodies (selftext ~500 chars) + engagement; ~half of items have bodies, `title_only` items don't count as pain evidence. **Amazon**: Top-reviews sample only — star filters/sort/pagination params all dead as of 2026-11-24 (fixed 8 reviews/ASIN, positive bias; EdgeX Guard anti-bot appears intermittently, 15 s auto-wait then skip). **Quora/Google**: Quora via Google SERP `site:quora.com`, problem-type Suggest seeds (`gl=us`), PAA questions. **Trends**: network capture of `widgetdata/relatedsearches` → DOM → GSC fallback; Trends widget XHR never fires on this network, so GSC `gsc_current_demand_context` (NOT trends, NOT rising) is the usual output.
+   - Output: `content-ideas/raw/pain-points/<date>/` (manifest + 4 platform JSON + `source/` originals). Uniform envelope with `quotes[].raw_ref` (file + JSON pointer) for citation audit. Scripts never emit analysis fields (no scores/ideas); all failures recorded honestly with error codes.
+2. **Analyze (Claude)** — follow `scripts/pain-radar/ANALYSIS.md`: filter/cluster, GSC cross-check, 33-article dedup (New/Update/Section), F/P/C/S/T weighted scoring (0.30F+0.25P+0.20C+0.15S+0.10T), verbatim quote audit (substring + raw_ref + URL). Report → `content-ideas/pain-points-<date>.md`: 4 platform tables (≥10 pain points each or ⚠️, fixed 8 columns), Top 10 ranked, Top 3 English SEO titles, gap opportunities, pitfalls. Never pad to 10; never fabricate quotes.
+
+Retry one lane: `npm run pain -- --only=amazon` (after manually passing captcha/EdgeX Guard in Chrome). `radar:browser` / `radar:social` are retired from the weekly loop since 2026-11-24 (kept for ad-hoc deep research); the old Reddit top-week / Amazon BSR / Pinterest Trends lanes are gone. Legacy reports: `content-ideas/radar-YYYY-MM-DD.md` (merge helper `scripts/lib/radar-merge.mjs`, only used by legacy scripts).
 
 **Recall coverage check (automated since 2026-08-03):** `trending-radar.mjs` reads brand/alias tokens from `src/data/recalls.ts` and flags any Petful recall item not yet covered in the dataset as "疑似未收录" in the action section — those entries must be verified against the FDA notice and added to `recalls.ts` (the Pet Recall Checker's data source), with `lastVerified` set to that day. This keeps `/tools/pet-recall-checker/` current without a separate maintenance task.
 
 | Script | npm run | Needs | Sources |
 |---|---|---|---|
 | `scripts/trending-radar.mjs` | `radar` | nothing | Petful recalls, Pet Poison Helpline RSS |
-| `scripts/trending-radar-browser.mjs` | `radar:browser` | kimi-webbridge daemon + browser | Reddit 9 subs, Google Suggest, Amazon, Pinterest Trends |
-| `scripts/trending-radar-social.mjs` | `radar:social` | python3, mcporter | last30days (reddit/web/youtube per topic) + Exa semantic news via agent-reach |
+| `scripts/pain-radar/index.mjs` | `pain` | kimi-webbridge daemon + browser (reddit lane: python3 only) | Reddit bodies, Amazon reviews, Quora/Suggest/PAA, Trends (+GSC fallback) |
+| `scripts/trending-radar-browser.mjs` / `trending-radar-social.mjs` | `radar:browser` / `radar:social` (retired from weekly loop) | — | legacy; ad-hoc deep research only |
 
 `radar:social` runs 4 fixed pet topics through `~/.claude/skills/last30days/scripts/last30days.py` (`--quick --days 30 --emit json`, serial, 6-min per-topic kill) plus 2 Exa queries (`mcporter call exa.web_search_exa`, spawned with cwd=repo root because the Exa MCP server is configured in project-level `config/mcporter.json`). Useful flags: `--only-topic "<query>"`, `--skip-exa`, `--days N`. It always exits 0 unless writing the report fails — per-source failures are recorded as ⚠️ lines in the report; never fabricate data for them.
 
