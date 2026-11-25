@@ -87,6 +87,10 @@ const fullTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 				function gtag() {
 					dataLayer.push(arguments);
 				}
+				// Astro wraps define:vars inline scripts in an IIFE, so the local
+				// gtag never lands on window by itself — the amazon_click listener
+				// below checks window.gtag and would silently drop every click.
+				window.gtag = gtag;
 				gtag('js', new Date());
 				gtag('config', GA_TRACKING_ID);
 			</script>
